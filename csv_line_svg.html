@@ -516,7 +516,7 @@
   //     .text("Number of Attacks per year" + "\n" + "1970 - 2016");
   // }
 
-  d3.csv("globalterrorismdb_0617dist.csv", function(error, data) {
+  d3.csv("large_data/globalterrorismdb_0617dist.csv", function(error, data) {
               
     if(error) {
         console.log(error);
@@ -575,6 +575,7 @@
       */
 
       var createMonthJSON = function(){
+
 
         ds3 = {"contents": [
               {
