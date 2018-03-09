@@ -447,7 +447,8 @@
 
         svg.selectAll("g.y-axis").call(yAxis);
 
-        svg.selectAll(".path-month").data([ds])
+        svg.selectAll(".path-month")
+              .data([ds])
               .transition()
               .duration(3500)
               // .ease("linear")
@@ -458,6 +459,16 @@
               .attr("d", line);
 
       var dots = svg.selectAll(".circle-svg")
+                      // .data(ds)
+                      .transition()
+                      .duration(1000)
+                      .ease("linear")
+                      .attr({
+                        cx: function(d) { return xScale(getDate(d.date)); },
+                        cy: function(d) { return yScale(d.count); },
+                      });
+      var dots = svg.selectAll(".circle-svg")
+                      .data(ds)
                       .transition()
                       .duration(1000)
                       .ease("linear")
@@ -793,16 +804,7 @@
             dsYear = dsYear.monthlyCount.splice(0, dsYear.monthlyCount.length - date);
 
             updateLineMonth(dsYear)
-
-            //  decodedData.contents.forEach(function(ds){
-
-            //     ds.monthlyCount.splice(0,ds.monthlySales.length-sel);
-
-            //     updateLine(ds);
-               
-            // });
-            
-            
+          
       });
 
       d3.select("#month-option")
