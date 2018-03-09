@@ -301,7 +301,6 @@
                       .style("opacity", 0)
 
 
-
     // Scales
     var xScale = d3.time.scale()
       .domain([minDate, maxDate])
@@ -342,7 +341,6 @@
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-
       svg.append("g")
           .attr("class", "x-axis")
           .attr("transform", "translate(0," + height + ")")
@@ -364,6 +362,32 @@
           .data([ds])
           .attr("class", "path-month")
           .attr("d", line);
+
+      var dots = svg.selectAll("circle")
+                      .data(ds)
+                      .enter()
+                      .append("circle")
+                      .attr({
+                        cx: function(d) { return xScale(getDate(d.date)); },
+                        cy: function(d) { return yScale(d.count); },
+                        r: 3,
+                        "fill": "#666666",
+                        class: "circle-svg"
+                      })
+                      .on("mouseover", function(d){
+
+                        tooltip.transition()
+                                  .duration(500)
+                                  .style("opacity", .85)
+                        tooltip.html("<strong>Attack Count: " + d.count)
+                                  .style("left", (d3.event.pageX) + "px")
+                                  .style("top", (d3.event.pageY - 28) + "px");
+                      })
+                      .on("mouseout", function(d){
+                        tooltip.transition()
+                                  .duration(300)
+                                  .style("opacity", 0);
+                      })
   };
 
   
@@ -432,6 +456,16 @@
               .ease("bounce")
             // .attr("class", "line")
               .attr("d", line);
+
+      var dots = svg.selectAll(".circle-svg")
+                      .transition()
+                      .duration(1000)
+                      .ease("linear")
+                      .attr({
+                        cx: function(d) { return xScale(getDate(d.date)); },
+                        cy: function(d) { return yScale(d.count); },
+                      });
+                      
   };
 
 // var obj = new Object();
