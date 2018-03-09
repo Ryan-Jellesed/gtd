@@ -201,7 +201,6 @@
         console.log(contents)
   };
 
-
   /*
     Start building the graphing functions
    */
@@ -279,7 +278,6 @@
           .attr("class", "path-month")
           .attr("d", line);
   };
-
 
   var buildLineMonth = function(ds) {
 
@@ -390,8 +388,6 @@
                       })
   };
 
-  
-
   var updateLineMonth = function(ds) {
 
       // base = 1970;
@@ -475,8 +471,7 @@
                       .attr({
                         cx: function(d) { return xScale(getDate(d.date)); },
                         cy: function(d) { return yScale(d.count); },
-                      });
-                      
+                      });                     
   };
 
 // var obj = new Object();
@@ -793,7 +788,7 @@
             var selYear = d3.select('#year-option').node().value;
             var selDate = d3.select("#date-option").node().value;
             // console.log(ds.monthlySales.length-sel);
-            console.log(selYear);
+            // console.log(selYear);
 
             var decodedData = JSON.parse(window.atob(data.content));
             var ds = decodedData.contents;
@@ -801,8 +796,12 @@
             var date = selDate;
             var dsYear = ds[year - 1970];
 
-            dsYear = dsYear.monthlyCount.splice(0, dsYear.monthlyCount.length - date);
-
+            // dsYear = dsYear.monthlyCount.splice(0, dsYear.monthlyCount.length - date);
+            if(d3.select("#date-option").node().value === "-6"){
+              dsYear = dsYear.monthlyCount.splice(6, dsYear.monthlyCount.length - date);
+            } else {
+              dsYear = dsYear.monthlyCount.splice(0, dsYear.monthlyCount.length - date);
+            }
             updateLineMonth(dsYear)
           
       });
@@ -829,11 +828,15 @@
             var date = selDate;
             var dsYear = ds[year - 1970];
 
-            dsYear = dsYear.monthlyCount.splice(0, dsYear.monthlyCount.length - date);
 
+            if(d3.select("#date-option").node().value === "-6"){
+              dsYear = dsYear.monthlyCount.splice(6, dsYear.monthlyCount.length - date);
+            } else {
+              dsYear = dsYear.monthlyCount.splice(0, dsYear.monthlyCount.length - date);
+            }
             updateLineMonth(dsYear);
 
-              console.log(selDate);    
+              // console.log(selDate);    
       });
 
       d3.select("#day-option")
@@ -842,7 +845,7 @@
               // get selected option
             var selDay = d3.select('#day-option').node().value;
 
-            console.log(selDay);    
+            // console.log(selDay);    
       });
 
   });
@@ -891,7 +894,8 @@
             <select id="date-option">
               <option value="0">One Year</option>
               <option value="3">Nine Months</option>
-              <option value="6">Six Months</option>
+              <option value="6">First Six Months</option>
+              <option value="-6">Last Six Months</option>
               <option value="9">Three Months</option>
             </select>
           </label>
