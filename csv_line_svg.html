@@ -295,95 +295,83 @@
           .attr("class", "path-month")
           .attr("d", line);
 
-      // var dots = svg.selectAll("circle")
-      //                 .data([dataset])
-      //                 .enter()
-      //                 .append("circle")
-      //                 .attr({
-      //                         cx: function(d) { return xScale(getDate(year + (d.x).pad() + (1).pad())); },
-      //                         cy: function(d) { return yScale(d.y); },
-      //                         r: 3,
-      //                         "fill": "#666666",
-      //                         class: "circle-month"
-      //                 })
-
     }
 
 
-  var buildLineYear = function(data) {
+  // var buildLineYear = function(data) {
 
-    dataset = data;
-    console.log(dataset)
+  //   dataset = data;
+  //   console.log(dataset)
 
-    var minDate = function(dataset){ return getDate(dataset[0].x + (1).pad() + (1).pad());};
+  //   var minDate = function(dataset){ return getDate(dataset[0].x + (1).pad() + (1).pad());};
 
-    var maxDate = function(dataset){return getDate(dataset[dataset.length -1].x + (1).pad() + (1).pad());};
+  //   var maxDate = function(dataset){return getDate(dataset[dataset.length -1].x + (1).pad() + (1).pad());};
 
-    console.log("min date: " + minDate(dataset));
-    console.log("max date: " + maxDate(dataset));
+  //   console.log("min date: " + minDate(dataset));
+  //   console.log("max date: " + maxDate(dataset));
 
-    // Scales
-    var xScale = d3.time.scale()
-      .domain([minDate(dataset), maxDate(dataset)])
-      .range([0, width]);
+  //   // Scales
+  //   var xScale = d3.time.scale()
+  //     .domain([minDate(dataset), maxDate(dataset)])
+  //     .range([0, width]);
 
-    var yScale = d3.scale.linear()
-        .domain([0, d3.max(dataset, function(d){ return d.y; })])
-        .range([height, 0]);
+  //   var yScale = d3.scale.linear()
+  //       .domain([0, d3.max(dataset, function(d){ return d.y; })])
+  //       .range([height, 0]);
 
-    // Axis
-    var xAxis = d3.svg.axis()
-        .scale(xScale)
-        .orient("bottom")
-        .innerTickSize(-height)
-        .outerTickSize(0)
-        .tickPadding(10)
-        .tickFormat(d3.time.format("%Y"));
+  //   // Axis
+  //   var xAxis = d3.svg.axis()
+  //       .scale(xScale)
+  //       .orient("bottom")
+  //       .innerTickSize(-height)
+  //       .outerTickSize(0)
+  //       .tickPadding(10)
+  //       .tickFormat(d3.time.format("%Y"));
 
-    var yAxis = d3.svg.axis()
-        .scale(yScale)
-        .orient("left")
-        .innerTickSize(-width)
-        .outerTickSize(0)
-        .tickPadding(10);
+  //   var yAxis = d3.svg.axis()
+  //       .scale(yScale)
+  //       .orient("left")
+  //       .innerTickSize(-width)
+  //       .outerTickSize(0)
+  //       .tickPadding(10);
 
-    // Line func
-    var line = d3.svg.line()
-        .x(function(d) { return xScale(getDate(d.x + (1).pad() + (1).pad())); })
-        .y(function(d) { return yScale(d.y); })
-        .interpolate("linear");
+  //   // Line func
+  //   var line = d3.svg.line()
+  //       .x(function(d) { return xScale(getDate(d.x + (1).pad() + (1).pad())); })
+  //       .y(function(d) { return yScale(d.y); })
+  //       .interpolate("linear");
 
-    // Create svg
-    var svg = d3.select("body").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .attr("id", "svg-month")
-      .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  //   // Create svg
+  //   var svg = d3.select("body").append("svg")
+  //       .attr("width", width + margin.left + margin.right)
+  //       .attr("height", height + margin.top + margin.bottom)
+  //       .attr("id", "svg-month")
+  //     .append("g")
+  //       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      svg.append("g")
-          .attr("class", "x-axis")
-          .attr("transform", "translate(0," + height + ")")
-          .call(xAxis)
+  //     svg.append("g")
+  //         .attr("class", "x-axis")
+  //         .attr("transform", "translate(0," + height + ")")
+  //         .call(xAxis)
 
-      svg.append("g")
-          .attr("class", "y-axis")
-          .call(yAxis)
+  //     svg.append("g")
+  //         .attr("class", "y-axis")
+  //         .call(yAxis)
 
-      // text label for the x axis
-      svg.append("text")             
-      .attr("transform",
-            "translate(" + (width/2) + " ," + 
-                           (height + margin.top + 10) + ")")
-      .style("text-anchor", "middle");
-      // .text("Month Number or Year Number (I haven't coded the dynamic variables yet)");
+  //     // text label for the x axis
+  //     svg.append("text")             
+  //     .attr("transform",
+  //           "translate(" + (width/2) + " ," + 
+  //                          (height + margin.top + 10) + ")")
+  //     .style("text-anchor", "middle");
+  //     // .text("Month Number or Year Number (I haven't coded the dynamic variables yet)");
 
-      svg.append("path")
-          .data([dataset])
-          .attr("class", "path-month")
-          .attr("d", line);
+  //     svg.append("path")
+  //         .data([dataset])
+  //         .attr("class", "path-month")
+  //         .attr("d", line);
 
-    }
+  //   }
 
 
 
@@ -449,18 +437,6 @@
               .ease("bounce")
             // .attr("class", "line")
               .attr("d", line);
-
-
-
-      // var dots = svg.selectAll(".circle-month")                                                   
-      //               .transition() 
-      //               .duration(1000)
-      //               .ease("linear")
-      //               .attr({
-      //                   cx: function(d) {return xScale(getDate(year + (d.x).pad() + (1).pad())); },
-      //                   cy: function (d) { return yScale(d.y); }                        
-      //               });                    
-
 
       }
 
@@ -575,7 +551,6 @@
       */
 
       var createMonthJSON = function(){
-
 
         ds3 = {"contents": [
               {

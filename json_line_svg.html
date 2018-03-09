@@ -67,6 +67,8 @@
 <script src="http://d3js.org/d3.v3.js"></script>
 <script>
 
+  var ds = [];
+
   var margin = {top: 20, right: 100, bottom: 50, left: 100},
       width = 960 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
@@ -94,7 +96,7 @@
     var s = String(this);
     while (s.length < (size || 2)) {s = "0" + s;}
     return s;
-  }
+  };
 
   var countYear = function(year) {
 
@@ -107,7 +109,7 @@
 
       date = getDate(ds[i]['date'])
       fullYear = date.getFullYear();
-      day = date.getDay();
+      day = date.getDate();
       month = date.getMonth();
       
       if(fullYear === year) {
@@ -118,19 +120,19 @@
       
     }
     return(counter) 
-  }
+  };
 
   var countMonth = function(yyyy, mm) {
     
     counter = 0;  
     
-    for(var i = 0; i < ds.length; i++) {
+    for(var i = 0; i < gtdJSON.length; i++) {
 
       // if(i % 10000 === 0){
       //   console.log(i);
       // };
 
-      date = getDate(ds[i]['date'])
+      date = getDate(gtdJSON[i]['date'])
       fullYear = date.getFullYear();
       day = date.getDay();
       month = date.getMonth();
@@ -153,9 +155,7 @@
     // console.log("xy is: " + nKillByYear);
     return attacksByYear
     console.log(attacksByYear);
-  }
-
-
+  };
 
   // create an object within an array that holds 
   var attacksYearMonthArray = function(arr){
@@ -176,8 +176,7 @@
     };
     return attacksYearMonth
     console.log(attacksYearMonth);
-  }
-
+  };
 
   var monthAttacks = function(arr){
       
@@ -202,100 +201,10 @@
         console.log(contents)
   };
 
-  // var buildLineMonth = function(year, month) {
 
-  //   base = 1970;
-  //   dataset = contents[year - base].month;
-  //   // data = dataset.month;
-  //   console.log(dataset)
-
-  //   var minDate = function(dataset){return getDate(year + (dataset[0].x).pad() + (1).pad());};
-
-  //   var maxDate = function(dataset){return getDate(year + (dataset.length).pad() + (1).pad());};
-
-  //   console.log("min date: " + minDate(dataset));
-  //   console.log("max date: " + maxDate(dataset));
-
-  //   var tooltip = d3.select("body").append("div")
-  //                     .attr("class", "tooltip")
-  //                     .style("opacity", 0)
-
-  //   // Scales
-  //   var xScale = d3.time.scale()
-  //     .domain([minDate(dataset), maxDate(dataset)])
-  //     .range([0, width]);
-
-  //   var yScale = d3.scale.linear()
-  //       .domain([0, d3.max(dataset, function(d){ return d.y; })])
-  //       .range([height, 0]);
-
-  //   // Axis
-  //   var xAxis = d3.svg.axis()
-  //       .scale(xScale)
-  //       .orient("bottom")
-  //       .innerTickSize(-height)
-  //       .outerTickSize(0)
-  //       .tickPadding(10)
-  //       .tickFormat(d3.time.format("%b"));
-
-  //   var yAxis = d3.svg.axis()
-  //       .scale(yScale)
-  //       .orient("left")
-  //       .innerTickSize(-width)
-  //       .outerTickSize(0)
-  //       .tickPadding(10);
-
-  //   // Line func
-  //   var line = d3.svg.line()
-  //       .x(function(d) { return xScale(getDate(year + (d.x).pad() + (1).pad())); })
-  //       .y(function(d) { return yScale(d.y); })
-  //       .interpolate("linear");
-
-  //   // Create svg
-  //   var svg = d3.select("body").append("svg")
-  //       .attr("width", width + margin.left + margin.right)
-  //       .attr("height", height + margin.top + margin.bottom)
-  //       .attr("id", "svg-month")
-  //     .append("g")
-  //       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
-  //     svg.append("g")
-  //         .attr("class", "x-axis")
-  //         .attr("transform", "translate(0," + height + ")")
-  //         .call(xAxis)
-
-  //     svg.append("g")
-  //         .attr("class", "y-axis")
-  //         .call(yAxis)
-
-  //     // text label for the x axis
-  //     svg.append("text")             
-  //     .attr("transform",
-  //           "translate(" + (width/2) + " ," + 
-  //                          (height + margin.top + 10) + ")")
-  //     .style("text-anchor", "middle");
-  //     // .text("Month Number or Year Number (I haven't coded the dynamic variables yet)");
-
-  //     svg.append("path")
-  //         .data([dataset])
-  //         .attr("class", "path-month")
-  //         .attr("d", line);
-
-  //     // var dots = svg.selectAll("circle")
-  //     //                 .data([dataset])
-  //     //                 .enter()
-  //     //                 .append("circle")
-  //     //                 .attr({
-  //     //                         cx: function(d) { return xScale(getDate(year + (d.x).pad() + (1).pad())); },
-  //     //                         cy: function(d) { return yScale(d.y); },
-  //     //                         r: 3,
-  //     //                         "fill": "#666666",
-  //     //                         class: "circle-month"
-  //     //                 })
-
-  //   }
-
+  /*
+    Start building the graphing functions
+   */
 
   var buildLineYear = function(data) {
 
@@ -369,94 +278,160 @@
           .data([dataset])
           .attr("class", "path-month")
           .attr("d", line);
-
-    }
-
+  };
 
 
-  // var updateLineMonth = function(year, month) {
+  var buildLineMonth = function(ds) {
 
-  //     base = 1970;
-  //     dataset = contents[year - base].month;
-  //     // data = dataset.month;
-  //     console.log(dataset)
+    // base = 1970;
+    // dataset = ds[year - base].month;
+    // data = dataset.month;
+    // console.log(dataset)
 
-  //     var minDate = function(dataset){return getDate(year + (dataset[0].x).pad() + (1).pad());};
+    var minDate = getDate(ds[0]['date']);
+    // console.log(minDate);
+    var maxDate = getDate(ds[ds.length-1].date);
+    // console.log(maxDate);
 
-  //     var maxDate = function(dataset){return getDate(year + (dataset.length).pad() + (1).pad());};
+    console.log("min date: " + minDate);
+    console.log("max date: " + maxDate);
 
-  //     console.log("min date: " + minDate(dataset));
-  //     console.log("max date: " + maxDate(dataset));
-
-  //     // Scales
-  //     var xScale = d3.time.scale()
-  //       .domain([minDate(dataset), maxDate(dataset)])
-  //       .range([0, width]);
-
-  //     var yScale = d3.scale.linear()
-  //         .domain([0, d3.max(dataset, function(d){ return d.y; })])
-  //         .range([height, 0]);
-
-  //     // Axis
-  //     var xAxis = d3.svg.axis()
-  //         .scale(xScale)
-  //         .orient("bottom")
-  //         .innerTickSize(-height)
-  //         .outerTickSize(0)
-  //         .tickPadding(10)
-  //         // .ticks(ds.monthlySales.length-1)     DIDN'T IMPLEMENT THIS YET FROM THE TUTORIAL
-  //         .tickFormat(d3.time.format("%b"));
-
-  //     var yAxis = d3.svg.axis()
-  //         .scale(yScale)
-  //         .orient("left")
-  //         .innerTickSize(-width)
-  //         .outerTickSize(0)
-  //         .tickPadding(10);
-
-  //     // Line func
-  //     var line = d3.svg.line()
-  //         .x(function(d) { return xScale(getDate(year + (d.x).pad() + (1).pad())); })
-  //         .y(function(d) { return yScale(d.y); })
-  //         .interpolate("linear");
-
-  //     // Create svg
-  //     var svg = d3.select("body").select("#svg-month");
-
-  //       svg.selectAll("g.x-axis").call(xAxis);
-
-  //       svg.selectAll("g.y-axis").call(yAxis);
-
-  //       svg.selectAll(".path-month").data([dataset])
-  //             .transition()
-  //             .duration(3000)
-  //             // .ease("linear")
-  //             // .ease("elastic")
-  //             // .ease("circle")
-  //             .ease("bounce")
-  //           // .attr("class", "line")
-  //             .attr("d", line);
+    var tooltip = d3.select("body").append("div")
+                      .attr("class", "tooltip")
+                      .style("opacity", 0)
 
 
 
-  //     // var dots = svg.selectAll(".circle-month")                                                   
-  //     //               .transition() 
-  //     //               .duration(1000)
-  //     //               .ease("linear")
-  //     //               .attr({
-  //     //                   cx: function(d) {return xScale(getDate(year + (d.x).pad() + (1).pad())); },
-  //     //                   cy: function (d) { return yScale(d.y); }                        
-  //     //               });                    
+    // Scales
+    var xScale = d3.time.scale()
+      .domain([minDate, maxDate])
+      .range([0, width]);
+
+    var yScale = d3.scale.linear()
+        .domain([0, d3.max(ds, function(d){ return d.count; })])
+        .range([height, 0])
+        .nice();
+
+    // Axis
+    var xAxis = d3.svg.axis()
+        .scale(xScale)
+        .orient("bottom")
+        .innerTickSize(-height)
+        .outerTickSize(0)
+        .tickPadding(10)
+        .tickFormat(d3.time.format("%b"));
+
+    var yAxis = d3.svg.axis()
+        .scale(yScale)
+        .orient("left")
+        .innerTickSize(-width)
+        .outerTickSize(0)
+        .tickPadding(10);
+
+    // Line func
+    var line = d3.svg.line()
+        .x(function(d) { return xScale(getDate(d.date)); })
+        .y(function(d) { return yScale(d.count); })
+        .interpolate("linear");
+
+    // Create svg
+    var svg = d3.select("body").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .attr("id", "svg-month")
+      .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-  //     }
+      svg.append("g")
+          .attr("class", "x-axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis)
 
+      svg.append("g")
+          .attr("class", "y-axis")
+          .call(yAxis)
 
+      // text label for the x axis
+      svg.append("text")             
+      .attr("transform",
+            "translate(" + (width/2) + " ," + 
+                           (height + margin.top + 10) + ")")
+      .style("text-anchor", "middle");
+      // .text("Month Number or Year Number (I haven't coded the dynamic variables yet)");
 
+      svg.append("path")
+          .data([ds])
+          .attr("class", "path-month")
+          .attr("d", line);
+  };
 
+  
 
+  var updateLineMonth = function(ds) {
 
+      // base = 1970;
+      // dataset = contents[year - base].month;
+      // data = dataset.month;
+      console.log(ds)
 
+      var minDate = getDate(ds[0].date);
+
+      var maxDate = getDate(ds[ds.length - 1].date);
+
+      console.log("min date: " + minDate);
+      console.log("max date: " + maxDate);
+
+      // Scales
+      var xScale = d3.time.scale()
+        .domain([minDate, maxDate])
+        .range([0, width]);
+
+      var yScale = d3.scale.linear()
+          .domain([0, d3.max(ds, function(d){ return d.count; })])
+          .range([height, 0])
+          .nice();
+
+      // Axis
+      var xAxis = d3.svg.axis()
+          .scale(xScale)
+          .orient("bottom")
+          .innerTickSize(-height)
+          .outerTickSize(0)
+          .tickPadding(10)
+          // .ticks(ds.monthlySales.length-1)     DIDN'T IMPLEMENT THIS YET FROM THE TUTORIAL
+          .tickFormat(d3.time.format("%b"));
+
+      var yAxis = d3.svg.axis()
+          .scale(yScale)
+          .orient("left")
+          .innerTickSize(-width)
+          .outerTickSize(0)
+          .tickPadding(10);
+
+      // Line func
+      var line = d3.svg.line()
+          .x(function(d) { return xScale(getDate(d.date)); })
+          .y(function(d) { return yScale(d.count); })
+          .interpolate("linear");
+
+      // Create svg
+      var svg = d3.select("body").select("#svg-month");
+
+        svg.selectAll("g.x-axis").call(xAxis);
+
+        svg.selectAll("g.y-axis").call(yAxis);
+
+        svg.selectAll(".path-month").data([ds])
+              .transition()
+              .duration(3500)
+              // .ease("linear")
+              // .ease("elastic")
+              // .ease("circle")
+              .ease("bounce")
+            // .attr("class", "line")
+              .attr("d", line);
+  };
 
 // var obj = new Object();
 //    obj.name = "Raj";
@@ -473,432 +448,357 @@
 //   console.log(ds);
 // })
 
-
-  // function showHeader(){
-  //   d3.select("body").append("h1")
-  //     .text("Number of Attacks per year" + "\n" + "1970 - 2016");
-  // }
-
+  function showHeader(){
+    d3.select("body").append("h1")
+      .text("Number of Attacks per year" + "\n" + "1970 - 2016");
+  };
 
 
+  /*
+    Load the whole gtd dataset in JSON format
+   */
+  // var gtdJSON = [];
+  // d3.json("large_data/gtd.json", function(error, data){
 
-
-
-
-
-
-/*
-    ORIGINAL KEEEP!!!!!!
- */
-
-
-  // d3.csv("globalterrorismdb_0617dist.csv", function(error, data) {
-              
-  //   if(error) {
-  //       console.log(error);
+  //   if(error){
+  //     console.log(error);
   //   } else {
-  //       console.log(data);  //we're golden
-  //       ds=data;  //  loads the csv file into the variable ds
-
+  //     console.log("************************************************");
+  //     console.log("Loaded the GTD full Dataset!!!");
+  //     console.log(data.contents);
+  //     console.log("************************************************\n\n\n\n");
   //   }
-      
-  //     attacksByYearArray(ds);     //  creates array that has cumulative attacks per year - years are indexed 0 - 46
-  //      // attacksByYear                            
-    
 
-  //     attacksYearMonthArray(ds);  //  creates array that has year and month separated into 12 different indexes per year 0 - 546
-  //      // attacksYearMonth
-
-  //     monthAttacks(attacksYearMonth); //  creates array that has years grouped by index. 0 - 
-  //     //  contents
-
-  //     buildLineMonth(1970, 1);
- 
-  //     // buildLineYear(attacksByYear);
-
-
-  //     // console.log(attacksYearMonth);
-      
-      
-  //     //  ADD Event Listener
-  //     d3.select("select")     
-  //         .on("change", function(d,i){
-
-  //           var year = d3.select("#year-option").node().value;
-
-  //             updateLineMonth(year, 1);
-  //       });
-
-  //     // d3.select("select")
-  //     //     .on("change", function(d,i){
-
-  //     //         var month = d3.select("#month-option").node().value;
-
-  //     //         updateLineMonth()
-
-  //     //     });   
+  //   console.log("*******    gtdJSON = GTD full dataset      *******");
+  //   data.contents.forEach(function(contents){
+  //     gtdJSON.push(contents);
+  //   });
+  //   console.log(gtdJSON);
+  //   console.log("**************************************************\n\n\n\n");
   // });
 
 
+  /* 
+    Creates the JSON object for the attacks per month by year
+    Doesn't take any params - just run
+    Relies on the countMonth(); function to populate the array
+  */
+  var createMonthJSON = function(ds){
 
-      d3.json("/Users/ryanjellesed/Desktop/spring_2018/capstone_MSBA_591/data/GTD_0617dist/gtd.json", function(error, data) {
+    ds3 = {"contents": [
+          {
+            "year": 1970,
+            "monthlyCount": []
+          },
+          {
+            "year": 1971,
+            "monthlyCount": []
+          },
+          {
+            "year": 1972,
+            "monthlyCount": []
+          },
+          {
+            "year": 1973,
+            "monthlyCount": []
+          },
+          {
+            "year": 1974,
+            "monthlyCount": []
+          },
+          {
+            "year": 1975,
+            "monthlyCount": []
+          },
+          {
+            "year": 1976,
+            "monthlyCount": []
+          },
+          {
+            "year": 1977,
+            "monthlyCount": []
+          },
+          {
+            "year": 1978,
+            "monthlyCount": []
+          },
+          {
+            "year": 1979,
+            "monthlyCount": []
+          },
+          {
+            "year": 1980,
+            "monthlyCount": []
+          },
+          {
+            "year": 1981,
+            "monthlyCount": []
+          },
+          {
+            "year": 1982,
+            "monthlyCount": []
+          },
+          {
+            "year": 1983,
+            "monthlyCount": []
+          },
+          {
+            "year": 1984,
+            "monthlyCount": []
+          },
+          {
+            "year": 1985,
+            "monthlyCount": []
+          },
+          {
+            "year": 1986,
+            "monthlyCount": []
+          },
+          {
+            "year": 1987,
+            "monthlyCount": []
+          },
+          {
+            "year": 1988,
+            "monthlyCount": []
+          },
+          {
+            "year": 1989,
+            "monthlyCount": []
+          },
+          {
+            "year": 1990,
+            "monthlyCount": []
+          },
+          {
+            "year": 1991,
+            "monthlyCount": []
+          },
+          {
+            "year": 1992,
+            "monthlyCount": []
+          },
+          {
+            "year": 1993,
+            "monthlyCount": []
+          },
+          {
+            "year": 1994,
+            "monthlyCount": []
+          },
+          {
+            "year": 1995,
+            "monthlyCount": []
+          },
+          {
+            "year": 1996,
+            "monthlyCount": []
+          },
+          {
+            "year": 1997,
+            "monthlyCount": []
+          },
+          {
+            "year": 1998,
+            "monthlyCount": []
+          },
+          {
+            "year": 1999,
+            "monthlyCount": []
+          },
+          {
+            "year": 2000,
+            "monthlyCount": []
+          },
+          {
+            "year": 2001,
+            "monthlyCount": []
+          },
+          {
+            "year": 2002,
+            "monthlyCount": []
+          },
+          {
+            "year": 2003,
+            "monthlyCount": []
+          },
+          {
+            "year": 2004,
+            "monthlyCount": []
+          },
+          {
+            "year": 2005,
+            "monthlyCount": []
+          },
+          {
+            "year": 2006,
+            "monthlyCount": []
+          },
+          {
+            "year": 2007,
+            "monthlyCount": []
+          },
+          {
+            "year": 2008,
+            "monthlyCount": []
+          },
+          {
+            "year": 2009,
+            "monthlyCount": []
+          },
+          {
+            "year": 2010,
+            "monthlyCount": []
+          },
+          {
+            "year": 2011,
+            "monthlyCount": []
+          },
+          {
+            "year": 2012,
+            "monthlyCount": []
+          },
+          {
+            "year": 2013,
+            "monthlyCount": []
+          },
+          {
+            "year": 2014,
+            "monthlyCount": []
+          },
+          {
+            "year": 2015,
+            "monthlyCount": []
+          },
+          {
+            "year": 2016,
+            "monthlyCount": []
+          },
+        ]};
 
-        if(error){
-          console.log(error);
-        } else {
-          console.log(data);
+    for(var i = 0; i < ds3.contents.length; i++){
+
+    // date = getDate(ds[i]['date'])
+    // fullYear = date.getFullYear();
+    // day = date.getDate();
+    // month = date.getMonth();
+      
+      for(var y = 1970; y < 2017; y++){
+
+        if(ds3.contents[i]['year'] === y){
+          
+          for(var m = 1; m < 13; m++){
+            ds3.contents[i].monthlyCount.push({
+              date: Number(String(y) + (m).pad() + (1).pad()),
+              count: countMonth(y,m)
+            })
+          }
         }
+      }
+    }
+    return ds3
+  };
 
 
+  /*
+    when pulling data from github use the api
+   */
+  
+  d3.json("https://api.github.com/repos/Ryan-Jellesed/gtd/contents/MM_YY_Atacks.json", function(error, data) {
+     
+   if(error) {
+       console.log(error);
+   } else {
+       // console.log(data); //we're golden!
+   }
 
+    var decodedData = JSON.parse(window.atob(data.content));
+      // console.log("******  MM_YY_Atacks Dataset from Github **********\n\n\n");
+      // console.log("******            decodedData            **********");
+      // console.log(decodedData);
+      // console.log("***************************************************\n\n\n\n");
+      // console.log("******         decodedData.contents      **********");
+      // console.log(decodedData.contents);
+      // console.log("***************************************************\n\n\n\n");
+
+      var ds = decodedData.contents;
+      var year = 1970;
+      var dsYear = ds[year - 1970];
+      console.log(dsYear['monthlyCount']);
+
+      
+      buildLineMonth(dsYear['monthlyCount']);
+
+
+      decodedData.contents.forEach(function(ds){
+
+          // console.log(ds);
+      //     // showHeader(ds);
+      //     // buildLine(ds);
       });
 
+      
+
+      d3.select("#year-option")
+          .on("change", function(d,i){
 
 
+            //get selected option
+            var selYear = d3.select('#year-option').node().value;
 
+            // console.log(ds.monthlySales.length-sel);
+            console.log(selYear);
 
-/*
-    ORINGINAL ABOVE!!!!!! KEEEEEEEP!!!!
- */
+            var decodedData = JSON.parse(window.atob(data.content));
+            var ds = decodedData.contents;
+            var year = selYear;
+            var dsYear = ds[year - 1970];
+            updateLineMonth(dsYear.monthlyCount)
 
+            //  decodedData.contents.forEach(function(ds){
 
-      d3.json("https://api.github.com/repos/Ryan-Jellesed/gtd/contents/MM_YY_Atacks.json", function(error, data) {
-         
-         if(error) {
-             console.log(error);
-         } else {
-             // console.log(data); //we're golden!
-         }
-  
-          var decodedData = JSON.parse(window.atob(data.content));
+            //     ds.monthlyCount.splice(0,ds.monthlySales.length-sel);
 
-            var year = 1970;
-            console.log(decodedData.contents[year - 1970]['monthlyCount']);
-
-          // console.log(decodedData.contents);
-
-
-
-          // decodedData.contents.forEach(function(ds){
-          //     console.log(ds);
-          //     buildLineMonth(ds[0]);
-          //     // showHeader(ds);
-          //     // buildLine(ds);
-
-          // })
-
-          d3.select("select")     
-              .on("change", function(d,i){
-
-                var year = d3.select("#year-option").node().value;
-
-                var decodedData = JSON.parse(window.atob(data.content));
-
-                decodedData.contents[year-1970]['monthlyCount'].forEach(function(ds){
-
-                    console.log(ds);
-
-                });
-
-                // updateLineMonth(year, 1);
-        });
-          
+            //     updateLine(ds);
+               
+            // });
       });
 
+      d3.select("#month-option")
+          .on("change", function(d,i){
 
-      /*
-        Creates the JSON object for the complete Global Terrorism Dataset
-       */
-      // var createGlobalTerrorismDataJSON = function(){
+                // get selected option
+            var selMonth = d3.select("#month-option").node().value;
 
-      //   gtd = {"contents": []};
+              console.log(selMonth);       
+      });
 
-      //   for(var i = 0; i < ds.length; i++){
-      //     gtd.contents.push(ds[i])
-      //   };
-      // }();
+      d3.select("#date-option")
+          .on("change", function(d,i){
 
+                // get selected option
+            var selDate = d3.select("#date-option").node().value;
 
-      /* 
-        Creates the JSON object for the attacks per month by year
-      */
-      // var createMonthJSON = function(){
+              console.log(selDate);    
+      });
 
-      //   ds3 = {"contents": [
-      //         {
-      //           "year": 1970,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1971,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1972,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1973,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1974,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1975,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1976,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1977,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1978,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1979,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1980,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1981,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1982,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1983,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1984,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1985,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1986,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1987,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1988,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1989,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1990,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1991,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1992,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1993,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1994,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1995,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1996,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1997,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1998,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 1999,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 2000,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 2001,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 2002,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 2003,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 2004,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 2005,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 2006,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 2007,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 2008,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 2009,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 2010,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 2011,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 2012,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 2013,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 2014,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 2015,
-      //           "monthlyCount": []
-      //         },
-      //         {
-      //           "year": 2016,
-      //           "monthlyCount": []
-      //         },
-      //       ]};
-        
-      //   for(var i = 0; i < ds3.contents.length; i++){
+      d3.select("#day-option")
+          .on("change", function(d,i){
 
-      //   date = getDate(ds[i]['date'])
-      //   fullYear = date.getFullYear();
-      //   day = date.getDay();
-      //   month = date.getMonth();
-          
-      //     for(var y = 1970; y < 2017; y++){
+              // get selected option
+            var selDay = d3.select('#day-option').node().value;
 
-      //       if(ds3.contents[i]['year'] === y){
-              
-      //         for(var m = 1; m < 13; m++){
-      //           ds3.contents[i].monthlyCount.push({
-      //             date: Number(String(y) + (m).pad() + (1).pad()),
-      //             count: countMonth(y,m)
-      //           })
-      //         }
-      //       }
-      //     }
-      //   }
-      //   return ds3
-      // }();
+            console.log(selDay);    
+      });
 
-
-      /*
-        when pulling data from github use the api
-       */
-      // d3.json("https://api.github.com/repos/Ryan-Jellesed/gtd/contents/MM_YY_Atacks.json", function(error, data) {
-         
-      //    if(error) {
-      //        console.log(error);
-      //    } else {
-      //        // console.log(data); //we're golden!
-      //    }
+  });
   
-      //     var decodedData = JSON.parse(window.atob(data.content));
-
-      //     // console.log(decodedData.contents);
-
-
-      //     decodedData.contents.forEach(function(ds){
-      //         // console.log(ds);
-      //         // showHeader(ds);
-      //         // buildLine(ds);
-
-      //     })
-
-          
-      //     //filter dates
-      //     //add an event listener
-      //     d3.select("select")
-      //         .on("change", function(d,i){
-
-      //         //get selected option
-      //         var sel = d3.select('#date-option').node().value;
-
-      //         // console.log(ds.monthlySales.length-sel);
-      //         // console.log(sel);
-
-      //         var decodedData = JSON.parse(window.atob(data.content));
-
-      //          decodedData.contents.forEach(function(ds){
-
-      //             ds.monthlyCount.splice(0,ds.monthlySales.length-sel);
-
-      //             updateLine(ds);
-                 
-      //         });
-
-      //     })
-      // });
-
-      // refactor for turning the dataset into json files and hosting on github
-
-
-
-
-
-
 
 /*
   function for saving JSON file
   console.save(data, filename);
  */
+
 (function(console){
 
     console.save = function(data, filename){
@@ -931,12 +831,12 @@
 
   <div id="date-pickers">
     <p> Choose Date Range
-      <!-- <select id="date-option">
+      <select id="date-option">
         <option value="12">One Year</option>
         <option value="9">Nine Months</option>
         <option value="6">Six Months</option>
         <option value="3">Three Months</option>
-      </select> -->
+      </select>
 
       <select id="year-option">
         <option value="1970">1970</option>
@@ -988,22 +888,58 @@
         <option value="2016">2016</option>
       </select>
 
-      <!-- <select id="month-option">
-        <option value="0">Jan</option>
-        <option value="1">Feb</option>
-        <option value="2">Mar</option>
-        <option value="3">Apr</option>
-        <option value="4">May</option>
-        <option value="5">Jun</option>
-        <option value="6">Jul</option>
-        <option value="7">Aug</option>
-        <option value="8">Sep</option>
-        <option value="9">Oct</option>
-        <option value="10">Nov</option>
-        <option value="11">Dec</option>
-      </select> -->
+      <select id="month-option">
+        <option value="1">Jan</option>
+        <option value="2">Feb</option>
+        <option value="3">Mar</option>
+        <option value="4">Apr</option>
+        <option value="5">May</option>
+        <option value="6">Jun</option>
+        <option value="7">Jul</option>
+        <option value="8">Aug</option>
+        <option value="9">Sep</option>
+        <option value="10">Oct</option>
+        <option value="11">Nov</option>
+        <option value="12">Dec</option>
+      </select>
+
+      <select id="day-option">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="19">19</option>
+        <option value="20">20</option>
+        <option value="21">21</option>
+        <option value="22">22</option>
+        <option value="23">23</option>
+        <option value="24">24</option>
+        <option value="25">25</option>
+        <option value="26">26</option>
+        <option value="27">27</option>
+        <option value="28">28</option>
+        <option value="29">29</option>
+        <option value="30">30</option>
+        <option value="31">31</option>
+      </select>
     </p>
   </div>
 
 </body>
 </html>
+
+
