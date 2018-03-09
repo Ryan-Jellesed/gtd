@@ -400,7 +400,8 @@
           .outerTickSize(0)
           .tickPadding(10)
           // .ticks(ds.monthlySales.length-1)     DIDN'T IMPLEMENT THIS YET FROM THE TUTORIAL
-          .tickFormat(d3.time.format("%b"));
+          .tickFormat(d3.time.format("%b"))
+          .ticks(ds.length - 1);
 
       var yAxis = d3.svg.axis()
           .scale(yScale)
@@ -745,15 +746,19 @@
 
             //get selected option
             var selYear = d3.select('#year-option').node().value;
-
+            var selDate = d3.select("#date-option").node().value;
             // console.log(ds.monthlySales.length-sel);
             console.log(selYear);
 
             var decodedData = JSON.parse(window.atob(data.content));
             var ds = decodedData.contents;
             var year = selYear;
+            var date = selDate;
             var dsYear = ds[year - 1970];
-            updateLineMonth(dsYear.monthlyCount)
+
+            dsYear = dsYear.monthlyCount.splice(0, dsYear.monthlyCount.length - date);
+
+            updateLineMonth(dsYear)
 
             //  decodedData.contents.forEach(function(ds){
 
@@ -762,6 +767,8 @@
             //     updateLine(ds);
                
             // });
+            
+            
       });
 
       d3.select("#month-option")
@@ -778,6 +785,17 @@
 
                 // get selected option
             var selDate = d3.select("#date-option").node().value;
+            var selYear = d3.select("#year-option").node().value;
+            var decodedData = JSON.parse(window.atob(data.content));
+
+            var ds = decodedData.contents
+            var year = selYear;
+            var date = selDate;
+            var dsYear = ds[year - 1970];
+
+            dsYear = dsYear.monthlyCount.splice(0, dsYear.monthlyCount.length - date);
+
+            updateLineMonth(dsYear);
 
               console.log(selDate);    
       });
@@ -835,10 +853,10 @@
         <div>
           <label for="date-option">Timeframe:
             <select id="date-option">
-              <option value="12">One Year</option>
-              <option value="9">Nine Months</option>
+              <option value="0">One Year</option>
+              <option value="3">Nine Months</option>
               <option value="6">Six Months</option>
-              <option value="3">Three Months</option>
+              <option value="9">Three Months</option>
             </select>
           </label>
         </div>
