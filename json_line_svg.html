@@ -65,141 +65,12 @@
 <body>
 
 <script src="http://d3js.org/d3.v3.js"></script>
+<script src="javascript/functions.js"></script>
 <script>
-
-  var ds = [];
 
   var margin = {top: 20, right: 100, bottom: 50, left: 100},
       width = 960 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
-
-  function getDate(d){
-
-    //19700101
-
-    var strDate = new String(d);
-
-    var year = strDate.substring(0,4);
-    var month = strDate.substring(4,6)-1;
-    var day = strDate.substring(6,8);
-
-    return new Date(year, month, day);
-  };
-
-  Number.prototype.pad = function(size) {
-
-    /*
-      (9).pad();  //returns "09"
-
-      (7).pad(3);  //returns "007"
-     */
-    var s = String(this);
-    while (s.length < (size || 2)) {s = "0" + s;}
-    return s;
-  };
-
-  var countYear = function(year) {
-
-    counter = 0;
-    
-    for(var i = 0; i < ds.length; i++) {
-      // if(i % 10000 === 0){
-      //   console.log(i);
-      // };
-
-      date = getDate(ds[i]['date'])
-      fullYear = date.getFullYear();
-      day = date.getDate();
-      month = date.getMonth();
-      
-      if(fullYear === year) {
-        counter++
-      } else { 
-      continue
-      }
-      
-    }
-    return(counter) 
-  };
-
-  var countMonth = function(yyyy, mm) {
-    
-    counter = 0;  
-    
-    for(var i = 0; i < gtdJSON.length; i++) {
-
-      // if(i % 10000 === 0){
-      //   console.log(i);
-      // };
-
-      date = getDate(gtdJSON[i]['date'])
-      fullYear = date.getFullYear();
-      day = date.getDay();
-      month = date.getMonth();
-
-      if((fullYear === yyyy) && (month === mm - 1)) {
-        counter++;
-      } 
-      
-    }
-    return(counter) 
-  };  
-
-  var attacksByYearArray = function(arr) {
-    
-    attacksByYear = [];
-
-    for(var i = 1970; i < 2017; i++){
-      attacksByYear.push({x: Number(i), y: countYear(i)});
-    }
-    // console.log("xy is: " + nKillByYear);
-    return attacksByYear
-    console.log(attacksByYear);
-  };
-
-  // create an object within an array that holds 
-  var attacksYearMonthArray = function(arr){
-
-    attacksYearMonth = [];
-
-    for(var i = 1970; i < 2017; i++) {
-      for(var j = 1; j < 13; j++){
-        attacksYearMonth.push({
-                             year: Number(i), 
-                             month: 
-                                {
-                                  x: Number(j), 
-                                  y: countMonth(i, j)
-                                }
-                            });   
-      }
-    };
-    return attacksYearMonth
-    console.log(attacksYearMonth);
-  };
-
-  var monthAttacks = function(arr){
-      
-      contents = [];
-      
-      for( var k = 1970; k < 2017; k++){
-        contents.push({
-          year: k,
-          month: []
-        })
-      };
-
-      for(var i = 0; i < attacksYearMonth.length; i++){;
-
-        for(var j = 0; j < contents.length; j++) {
-          if(contents[j].year === attacksYearMonth[i].year){
-            contents[j].month.push(attacksYearMonth[i].month);
-              }
-            }
-          };
-        return contents
-        console.log(contents)
-  };
 
   /*
     Start building the graphing functions
@@ -498,25 +369,25 @@
   /*
     Load the whole gtd dataset in JSON format
    */
-  // var gtdJSON = [];
-  // d3.json("large_data/gtd.json", function(error, data){
+  var gtdJSON = [];
+  d3.json("large_data/gtd.json", function(error, data){
 
-  //   if(error){
-  //     console.log(error);
-  //   } else {
-  //     console.log("************************************************");
-  //     console.log("Loaded the GTD full Dataset!!!");
-  //     console.log(data.contents);
-  //     console.log("************************************************\n\n\n\n");
-  //   }
+    if(error){
+      console.log(error);
+    } else {
+      console.log("************************************************");
+      console.log("Loaded the GTD full Dataset!!!");
+      console.log(data.contents);
+      console.log("************************************************\n\n\n\n");
+    }
 
-  //   console.log("*******    gtdJSON = GTD full dataset      *******");
-  //   data.contents.forEach(function(contents){
-  //     gtdJSON.push(contents);
-  //   });
-  //   console.log(gtdJSON);
-  //   console.log("**************************************************\n\n\n\n");
-  // });
+    console.log("*******    gtdJSON = GTD full dataset      *******");
+    data.contents.forEach(function(contents){
+      gtdJSON.push(contents);
+    });
+    console.log(gtdJSON);
+    console.log("**************************************************\n\n\n\n");
+  });
 
 
   /* 
@@ -953,7 +824,7 @@
           </select>
         </label>
 
-        <label for="month-option">Month:
+        <!-- <label for="month-option">Month:
           <select id="month-option">
             <option value="1">Jan</option>
             <option value="2">Feb</option>
@@ -1004,7 +875,7 @@
             <option value="30">30</option>
             <option value="31">31</option>
           </select>
-        </label>
+        </label> -->
         
       </div>
     </p>
