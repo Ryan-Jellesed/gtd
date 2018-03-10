@@ -1,0 +1,24 @@
+{
+    "contents": [
+        {
+            "decade": 1970,
+            "count": 9607
+        },
+        {
+            "decade": 1980,
+            "count": 30860
+        },
+        {
+            "decade": 1990,
+            "count": 28657
+        },
+        {
+            "decade": 2000,
+            "count": 24841
+        },
+        {
+            "decade": 2010,
+            "count": 75494
+        }
+    ]
+}

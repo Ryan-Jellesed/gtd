@@ -169,7 +169,6 @@
                       .attr("class", "tooltip")
                       .style("opacity", 0)
 
-
     // Scales
     var xScale = d3.time.scale()
       .domain([minDate, maxDate])
@@ -220,12 +219,14 @@
           .call(yAxis)
 
       // text label for the x axis
-      svg.append("text")             
-      .attr("transform",
-            "translate(" + (width/2) + " ," + 
-                           (height + margin.top + 10) + ")")
-      .style("text-anchor", "middle");
-      // .text("Month Number or Year Number (I haven't coded the dynamic variables yet)");
+      // svg.append("text")             
+      //       .attr("transform",
+      //             "translate(" + (width/2) + " ," + 
+      //                            (height + margin.top + 10) + ")")
+      //       .style("text-anchor", "middle")
+      //       .text("Count of Global Terror Attacks")
+      //       .text("1970 - 2016");
+
 
       svg.append("path")
           .data([ds])
@@ -257,6 +258,17 @@
                                   .duration(300)
                                   .style("opacity", 0);
                       })
+
+
+      svg.append("text")
+            .attr("x", (width /2 ))
+            .attr("y", 0 - (margin.top / 5))
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("text-decoration", "underline")
+            .text("Count of Global Terror Attacks 1970 - 2016")
+            // .text("1970 - 2016");
+
   };
 
   var updateLineMonth = function(ds) {
@@ -360,11 +372,6 @@
 //   console.log(ds);
 // })
 
-  function showHeader(){
-    d3.select("body").append("h1")
-      .text("Number of Attacks per year" + "\n" + "1970 - 2016");
-  };
-
 
   /*
     Load the whole gtd dataset in JSON format
@@ -389,227 +396,6 @@
     console.log("**************************************************\n\n\n\n");
   });
 
-
-  /* 
-    Creates the JSON object for the attacks per month by year
-    Doesn't take any params - just run
-    Relies on the countMonth(); function to populate the array
-  */
-  var createMonthJSON = function(ds){
-
-    ds3 = {"contents": [
-          {
-            "year": 1970,
-            "monthlyCount": []
-          },
-          {
-            "year": 1971,
-            "monthlyCount": []
-          },
-          {
-            "year": 1972,
-            "monthlyCount": []
-          },
-          {
-            "year": 1973,
-            "monthlyCount": []
-          },
-          {
-            "year": 1974,
-            "monthlyCount": []
-          },
-          {
-            "year": 1975,
-            "monthlyCount": []
-          },
-          {
-            "year": 1976,
-            "monthlyCount": []
-          },
-          {
-            "year": 1977,
-            "monthlyCount": []
-          },
-          {
-            "year": 1978,
-            "monthlyCount": []
-          },
-          {
-            "year": 1979,
-            "monthlyCount": []
-          },
-          {
-            "year": 1980,
-            "monthlyCount": []
-          },
-          {
-            "year": 1981,
-            "monthlyCount": []
-          },
-          {
-            "year": 1982,
-            "monthlyCount": []
-          },
-          {
-            "year": 1983,
-            "monthlyCount": []
-          },
-          {
-            "year": 1984,
-            "monthlyCount": []
-          },
-          {
-            "year": 1985,
-            "monthlyCount": []
-          },
-          {
-            "year": 1986,
-            "monthlyCount": []
-          },
-          {
-            "year": 1987,
-            "monthlyCount": []
-          },
-          {
-            "year": 1988,
-            "monthlyCount": []
-          },
-          {
-            "year": 1989,
-            "monthlyCount": []
-          },
-          {
-            "year": 1990,
-            "monthlyCount": []
-          },
-          {
-            "year": 1991,
-            "monthlyCount": []
-          },
-          {
-            "year": 1992,
-            "monthlyCount": []
-          },
-          {
-            "year": 1993,
-            "monthlyCount": []
-          },
-          {
-            "year": 1994,
-            "monthlyCount": []
-          },
-          {
-            "year": 1995,
-            "monthlyCount": []
-          },
-          {
-            "year": 1996,
-            "monthlyCount": []
-          },
-          {
-            "year": 1997,
-            "monthlyCount": []
-          },
-          {
-            "year": 1998,
-            "monthlyCount": []
-          },
-          {
-            "year": 1999,
-            "monthlyCount": []
-          },
-          {
-            "year": 2000,
-            "monthlyCount": []
-          },
-          {
-            "year": 2001,
-            "monthlyCount": []
-          },
-          {
-            "year": 2002,
-            "monthlyCount": []
-          },
-          {
-            "year": 2003,
-            "monthlyCount": []
-          },
-          {
-            "year": 2004,
-            "monthlyCount": []
-          },
-          {
-            "year": 2005,
-            "monthlyCount": []
-          },
-          {
-            "year": 2006,
-            "monthlyCount": []
-          },
-          {
-            "year": 2007,
-            "monthlyCount": []
-          },
-          {
-            "year": 2008,
-            "monthlyCount": []
-          },
-          {
-            "year": 2009,
-            "monthlyCount": []
-          },
-          {
-            "year": 2010,
-            "monthlyCount": []
-          },
-          {
-            "year": 2011,
-            "monthlyCount": []
-          },
-          {
-            "year": 2012,
-            "monthlyCount": []
-          },
-          {
-            "year": 2013,
-            "monthlyCount": []
-          },
-          {
-            "year": 2014,
-            "monthlyCount": []
-          },
-          {
-            "year": 2015,
-            "monthlyCount": []
-          },
-          {
-            "year": 2016,
-            "monthlyCount": []
-          },
-        ]};
-
-    for(var i = 0; i < ds3.contents.length; i++){
-
-    // date = getDate(ds[i]['date'])
-    // fullYear = date.getFullYear();
-    // day = date.getDate();
-    // month = date.getMonth();
-      
-      for(var y = 1970; y < 2017; y++){
-
-        if(ds3.contents[i]['year'] === y){
-          
-          for(var m = 1; m < 13; m++){
-            ds3.contents[i].monthlyCount.push({
-              date: Number(String(y) + (m).pad() + (1).pad()),
-              count: countMonth(y,m)
-            })
-          }
-        }
-      }
-    }
-    return ds3
-  };
 
 
   /*
@@ -638,7 +424,7 @@
       var dsYear = ds[year - 1970];
       console.log(dsYear['monthlyCount']);
 
-      
+
       buildLineMonth(dsYear['monthlyCount']);
 
 
@@ -653,7 +439,6 @@
 
       d3.select("#year-option")
           .on("change", function(d,i){
-
 
             //get selected option
             var selYear = d3.select('#year-option').node().value;
