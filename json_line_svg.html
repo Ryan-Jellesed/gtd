@@ -458,7 +458,7 @@
     when pulling data from github use the api
    */
   
-  d3.json("https://api.github.com/repos/Ryan-Jellesed/gtd/contents/MM_YY_Atacks.json", function(error, data) {
+  d3.json("https://api.github.com/repos/Ryan-Jellesed/gtd/contents/jsonFiles/MM_YY_Atacks.json", function(error, data) {
      
    if(error) {
        console.log(error);
@@ -563,7 +563,7 @@
       });
 
 
-  d3.json("https://api.github.com/repos/Ryan-Jellesed/gtd/contents/attacksByYear.json", function(error, data) {
+  d3.json("https://api.github.com/repos/Ryan-Jellesed/gtd/contents/jsonFiles/attacksByYear.json", function(error, data) {
      
     if(error) {
        console.log(error);
