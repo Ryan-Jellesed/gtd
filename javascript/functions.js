@@ -1,4 +1,4 @@
-var countCountry = function(country){
+var countAttacksPerCountry = function(country){
   counter = 0;
   for(i = 0; i < gtdJSON.length; i++){
 
@@ -11,27 +11,27 @@ var countCountry = function(country){
   return counter
 };
 
-var countDecade = function(ds){
+var countAttacksPerDecade = function(ds){
 
   var decadeCount = { contents: [
       {
-        decade: 1970,
+        date: 19700101,
         count: 0
       },
       {
-        decade: 1980,
+        date: 19800101,
         count: 0
       },
       {
-        decade: 1990,
+        date: 19900101,
         count: 0
       },
       {
-        decade: 2000,
+        date: 20000101,
         count: 0
       },
       {
-        decade: 2010,
+        date: 20100101,
         count: 0
       }]
   };
@@ -40,7 +40,7 @@ var countDecade = function(ds){
 
     for(j = 0; j < decadeCount.contents.length; j++){
 
-      if(gtdJSON[i].iyear.slice(0,3) === decadeCount.contents[j].decade.toString().slice(0,3)) {
+      if(gtdJSON[i].iyear.slice(0,3) === decadeCount.contents[j].date.toString().slice(0,3)) {
         decadeCount.contents[j].count++;
       }
 
@@ -50,6 +50,62 @@ var countDecade = function(ds){
   return decadeCount;
 };
 
+var countAttacksPerDay = function(date){
+  counter = 0;
+  for(var i = 0; i < gtdJSON.length; i++){
+    if(String(date) === gtdJSON[i].date){
+      counter++;
+    }
+  }
+  return(counter)
+}
+
+var countAttacksPerYear = function(year) {
+
+  counter = 0;
+  
+  for(var i = 0; i < gtdJSON.length; i++) {
+    // if(i % 10000 === 0){
+    //   console.log(i);
+    // };
+
+    date = getDate(gtdJSON[i]['date'])
+    fullYear = date.getFullYear();
+    day = date.getDate();
+    month = date.getMonth();
+    
+    if(fullYear === year) {
+      counter++
+    } else { 
+    continue
+    }
+    
+  }
+  return(counter) 
+};
+
+var countAttacksPerMonth = function(yyyy, mm) {
+  
+  counter = 0;  
+  
+  for(var i = 0; i < gtdJSON.length; i++) {
+
+  // if(i % 10000 === 0){
+  //   console.log(i);
+  // };
+
+    date = getDate(gtdJSON[i]['date'])
+    fullYear = date.getFullYear();
+    day = date.getDay();
+    month = date.getMonth();
+
+    if((fullYear === yyyy) && (month === mm - 1)) {
+      counter++;
+    } 
+    
+  }
+  return(counter) 
+};  
 
 function getDate(d){
 
@@ -77,64 +133,35 @@ Number.prototype.pad = function(size) {
 };
 
 
-var countYear = function(year) {
 
-  counter = 0;
-  
-  for(var i = 0; i < gtdJSON.length; i++) {
-    // if(i % 10000 === 0){
-    //   console.log(i);
-    // };
-
-    date = getDate(gtdJSON[i]['date'])
-    fullYear = date.getFullYear();
-    day = date.getDate();
-    month = date.getMonth();
-    
-    if(fullYear === year) {
-      counter++
-    } else { 
-    continue
-    }
-    
-  }
-  return(counter) 
-};
-
-var countMonth = function(yyyy, mm) {
-  
-  counter = 0;  
-  
-  for(var i = 0; i < gtdJSON.length; i++) {
-
-  // if(i % 10000 === 0){
-  //   console.log(i);
-  // };
-
-    date = getDate(gtdJSON[i]['date'])
-    fullYear = date.getFullYear();
-    day = date.getDay();
-    month = date.getMonth();
-
-    if((fullYear === yyyy) && (month === mm - 1)) {
-      counter++;
-    } 
-    
-  }
-  return(counter) 
-};  
 
 var attacksByYearArray = function(arr) {
   
   attacksByYear = [];
 
   for(var i = 1970; i < 2017; i++){
-    attacksByYear.push({x: Number(i), y: countYear(i)});
+    attacksByYear.push({date: Number(i) + (1).pad() + (1).pad(), count: countYear(i)});
   }
+
   // console.log("xy is: " + nKillByYear);
   return attacksByYear
   console.log(attacksByYear);
 };
+
+
+
+
+var createChronArray = function(){
+  chronArray = [];
+
+  for(var i = 0; i < gtdJSON.length; i++){
+    chronArray.push({date: gtdJSON[i].date})
+  }
+
+}
+
+
+
 
 // create an object within an array that holds the year and month (which is an object containing month number and count of attacks in that month)
 var attacksYearMonthArray = function(arr){

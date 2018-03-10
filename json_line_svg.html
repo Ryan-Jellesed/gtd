@@ -76,6 +76,50 @@
     Start building the graphing functions
    */
 
+ 
+  // var buildLine = function(ds){
+
+  //   var minDate = getDate(ds[0].date);
+
+  //   var maxDate = getDate(ds[ds.length-1].date);
+
+  //   console.log("min date: " + minDate);
+  //   console.log("max date: " + maxDate);
+
+  //   var tooltip = d3.select('body').append("div")
+  //                     .attr("class", "tooltip")
+  //                     .style("opacity", 0)
+
+  //   // scales
+  //   var xScale = d3.time.scale()
+  //                         .domain([minDate, maxDate])
+  //                         .range([0, width]);
+
+  //   var yScale = d3.scale.linear()
+  //                           .domain([0, d3.max(ds. function(d){ return d.count; })])
+  //                           .range([height, 0])
+  //                           .nice();
+
+  //   // Axis
+  //   var xAxis = d3.svg.axis()
+  //                       .scale(xScale)
+  //                       .orient("bottom")
+  //                       .innerTickSize(-height)
+  //                       .outerTickSize(0)
+  //                       .tickPadding(10)
+  //                       .tickFormat(d3.time.format("%b"));
+
+  //   var yAxis = d3.svg.axis()
+  //       .scale(yScale)
+  //       .orient("left")
+  //       .innerTickSize(-width)
+  //       .outerTickSize(0)
+  //       .tickPadding(10);
+
+
+  // }
+
+
   var buildLineYear = function(data) {
 
     dataset = data;
