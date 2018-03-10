@@ -69,7 +69,7 @@
 <script src="javascript/mathFunctions.js"></script>
 <script>
 
-  var margin = {top: 20, right: 100, bottom: 50, left: 100},
+  var margin = {top: 40, right: 100, bottom: 50, left: 100},
       width = 960 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
 
@@ -126,20 +126,20 @@
     dataset = data;
     console.log(dataset)
 
-    var minDate = function(dataset){ return getDate(dataset[0].x + (1).pad() + (1).pad());};
+    var minDate = getDate(dataset[0].date );
 
-    var maxDate = function(dataset){return getDate(dataset[dataset.length -1].x + (1).pad() + (1).pad());};
+    var maxDate = getDate(dataset[dataset.length -1].date );
 
-    console.log("min date: " + minDate(dataset));
-    console.log("max date: " + maxDate(dataset));
+    console.log("min date: " + minDate);
+    console.log("max date: " + maxDate);
 
     // Scales
     var xScale = d3.time.scale()
-      .domain([minDate(dataset), maxDate(dataset)])
+      .domain([minDate, maxDate])
       .range([0, width]);
 
     var yScale = d3.scale.linear()
-        .domain([0, d3.max(dataset, function(d){ return d.y; })])
+        .domain([0, d3.max(dataset, function(d){ return d.count; })])
         .range([height, 0]);
 
     // Axis
@@ -149,7 +149,7 @@
         .innerTickSize(-height)
         .outerTickSize(0)
         .tickPadding(10)
-        .tickFormat(d3.time.format("%Y"));
+        .tickFormat(d3.time.format("%y'"));
 
     var yAxis = d3.svg.axis()
         .scale(yScale)
@@ -160,8 +160,8 @@
 
     // Line func
     var line = d3.svg.line()
-        .x(function(d) { return xScale(getDate(d.x + (1).pad() + (1).pad())); })
-        .y(function(d) { return yScale(d.y); })
+        .x(function(d) { return xScale(getDate(d.date ))})
+        .y(function(d) { return yScale(d.count); })
         .interpolate("linear");
 
     // Create svg
@@ -311,7 +311,15 @@
             .attr("text-anchor", "middle")
             .style("font-size", "16px")
             .style("text-decoration", "underline")
-            .text("Count of Global Terror Attacks 1970 - 2016")
+            .text("Count of Global Terror Attacks 1970 - 2016 ")
+      svg.append("text")
+            .attr("x", (width - 70 ))
+            .attr("y", 0 - (margin.top /5))
+            .attr("text-anchor", "right")
+            .style("font-size", "30px")
+            .style("text-decoration", "bold")
+            .text("1970")
+            .attr("id", "demo")
             // .text("1970 - 2016");
 
   };
@@ -348,7 +356,7 @@
           .outerTickSize(0)
           .tickPadding(10)
           // .ticks(ds.monthlySales.length-1)     DIDN'T IMPLEMENT THIS YET FROM THE TUTORIAL
-          .tickFormat(d3.time.format("%y"))
+          .tickFormat(d3.time.format("%b"))
           .ticks(ds.length - 1);
 
       var yAxis = d3.svg.axis()
@@ -382,8 +390,11 @@
             // .attr("class", "line")
               .attr("d", line);
 
+      // var svg = d3.select("svg");
+      // svg.selectAll("*").remove();
+
       var dots = svg.selectAll(".circle-svg")
-                      .data(ds)
+                      // .data(ds)     
                       .transition()
                       .duration(1000)
                       .ease("linear")
@@ -493,7 +504,7 @@
 
             var decodedData = JSON.parse(window.atob(data.content));
             var ds = decodedData.contents;
-            var year = selYear;
+            year = selYear;
             var date = selDate;
             var dsYear = ds[year - 1970];
 
@@ -532,6 +543,8 @@
 
             if(d3.select("#date-option").node().value === "-6"){
               dsYear = dsYear.monthlyCount.splice(6, dsYear.monthlyCount.length - date);
+            } else if(d3.select("#date-option").node().value === "-3"){
+              dsYear = dsYear.monthlyCount.splice(9, dsYear.monthlyCount.length - date);
             } else {
               dsYear = dsYear.monthlyCount.splice(0, dsYear.monthlyCount.length - date);
             }
@@ -556,15 +569,16 @@
        console.log(error);
     } else {
        // console.log(data); //we're golden!
+       
     }
 
-    var decodedData = JSON.parse(window.atob(data.content));
-
-
-
-
+      var decodedData = JSON.parse(window.atob(data.content));
+      attacksByYear = decodedData;
+      return(attacksByYear);
   });
-  
+
+
+});
 
 /*
   function for saving JSON file
@@ -597,27 +611,32 @@
         a.dispatchEvent(e)
     }
 })(console)
- 
+
+function myFunction() {
+  var selectedYear = document.getElementById("year-option").value;
+  document.getElementById("demo").innerHTML = selectedYear;
+} 
 
   </script>
 
   <div id="date-pickers">
-    <p> Choose Date Range
+    <p> Choose Date Range:
       <div>
         <div>
           <label for="date-option">Timeframe:
             <select id="date-option">
-              <option value="0">One Year</option>
+              <option value="0">Twelve Months</option>
               <option value="3">Nine Months</option>
               <option value="6">First Six Months</option>
               <option value="-6">Last Six Months</option>
-              <option value="9">Three Months</option>
+              <option value="9">First Three Months</option>
+              <option value="-3">Last Three Months</option>
             </select>
           </label>
         </div>
 
         <label for="year-option">Year:
-          <select id="year-option">
+          <select id="year-option"  onchange="myFunction()">
             <option value="1970">1970</option>
             <option value="1971">1971</option>
             <option value="1972">1972</option>
