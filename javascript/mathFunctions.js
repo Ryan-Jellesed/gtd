@@ -22,6 +22,9 @@ function average(data){
   return avg;
 }
 
-$(function(){
+(function(){
 
   var stdDev = standardDeviation([25, 25, 25, 25, 1, 25,25, 25,25, 25]);
+  ("#stdDev").text(stdDev);
+
+});

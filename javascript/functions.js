@@ -140,7 +140,7 @@ var attacksByYearArray = function(arr) {
   attacksByYear = [];
 
   for(var i = 1970; i < 2017; i++){
-    attacksByYear.push({date: Number(i) + (1).pad() + (1).pad(), count: countYear(i)});
+    attacksByYear.push({date: Number(i) + (1).pad() + (1).pad(), count: countAttacksPerYear(i)});
   }
 
   // console.log("xy is: " + nKillByYear);

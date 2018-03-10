@@ -348,7 +348,7 @@
           .outerTickSize(0)
           .tickPadding(10)
           // .ticks(ds.monthlySales.length-1)     DIDN'T IMPLEMENT THIS YET FROM THE TUTORIAL
-          .tickFormat(d3.time.format("%b"))
+          .tickFormat(d3.time.format("%y"))
           .ticks(ds.length - 1);
 
       var yAxis = d3.svg.axis()
@@ -383,7 +383,7 @@
               .attr("d", line);
 
       var dots = svg.selectAll(".circle-svg")
-                      // .data(ds)
+                      .data(ds)
                       .transition()
                       .duration(1000)
                       .ease("linear")
@@ -549,6 +549,20 @@
             // console.log(selDay);    
       });
 
+
+  d3.json("https://api.github.com/repos/Ryan-Jellesed/gtd/contents/attacksByYear.json", function(error, data) {
+     
+    if(error) {
+       console.log(error);
+    } else {
+       // console.log(data); //we're golden!
+    }
+
+    var decodedData = JSON.parse(window.atob(data.content));
+
+
+
+
   });
   
 
@@ -651,6 +665,15 @@
             <option value="2014">2014</option>
             <option value="2015">2015</option>
             <option value="2016">2016</option>
+          </select>
+        </label>
+
+        <label for="descriptive-stas">Desciptives:
+          <select id="descriptives-stats">
+            <option value="std-dev">Std Dev</option>
+            <option value="med">Median</option>
+            <option value="max">Max</option>
+            <option value="min">Min</option>
           </select>
         </label>
 
