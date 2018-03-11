@@ -437,8 +437,18 @@ var createMonthJSON = function(ds){
 // };
 
 
-
-
+/*
+  counts the number of occurences of an object in an array
+ */
+var countedNames = arr.reduce(function (allNames, name) { 
+  if (name in allNames) {
+    allNames[name]++;
+  }
+  else {
+    allNames[name] = 1;
+  }
+  return allNames;
+}, {});
 
 
 

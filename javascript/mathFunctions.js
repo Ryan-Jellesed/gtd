@@ -22,14 +22,21 @@ function average(data){
   return avg;
 }
 
-(function(){
+// (function(){
 
-  var stdDev = standardDeviation([25, 25, 25, 25, 1, 25,25, 25,25, 25]);
-  ("#stdDev").text(stdDev);
+//   var stdDev = standardDeviation([25, 25, 25, 25, 1, 25,25, 25,25, 25]);
+//   ("#stdDev").text(stdDev);
 
-});
+// });
 
+var median = function(arr){
 
+  arr.sort((a, b) => a - b);
+  let lowMiddle = Math.floor((arr.length - 1) / 2);
+  let highMiddle = Math.ceil((arr.length - 1) / 2);
+  let median = (arr[lowMiddle] + arr[highMiddle]) / 2;
+  return(median);
+};
 
 
 
