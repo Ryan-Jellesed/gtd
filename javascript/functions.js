@@ -13,7 +13,7 @@ var countAttacksPerCountry = function(country){
 
 var countAttacksPerDecade = function(ds){
 
-  var decadeCount = { contents: [
+  decadeCount = { contents: [
       {
         date: 19700101,
         count: 0
@@ -133,8 +133,6 @@ Number.prototype.pad = function(size) {
 };
 
 
-
-
 var attacksByYearArray = function(arr) {
   
   attacksByYear = [];
@@ -149,18 +147,13 @@ var attacksByYearArray = function(arr) {
 };
 
 
-
-
 var createChronArray = function(){
   chronArray = [];
 
   for(var i = 0; i < gtdJSON.length; i++){
     chronArray.push({date: gtdJSON[i].date})
   }
-
 }
-
-
 
 
 // create an object within an array that holds the year and month (which is an object containing month number and count of attacks in that month)
@@ -451,8 +444,42 @@ var countedNames = arr.reduce(function (allNames, name) {
 }, {});
 
 
+var buildArray = function(){
 
 
+}
+
+
+var countIndex = function(ds, column, item){
+  counter = 0;
+  arr = [];
+  for(i = 0; i < ds.length; i++){
+
+    if(ds[i].column === new String(item.toLowerCase())){
+
+      counter++;
+    }
+    return counter;   
+  }
+}
+
+/*
+  returns the count of item from the 'column' in dataset ds
+ */
+var countIndex = function(ds, column, item){
+  counter = 0;
+  arr = [];
+
+  for(i = 0; i < ds.length; i++){
+
+    if(ds[i][column].toLowerCase() === item.toLowerCase()){
+//    console.log(typeof(ds[i][column].toLowerCase()));
+//    console.log(typeof(item.toLowerCase()));
+      counter++;
+    } 
+  }
+return counter;
+}
 
 
 
