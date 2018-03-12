@@ -469,25 +469,28 @@ var countryDS = function(ds, country){
 }
 
 
+// var createIndexList = function(ds, field){
+//   counter = 0;
+//   arr = {key: field,
+//          values: []
+//   };
+
+//   for(i = 0; i < ds.length; i++){
+
+//     // if(ds[i][field].toLowerCase() === field.toLowerCase()){
+
+//       arr.values.push(ds[i][field]);
+//       counter++;
+//     // }
+//   };
+//   return arr;
+// };
+
+/*
+  Takes a dataset, DS and field parameters such as 'weapntype1_txt' & 'country_txt'
+  return an object where each field parameter is an array from 0 - ds.length()
+ */
 var createIndexList = function(ds, field){
-  counter = 0;
-  arr = {key: field,
-         values: []
-  };
-
-  for(i = 0; i < ds.length; i++){
-
-    // if(ds[i][field].toLowerCase() === field.toLowerCase()){
-
-      arr.values.push(ds[i][field]);
-      counter++;
-    // }
-  };
-  return arr;
-};
-
-
-var createIndexList = function(ds, field, ...){
   counter = 0;
   obj = {};
 
@@ -513,12 +516,6 @@ var createIndexList = function(ds, field, ...){
   }
   return obj;
 };
-
-
-
-
-
-
 
 
 
