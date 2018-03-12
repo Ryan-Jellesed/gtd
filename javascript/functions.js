@@ -468,18 +468,6 @@ var countryDS = function(ds, country){
   return counter;
 }
 
-// x = findMax(1, 123, 500, 115, 44, 88);
-
-// function findMax() {
-//     var i;
-//     var max = -Infinity;
-//     for (i = 0; i < arguments.length; i++) {
-//         if (arguments[i] > max) {
-//             max = arguments[i];
-//         }
-//     }
-//     return max;
-// }
 
 var createIndexList = function(ds, field){
   counter = 0;
@@ -499,7 +487,7 @@ var createIndexList = function(ds, field){
 };
 
 
-var createIndexList = function(ds, field){
+var createIndexList = function(ds, field, ...){
   counter = 0;
   obj = {};
 
