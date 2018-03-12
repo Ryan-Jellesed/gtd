@@ -132,7 +132,6 @@ Number.prototype.pad = function(size) {
   return s;
 };
 
-
 var attacksByYearArray = function(arr) {
   
   attacksByYear = [];
@@ -146,7 +145,6 @@ var attacksByYearArray = function(arr) {
   console.log(attacksByYear);
 };
 
-
 var createChronArray = function(){
   chronArray = [];
 
@@ -154,7 +152,6 @@ var createChronArray = function(){
     chronArray.push({date: gtdJSON[i].date})
   }
 }
-
 
 // create an object within an array that holds the year and month (which is an object containing month number and count of attacks in that month)
 var attacksYearMonthArray = function(arr){
@@ -199,7 +196,6 @@ var monthAttacks = function(arr){
     return contents
     console.log(contents)
 };
-
 
 /* 
     Creates the JSON object for the attacks per month by year
@@ -431,61 +427,26 @@ var createMonthJSON = function(ds){
 
 
 /*
-  counts the number of occurences of an object in an array
+  returns the count of item from the 'column' in dataset ds
  */
-var countedNames = arr.reduce(function (allNames, name) { 
-  if (name in allNames) {
-    allNames[name]++;
-  }
-  else {
-    allNames[name] = 1;
-  }
-  return allNames;
-}, {});
-
-
-var buildArray = function(){
-
-
-}
-
-
-var countIndex = function(ds, column, item){
+var countIndex = function(ds, field, item){
   counter = 0;
   arr = [];
+
   for(i = 0; i < ds.length; i++){
 
-    if(ds[i].column === new String(item.toLowerCase())){
-
+    if(ds[i][field].toLowerCase() === item.toLowerCase()){
+  //    console.log(typeof(ds[i][column].toLowerCase()));
+  //    console.log(typeof(item.toLowerCase()));
       counter++;
     }
-    return counter;   
   }
+  return counter;
 }
 
 /*
-  returns the count of item from the 'column' in dataset ds
+  builds an array of the specific country in a dataset, ds
  */
-var countIndex = function(ds, column, item){
-  counter = 0;
-  arr = [];
-
-  for(i = 0; i < ds.length; i++){
-
-    if(ds[i][column].toLowerCase() === item.toLowerCase()){
-  //    console.log(typeof(ds[i][column].toLowerCase()));
-  //    console.log(typeof(item.toLowerCase()));
-
-
-      counter++;
-
-    }
-   
-  }
-return counter;
-}
-
-
 var countryDS = function(ds, country){
   counter = 0;
   arr = [];
@@ -507,5 +468,99 @@ var countryDS = function(ds, country){
   return counter;
 }
 
+// x = findMax(1, 123, 500, 115, 44, 88);
+
+// function findMax() {
+//     var i;
+//     var max = -Infinity;
+//     for (i = 0; i < arguments.length; i++) {
+//         if (arguments[i] > max) {
+//             max = arguments[i];
+//         }
+//     }
+//     return max;
+// }
+
+var createIndexList = function(ds, field){
+  counter = 0;
+  arr = {key: field,
+         values: []
+  };
+
+  for(i = 0; i < ds.length; i++){
+
+    // if(ds[i][field].toLowerCase() === field.toLowerCase()){
+
+      arr.values.push(ds[i][field]);
+      counter++;
+    // }
+  };
+  return arr;
+};
+
+
+var createIndexList = function(ds, field){
+  counter = 0;
+  obj = {};
+
+  for( j = 1; j < arguments.length; j++){
+    
+    for(i = 0; i < ds.length; i++){
+      
+      if(arguments[j] in obj){
+        obj[arguments[j]].push(ds[i][arguments[j]])
+      } else {
+        obj[arguments[j]] = [ds[i][arguments[j]]]
+      }
+      
+      // if(ds[i][field].toLowerCase() === field.toLowerCase()){
+        // obj.push({
+        //           key: arguments[j],
+        //           values: [ds[i][j]]
+        //          });
+        // counter++;
+      // }
+    // };
+    }
+  }
+  return obj;
+};
+
+
+
+
+
+
+
+
+
+
+
+/*
+  counts the number of occurences of an object in an array
+ */
+reduceArray = [];
+var countedNames = reduceArray.reduce(function (allNames, name) { 
+  if (name in allNames) {
+    allNames[name]++;
+  }
+  else {
+    allNames[name] = 1;
+  }
+  return allNames;
+}, {});
+
+var tallyColumn = function(arr) {
+  countedNames = arr.reduce(function (allNames, name) { 
+    if (name in allNames) {
+      allNames[name]++;
+    }
+    else {
+      allNames[name] = 1;
+    }
+    return allNames;
+  }, {});
+  return countedNames;
+}
 
 
