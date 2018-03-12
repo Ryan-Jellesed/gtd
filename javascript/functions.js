@@ -473,17 +473,39 @@ var countIndex = function(ds, column, item){
   for(i = 0; i < ds.length; i++){
 
     if(ds[i][column].toLowerCase() === item.toLowerCase()){
-//    console.log(typeof(ds[i][column].toLowerCase()));
-//    console.log(typeof(item.toLowerCase()));
+  //    console.log(typeof(ds[i][column].toLowerCase()));
+  //    console.log(typeof(item.toLowerCase()));
+
+
       counter++;
-    } 
+
+    }
+   
   }
 return counter;
 }
 
 
+var countryDS = function(ds, country){
+  counter = 0;
+  arr = [];
 
+  for(i = 0; i < ds.length; i++){
 
+    if(ds[i]['country_txt'].toLowerCase() === country.toLowerCase()){
+    //    console.log(typeof(ds[i][column].toLowerCase()));
+    //    console.log(typeof(item.toLowerCase()));
+
+      arr.push(ds[i]);
+
+      counter++;
+
+    }
+   
+  }
+  return arr;
+  return counter;
+}
 
 
 
