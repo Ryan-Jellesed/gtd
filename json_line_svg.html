@@ -324,6 +324,14 @@
             .style("text-decoration", "bold")
             .text("1970")
             .attr("id", "demo")
+      svg.append("text")
+            .attr("x", (width - 70 ))
+            .attr("y", 0 - (margin.top /5))
+            .attr("text-anchor", "right")
+            .style("font-size", "30px")
+            .style("text-decoration", "bold")
+            .text("1970")
+            .attr("id", "gdp-year")
             // .text("1970 - 2016");
 
   };
@@ -584,6 +592,24 @@
 
 });
 
+
+
+
+
+d3.json("http://api.worldbank.org/v2/countries/eg/indicators/NY.GDP.MKTP.CD?date=1970&format=json", function(error, data) {
+     
+    if(error) {
+       console.log(error);
+    } else {
+       // console.log(data); //we're golden! 
+    }
+
+      // var decodedData = JSON.parse(window.atob(data.content));
+      countryGDPyear = data;
+      return(countryGDPyear);
+  });
+
+
 /*
   function for saving JSON file
   console.save(data, filename);
@@ -620,6 +646,14 @@ function myFunction() {
   var selectedYear = document.getElementById("year-option").value;
   document.getElementById("demo").innerHTML = selectedYear;
 } 
+
+
+function insertGDP() {
+  // var selectedCountry = document.getElementsByClassName("country").class;
+  var selectedCountry = $("#country option:selected").html();
+  document.getElementById("gdp").innerHTML = selectedCountry;
+}
+
 
   </script>
 
@@ -783,9 +817,9 @@ function myFunction() {
     </label>
 
     <label for="">Country: 
-      <select name="" id="country">
+      <select name="" id="country" onchange="insertGDP()">
         <option class="all" value="99">All Countries</option>
-        <option class="South Asia" value="4">Afghanistan</option>
+        <option class="South Asia" value="4" text="Afghanistan">Afghanistan</option>
         <option class="Eastern Europe" value="5">Albania</option>
         <option class="Middle East & North Africa" value="6">Algeria</option>
         <option class="Western Europe" value="7">Andorra</option>
@@ -994,6 +1028,18 @@ function myFunction() {
     </label>
 
   </div>
+
+
+    <div id="gdp-year">
+      <label for="">Country GDP: <span id="gdp">Test</span> </label>
+    </div>
+
+
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
 </body>
 </html>
 
