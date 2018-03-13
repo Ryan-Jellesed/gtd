@@ -660,14 +660,19 @@ function insertCountry() {
   document.getElementById("data1").innerHTML = selectedCountry;
 }
 
-
+/*
+  this function gets the iso county code and year value from the selection option in the html and 
+  pulls the correct json file from the world bank data, returning the correct gdp for the country
+  and year
+ */
 function selectCountryCode(){
   selectCountryISO = document.getElementById("country").value;
   selectCountryYear = document.getElementById("year-option").value;
 
   // console.log(selectCountryISO);
-  if(document.getElementById("country").value === '99' || document.getElementById("country").value === "cs"){
+  if(document.getElementById("country").value === '99' || document.getElementById("country").value === "cs") {
     document.getElementById("gdp").innerHTML = " _____ ";
+    document.getElementById("population-total").innerHTML = "  _____  ";
   } else {
     d3.json("http://api.worldbank.org/v2/countries/"+selectCountryISO+"/indicators/NY.GDP.MKTP.CD?date=" + selectCountryYear + "&format=json", function(error, data) {
      
@@ -688,6 +693,23 @@ function selectCountryCode(){
 
       document.getElementById("gdp").innerHTML = countryGDP;
     });
+
+    d3.json("https://api.worldbank.org/v2/countries/"+ selectCountryISO + "/indicators/SP.POP.TOTL?&format=json" + "&date=" + selectCountryYear, function(error, data) {
+
+      if(error){
+        console.log(error);
+      } else {
+        // console.log(data);
+      }
+
+      population = data[1][0].value;
+      population = (population / 1000000).toFixed(4);
+
+      document.getElementById("population-total").innerHTML = population;
+
+      return population;
+    });
+
   }
 }
 
@@ -821,7 +843,7 @@ function selectCountryCode(){
   
   <div>
     <div>
-      <p>Select Data: <strong><span id='data1'></span></strong></p>
+      <p>API linked, World Bank Data: </p>
     </div>
 
     <label for="descriptive-stas">Desciptives:
@@ -1067,9 +1089,17 @@ function selectCountryCode(){
 
   </div>
 
-
-    <div id="gdp-year">
-      <label for=""><strong>GDP in Billions (current US$): </strong><span id="gdp">  _____  </span> </label>
+    <br>
+    <div id="world-bank-output">
+      <div>
+        <label for="">Country: <strong><span id='data1'>  _____  </span></strong></label>
+      </div>
+      <div>
+        <label for="">GDP in Billions (current US$): <u><span id="gdp">  _____  </span></u></label>  
+      </div>
+      <div>
+        <label for="">Population in Millions: <u><span id="population-total">  _____   </span></u></label>
+      </div>
     </div>
 
 
