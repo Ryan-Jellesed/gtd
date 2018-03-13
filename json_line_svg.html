@@ -663,11 +663,12 @@ function myFunction() {
 
 function selectCountryCode(){
   selectCountryISO = document.getElementById("country").value;
+  selectCountryYear = document.getElementById("year-option").value;
   // console.log(selectCountryISO);
-  if(document.getElementById("country").value === '99'){
+  if(document.getElementById("country").value === '99' || document.getElementById("country").value === "cs"){
     document.getElementById("gdp").innerHTML = " _____ ";
   } else {
-    d3.json("http://api.worldbank.org/v2/countries/"+selectCountryISO+"/indicators/NY.GDP.MKTP.CD?date=1970&format=json", function(error, data) {
+    d3.json("http://api.worldbank.org/v2/countries/"+selectCountryISO+"/indicators/NY.GDP.MKTP.CD?date=" + selectCountryYear + "&format=json", function(error, data) {
      
       if(error) {
          console.log(error);
@@ -677,9 +678,12 @@ function selectCountryCode(){
 
       // var decodedData = JSON.parse(window.atob(data.content));
       countryGDPyear = data;
+      n = countryGDPyear[1][0].value / 1000000;
+      n = n.toFixed().replace(/(\d)(?=(\d{3})+(,|$))/g, '$1,')
 
+      // countryGDP = Math.round(countryGDPyear[1][0].value / 1000000);
 
-      countryGDP = (countryGDPyear[1][0].value / 1000000000).toFixed(3);
+      countryGDP = n;
 
       document.getElementById("gdp").innerHTML = countryGDP;
     });
@@ -705,7 +709,7 @@ function selectCountryCode(){
         </div>
 
         <label for="year-option">Year:
-          <select id="year-option"  onchange="myFunction()">
+          <select id="year-option"  onchange="myFunction(); selectCountryCode();">
             <option value="1970">1970</option>
             <option value="1971">1971</option>
             <option value="1972">1972</option>
@@ -860,40 +864,41 @@ function selectCountryCode(){
         <option class="South America" value="ar">Argentina</option>
         <option class="Central Asia" value="am">Armenia</option>
         <option class="Australasia & Oceania" value="au">Australia</option>
-        <option class="Western Europe" value="15">Austria</option>
-        <option class="Central Asia" value="16">Azerbaijan</option>
-        <option class="Central America & Caribbean" value="17">Bahamas</option>
-        <option class="Middle East & North Africa" value="18">Bahrain</option>
-        <option class="South Asia" value="19">Bangladesh</option>
-        <option class="Central America & Caribbean" value="20">Barbados</option>
-        <option class="Eastern Europe" value="35">Belarus</option>
-        <option class="Western Europe" value="21">Belgium</option>
-        <option class="Central America & Caribbean" value="22">Belize</option>
-        <option class="Sub-Saharan Africa" value="23">Benin</option>
-        <option class="South Asia" value="25">Bhutan</option>
-        <option class="South America" value="26">Bolivia</option>
-        <option class="Eastern Europe" value="28">Bosnia-Herzegovina</option>
-        <option class="Sub-Saharan Africa" value="29">Botswana</option>
-        <option class="South America" value="30">Brazil</option>
-        <option class="Southeast Asia" value="31">Brunei</option>
-        <option class="Eastern Europe" value="32">Bulgaria</option>
-        <option class="Sub-Saharan Africa" value="33">Burkina Faso</option>
-        <option class="Sub-Saharan Africa" value="34">Burundi</option>
-        <option class="Southeast Asia" value="36">Cambodia</option>
-        <option class="Sub-Saharan Africa" value="37">Cameroon</option>
-        <option class="North America" value="38">Canada</option>
-        <option class="Sub-Saharan Africa" value="41">Central African Republic</option>
-        <option class="Sub-Saharan Africa" value="42">Chad</option>
-        <option class="South America" value="43">Chile</option>
-        <option class="East Asia" value="44">China</option>
-        <option class="South America" value="45">Colombia</option>
-        <option class="Sub-Saharan Africa" value="46">Comoros</option>
-        <option class="Central America & Caribbean" value="49">Costa Rica</option>
-        <option class="Eastern Europe" value="50">Croatia</option>
-        <option class="Central America & Caribbean" value="51">Cuba</option>
-        <option class="Western Europe" value="53">Cyprus</option>
-        <option class="Eastern Europe" value="54">Czech Republic</option>
-        <option class="Eastern Europe" value="236">Czechoslovakia</option>
+        <option class="Western Europe" value="at">Austria</option>
+        <option class="Central Asia" value="az">Azerbaijan</option>
+        <option class="Central America & Caribbean" value="bs">Bahamas</option>
+        <option class="Middle East & North Africa" value="bh">Bahrain</option>
+        <option class="South Asia" value="bd">Bangladesh</option>
+        <option class="Central America & Caribbean" value="bb">Barbados</option>
+        <option class="Eastern Europe" value="by">Belarus</option>
+        <option class="Western Europe" value="be">Belgium</option>
+        <option class="Central America & Caribbean" value="bz">Belize</option>
+        <option class="Sub-Saharan Africa" value="bj">Benin</option>
+        <option class="South Asia" value="bt">Bhutan</option>
+        <option class="South America" value="bo">Bolivia</option>
+        <option class="Eastern Europe" value="ba">Bosnia-Herzegovina</option>
+        <option class="Sub-Saharan Africa" value="bw">Botswana</option>
+        <option class="South America" value="br">Brazil</option>
+        <option class="Southeast Asia" value="bn">Brunei</option>
+        <option class="Eastern Europe" value="bg">Bulgaria</option>
+        <option class="Sub-Saharan Africa" value="bf">Burkina Faso</option>
+        <option class="Sub-Saharan Africa" value="bi">Burundi</option>
+        <option class="Southeast Asia" value="kh">Cambodia</option>
+        <option class="Sub-Saharan Africa" value="cm">Cameroon</option>
+        <option class="North America" value="ca">Canada</option>
+        <option class="Sub-Saharan Africa" value="cf">Central African Republic</option>
+        <option class="Sub-Saharan Africa" value="td">Chad</option>
+        <option class="South America" value="cl">Chile</option>
+        <option class="East Asia" value="cn">China</option>
+        <option class="South America" value="co">Colombia</option>
+        <option class="Sub-Saharan Africa" value="km">Comoros</option>
+        <option class="Central America & Caribbean" value="cr">Costa Rica</option>
+        <option class="Eastern Europe" value="hr">Croatia</option>
+        <option class="Central America & Caribbean" value="cu">Cuba</option>
+        <option class="Western Europe" value="cy">Cyprus</option>
+        <option class="Eastern Europe" value="cz">Czech Republic</option>
+        <option class="Eastern Europe" value="cs">Czechoslovakia</option>
+
         <option class="Sub-Saharan Africa" value="229">Democratic Republic of the Congo</option>
         <option class="Western Europe" value="55">Denmark</option>
         <option class="Sub-Saharan Africa" value="56">Djibouti</option>
@@ -1063,7 +1068,7 @@ function selectCountryCode(){
 
 
     <div id="gdp-year">
-      <label for=""><strong>GDP in Billions (current US$): </strong><span id="gdp">  _____  </span> </label>
+      <label for=""><strong>GDP in Millions (current US$): </strong><span id="gdp">  _____  </span> </label>
     </div>
 
 
