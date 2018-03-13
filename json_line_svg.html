@@ -654,16 +654,17 @@ function myFunction() {
 } 
 
 
-// function insertGDP() {
-//   // var selectedCountry = document.getElementsByClassName("country").class;
-//   var selectedCountry = $("#country option:selected").html();
-//   document.getElementById("gdp").innerHTML = selectedCountry;
-// }
+function insertCountry() {
+  // var selectedCountry = document.getElementsByClassName("country").class;
+  var selectedCountry = $("#country option:selected").html();
+  document.getElementById("data1").innerHTML = selectedCountry;
+}
 
 
 function selectCountryCode(){
   selectCountryISO = document.getElementById("country").value;
   selectCountryYear = document.getElementById("year-option").value;
+
   // console.log(selectCountryISO);
   if(document.getElementById("country").value === '99' || document.getElementById("country").value === "cs"){
     document.getElementById("gdp").innerHTML = " _____ ";
@@ -678,12 +679,12 @@ function selectCountryCode(){
 
       // var decodedData = JSON.parse(window.atob(data.content));
       countryGDPyear = data;
-      n = countryGDPyear[1][0].value / 1000000;
-      n = n.toFixed().replace(/(\d)(?=(\d{3})+(,|$))/g, '$1,')
+      // n = countryGDPyear[1][0].value / 1000000;
+      // n = n.toFixed().replace(/(\d)(?=(\d{3})+(,|$))/g, '$1,')
+      // countryGDP = n;
 
-      // countryGDP = Math.round(countryGDPyear[1][0].value / 1000000);
-
-      countryGDP = n;
+      countryGDP = Math.round(countryGDPyear[1][0].value / 1000000);
+      countryGDP = (countryGDPyear[1][0].value / 1000000000).toFixed(4);
 
       document.getElementById("gdp").innerHTML = countryGDP;
     });
@@ -820,7 +821,7 @@ function selectCountryCode(){
   
   <div>
     <div>
-      <p>Select Data:</p>
+      <p>Select Data: <strong><span id='data1'></span></strong></p>
     </div>
 
     <label for="descriptive-stas">Desciptives:
@@ -853,7 +854,7 @@ function selectCountryCode(){
 
     <label for="">Country: 
       <!-- <select name="" id="country" onchange="insertGDP(); selectCountryCode();"> -->
-      <select name="" id="country" onchange="selectCountryCode()">
+      <select name="" id="country" onchange="selectCountryCode(); insertCountry();">
         <option class="all" value="99">All Countries</option>
         <option class="South Asia" value="af" text="Afghanistan">Afghanistan</option>
         <option class="Eastern Europe" value="al">Albania</option>
@@ -1068,7 +1069,7 @@ function selectCountryCode(){
 
 
     <div id="gdp-year">
-      <label for=""><strong>GDP in Millions (current US$): </strong><span id="gdp">  _____  </span> </label>
+      <label for=""><strong>GDP in Billions (current US$): </strong><span id="gdp">  _____  </span> </label>
     </div>
 
 
