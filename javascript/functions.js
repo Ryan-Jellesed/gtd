@@ -518,9 +518,6 @@ var createIndexList = function(ds, field){
 };
 
 
-
-
-
 /*
   counts the number of occurences of an object in an array
  */
