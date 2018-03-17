@@ -165,7 +165,7 @@ var attacksYearMonthArray = function(arr){
                            month: 
                               {
                                 x: Number(j), 
-                                y: countMonth(i, j)
+                                y: countAttacksPerMonth(i, j)
                               }
                           });   
     }
@@ -410,7 +410,7 @@ var createMonthJSON = function(ds){
         for(var m = 1; m < 13; m++){
           ds3.contents[i].monthlyCount.push({
             date: Number(String(y) + (m).pad() + (1).pad()),
-            count: countMonth(y,m)
+            count: countAttacksPerMonth(y,m)
           })
         }
       }
