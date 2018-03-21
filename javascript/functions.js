@@ -165,7 +165,7 @@ var attacksYearMonthArray = function(arr){
                            month: 
                               {
                                 x: Number(j), 
-                                y: countAttacksPerMonth(i, j)
+                                y: countMonth(i, j)
                               }
                           });   
     }
