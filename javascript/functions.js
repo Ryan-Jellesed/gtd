@@ -165,7 +165,7 @@ var attacksYearMonthArray = function(arr){
                            month: 
                               {
                                 x: Number(j), 
-                                y: countMonth(i, j)
+                                y: countAttacksPerMonth(i, j)
                               }
                           });   
     }
@@ -200,7 +200,7 @@ var monthAttacks = function(arr){
 /* 
     Creates the JSON object for the attacks per month by year
     Doesn't take any params - just run
-    Relies on the countMonth(); function to populate the array
+    Relies on the countAttacksPerMonth(); function to populate the array
     This is now stored on github. MM_YY_Attacks.json
   */
 var createMonthJSON = function(ds){
@@ -521,16 +521,16 @@ var createIndexList = function(ds, field){
 /*
   counts the number of occurences of an object in an array
  */
-reduceArray = [];
-var countedNames = reduceArray.reduce(function (allNames, name) { 
-  if (name in allNames) {
-    allNames[name]++;
-  }
-  else {
-    allNames[name] = 1;
-  }
-  return allNames;
-}, {});
+// reduceArray = [];
+// var countedNames = reduceArray.reduce(function (allNames, name) { 
+//   if (name in allNames) {
+//     allNames[name]++;
+//   }
+//   else {
+//     allNames[name] = 1;
+//   }
+//   return allNames;
+// }, {});
 
 var tallyColumn = function(arr) {
   countedNames = arr.reduce(function (allNames, name) { 
