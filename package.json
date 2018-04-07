@@ -1,0 +1,22 @@
+{
+  "name": "gtd",
+  "version": "1.0.0",
+  "description": "Analyzing the Global Terror Dataset with D3 anscillary data from the World Bank Open Data site",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ryan-Jellesed/gtd.git"
+  },
+  "author": "Ryan Jellesed",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ryan-Jellesed/gtd/issues"
+  },
+  "homepage": "https://github.com/Ryan-Jellesed/gtd#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
