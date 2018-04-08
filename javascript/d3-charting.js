@@ -577,6 +577,7 @@ d3.json("http://api.worldbank.org/v2/countries/eg/indicators/NY.GDP.MKTP.CD?date
     }
 })(console)
 
+
 function myFunction() {
   var selectedYear = document.getElementById("year-option").value;
   document.getElementById("demo").innerHTML = selectedYear;
