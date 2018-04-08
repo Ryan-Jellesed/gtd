@@ -595,6 +595,7 @@ function insertCountry() {
   and year
  */
 function selectCountryCode(){
+
   selectCountryISO = document.getElementById("country").value;
   selectCountryYear = document.getElementById("year-option").value;
 
@@ -646,4 +647,57 @@ function selectCountryCode(){
 function clearInputs() {
   document.getElementById("gdp").innerHTML = " _____ ";
   document.getElementById("population-total").innerHTML = "  _____  ";
+}
+
+
+
+
+
+function selectNorthAmericaCountryCode() {
+
+  selectCountryISO = document.getElementById("north_america").value;
+  selectCountryYear = document.getElementById("year-option").value;
+
+  // console.log(selectCountryISO);
+  if(document.getElementById("north_america").value === '99' || document.getElementById("north_america").value === "cs") {
+    document.getElementById("gdp").innerHTML = " _____ ";
+    document.getElementById("population-total").innerHTML = "  _____  ";
+  } else {
+    d3.json("http://api.worldbank.org/v2/countries/"+selectCountryISO+"/indicators/NY.GDP.MKTP.CD?date=" + selectCountryYear + "&format=json", function(error, data) {
+     
+      if(error) {
+         console.log(error);
+      } else {
+         // console.log(data); //we're golden! 
+      }
+
+      // var decodedData = JSON.parse(window.atob(data.content));
+      countryGDPyear = data;
+      // n = countryGDPyear[1][0].value / 1000000;
+      // n = n.toFixed().replace(/(\d)(?=(\d{3})+(,|$))/g, '$1,')
+      // countryGDP = n;
+
+      countryGDP = Math.round(countryGDPyear[1][0].value / 1000000);
+      countryGDP = (countryGDPyear[1][0].value / 1000000000).toFixed(4);
+
+      document.getElementById("gdp").innerHTML = countryGDP;
+    });
+
+    d3.json("https://api.worldbank.org/v2/countries/"+ selectCountryISO + "/indicators/SP.POP.TOTL?&format=json" + "&date=" + selectCountryYear, function(error, data) {
+
+      if(error){
+        console.log(error);
+      } else {
+        // console.log(data);
+      }
+
+      population = data[1][0].value;
+      population = (population / 1000000).toFixed(4);
+
+      document.getElementById("population-total").innerHTML = population;
+
+      return population;
+    });
+
+  }
 }
