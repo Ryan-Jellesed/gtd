@@ -1,0 +1,68 @@
+
+  #region2 {
+    display:  none;
+  }
+
+  ."South-Asia" {
+    display:  none;
+  }
+
+
+  /* 
+  div.area-1, div.area-2 { display: inline; }
+  */
+ 
+  .x-axis path, .y-axis path,
+  .x-axis line, .y-axis line{
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+  }
+
+  .path-month{
+    fill: none;
+    stroke: blue;
+    stroke-width: 2px;
+  }
+
+  .line{
+    fill: none;
+    stroke: blue;
+    stroke-width: 2px;
+  }
+
+  .tick text{
+    font-size: 12px;
+  }
+
+  .tick line{
+    opacity: 0.2;
+  }
+
+  h1 {
+    font-family:  sans-serif;
+    font-weight: 300;
+    font-size:  16px;
+  }
+
+  .x-axis text, .y-axis text {
+    font-family: sans-serif;
+    font-size: 10px;
+  }
+  
+  div.tooltip {   
+                position: absolute;
+                max-width: 200px;
+                height: auto;
+                padding: 5px;
+                background-color: white;
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                border-radius: 5px;
+                -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+                -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+                box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+                pointer-events: none; /* MUI IMPORTANTE! */
+                font-family: sans-serif;
+                font-size:12px;
+            }

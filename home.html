@@ -3,718 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <title>Line Chart</title>
-<style>
 
-  /* 
-  div.area-1, div.area-2 { display: inline; }
-  */
- 
-  .x-axis path, .y-axis path,
-  .x-axis line, .y-axis line{
-    fill: none;
-    stroke: black;
-    shape-rendering: crispEdges;
-  }
-
-  .path-month{
-    fill: none;
-    stroke: blue;
-    stroke-width: 2px;
-  }
-
-  .line{
-    fill: none;
-    stroke: blue;
-    stroke-width: 2px;
-  }
-
-  .tick text{
-    font-size: 12px;
-  }
-
-  .tick line{
-    opacity: 0.2;
-  }
-
-  h1 {
-    font-family:  sans-serif;
-    font-weight: 300;
-    font-size:  16px;
-  }
-
-  .x-axis text, .y-axis text {
-    font-family: sans-serif;
-    font-size: 10px;
-  }
-  
-  div.tooltip {   
-                position: absolute;
-                max-width: 200px;
-                height: auto;
-                padding: 5px;
-                background-color: white;
-                -webkit-border-radius: 5px;
-                -moz-border-radius: 5px;
-                border-radius: 5px;
-                -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-                -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-                box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-                pointer-events: none; /* MUI IMPORTANTE! */
-                font-family: sans-serif;
-                font-size:12px;
-            }
-
-</style>
 </head>
 <body>
 
+<link rel="stylesheet" href="style.css">
 <script src="http://d3js.org/d3.v3.js"></script>
-<script src="javascript/functions.js"></script>
 <script src="javascript/mathFunctions.js"></script>
-<script>
-
-  var margin = {top: 40, right: 100, bottom: 50, left: 100},
-      width = 960 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom;
-
-  /*
-    Start building the graphing functions
-   */
-
- 
-  // var buildLine = function(ds){
-
-  //   var minDate = getDate(ds[0].date);
-
-  //   var maxDate = getDate(ds[ds.length-1].date);
-
-  //   console.log("min date: " + minDate);
-  //   console.log("max date: " + maxDate);
-
-  //   var tooltip = d3.select('body').append("div")
-  //                     .attr("class", "tooltip")
-  //                     .style("opacity", 0)
-
-  //   // scales
-  //   var xScale = d3.time.scale()
-  //                         .domain([minDate, maxDate])
-  //                         .range([0, width]);
-
-  //   var yScale = d3.scale.linear()
-  //                           .domain([0, d3.max(ds. function(d){ return d.count; })])
-  //                           .range([height, 0])
-  //                           .nice();
-
-  //   // Axis
-  //   var xAxis = d3.svg.axis()
-  //                       .scale(xScale)
-  //                       .orient("bottom")
-  //                       .innerTickSize(-height)
-  //                       .outerTickSize(0)
-  //                       .tickPadding(10)
-  //                       .tickFormat(d3.time.format("%b"));
-
-  //   var yAxis = d3.svg.axis()
-  //       .scale(yScale)
-  //       .orient("left")
-  //       .innerTickSize(-width)
-  //       .outerTickSize(0)
-  //       .tickPadding(10);
-
-
-  // }
-
-
-  var buildLineYear = function(data) {
-
-    dataset = data;
-    console.log(dataset)
-
-    var minDate = getDate(dataset[0].date );
-
-    var maxDate = getDate(dataset[dataset.length -1].date );
-
-    console.log("min date: " + minDate);
-    console.log("max date: " + maxDate);
-
-    // Scales
-    var xScale = d3.time.scale()
-      .domain([minDate, maxDate])
-      .range([0, width]);
-
-    var yScale = d3.scale.linear()
-        .domain([0, d3.max(dataset, function(d){ return d.count; })])
-        .range([height, 0]);
-
-    // Axis
-    var xAxis = d3.svg.axis()
-        .scale(xScale)
-        .orient("bottom")
-        .innerTickSize(-height)
-        .outerTickSize(0)
-        .tickPadding(10)
-        .tickFormat(d3.time.format("%y'"));
-
-    var yAxis = d3.svg.axis()
-        .scale(yScale)
-        .orient("left")
-        .innerTickSize(-width)
-        .outerTickSize(0)
-        .tickPadding(10);
-
-    // Line func
-    var line = d3.svg.line()
-        .x(function(d) { return xScale(getDate(d.date ))})
-        .y(function(d) { return yScale(d.count); })
-        .interpolate("linear");
-
-    // Create svg
-    var svg = d3.select("").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .attr("id", "svg-month")
-      .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-      svg.append("g")
-          .attr("class", "x-axis")
-          .attr("transform", "translate(0," + height + ")")
-          .call(xAxis)
-
-      svg.append("g")
-          .attr("class", "y-axis")
-          .call(yAxis)
-
-      // text label for the x axis
-      svg.append("text")             
-      .attr("transform",
-            "translate(" + (width/2) + " ," + 
-                           (height + margin.top + 10) + ")")
-      .style("text-anchor", "middle");
-      // .text("Month Number or Year Number (I haven't coded the dynamic variables yet)");
-
-      svg.append("path")
-          .data([dataset])
-          .attr("class", "path-month")
-          .attr("d", line);
-  };
-
-  var buildLineMonth = function(ds) {
-
-    // base = 1970;
-    // dataset = ds[year - base].month;
-    // data = dataset.month;
-    // console.log(dataset)
-
-    var minDate = getDate(ds[0]['date']);
-    // console.log(minDate);
-    var maxDate = getDate(ds[ds.length-1].date);
-    // console.log(maxDate);
-
-    console.log("min date: " + minDate);
-    console.log("max date: " + maxDate);
-
-    var tooltip = d3.select("body").append("div")
-                      .attr("class", "tooltip")
-                      .style("opacity", 0)
-
-    // Scales
-    var xScale = d3.time.scale()
-      .domain([minDate, maxDate])
-      .range([0, width]);
-
-    var yScale = d3.scale.linear()
-        .domain([0, d3.max(ds, function(d){ return d.count; })])
-        .range([height, 0])
-        .nice();
-
-    // Axis
-    var xAxis = d3.svg.axis()
-        .scale(xScale)
-        .orient("bottom")
-        .innerTickSize(-height)
-        .outerTickSize(0)
-        .tickPadding(10)
-        .tickFormat(d3.time.format("%b"));
-
-    var yAxis = d3.svg.axis()
-        .scale(yScale)
-        .orient("left")
-        .innerTickSize(-width)
-        .outerTickSize(0)
-        .tickPadding(10);
-
-    // Line func
-    var line = d3.svg.line()
-        .x(function(d) { return xScale(getDate(d.date)); })
-        .y(function(d) { return yScale(d.count); })
-        .interpolate("linear");
-
-    // Create svg
-    var svg = d3.select("#area-1").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .attr("id", "svg-month")
-      .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-      svg.append("g")
-          .attr("class", "x-axis")
-          .attr("transform", "translate(0," + height + ")")
-          .call(xAxis)
-
-      svg.append("g")
-          .attr("class", "y-axis")
-          .call(yAxis)
-
-      // text label for the x axis
-      // svg.append("text")             
-      //       .attr("transform",
-      //             "translate(" + (width/2) + " ," + 
-      //                            (height + margin.top + 10) + ")")
-      //       .style("text-anchor", "middle")
-      //       .text("Count of Global Terror Attacks")
-      //       .text("1970 - 2016");
-
-
-      svg.append("path")
-          .data([ds])
-          .attr("class", "path-month")
-          .attr("d", line);
-
-      var dots = svg.selectAll("circle")
-                      .data(ds)
-                      .enter()
-                      .append("circle")
-                      .attr({
-                        cx: function(d) { return xScale(getDate(d.date)); },
-                        cy: function(d) { return yScale(d.count); },
-                        r: 3,
-                        "fill": "#666666",
-                        class: "circle-svg"
-                      })
-                      .on("mouseover", function(d){
-
-                        tooltip.transition()
-                                  .duration(500)
-                                  .style("opacity", .85)
-                        tooltip.html("<strong>Attack Count: " + d.count)
-                                  .style("left", (d3.event.pageX) + "px")
-                                  .style("top", (d3.event.pageY - 28) + "px");
-                      })
-                      .on("mouseout", function(d){
-                        tooltip.transition()
-                                  .duration(300)
-                                  .style("opacity", 0);
-                      })
-
-
-      svg.append("text")
-            .attr("x", (width /2 ))
-            .attr("y", 0 - (margin.top / 5))
-            .attr("text-anchor", "middle")
-            .style("font-size", "16px")
-            .style("text-decoration", "underline")
-            .text("Count of Global Terror Attacks 1970 - 2016 ")
-      svg.append("text")
-            .attr("x", (width - 70 ))
-            .attr("y", 0 - (margin.top /5))
-            .attr("text-anchor", "right")
-            .style("font-size", "30px")
-            .style("text-decoration", "bold")
-            .text("1970")
-            .attr("id", "demo")
-      // svg.append("text")
-      //       .attr("x", (width - 70 ))
-      //       .attr("y", 0 - (margin.top /5))
-      //       .attr("text-anchor", "right")
-      //       .style("font-size", "30px")
-      //       .style("text-decoration", "bold")
-      //       .text("U.S.")
-      //       .attr("id", "gdp-year")
-            // .text("1970 - 2016");
-
-  };
-
-  var updateLineMonth = function(ds) {
-
-      // base = 1970;
-      // dataset = contents[year - base].month;
-      // data = dataset.month;
-      console.log(ds)
-
-      var minDate = getDate(ds[0].date);
-
-      var maxDate = getDate(ds[ds.length - 1].date);
-
-      console.log("min date: " + minDate);
-      console.log("max date: " + maxDate);
-
-      // Scales
-      var xScale = d3.time.scale()
-        .domain([minDate, maxDate])
-        .range([0, width]);
-
-      var yScale = d3.scale.linear()
-          .domain([0, d3.max(ds, function(d){ return d.count; })])
-          .range([height, 0])
-          .nice();
-
-      // Axis
-      var xAxis = d3.svg.axis()
-          .scale(xScale)
-          .orient("bottom")
-          .innerTickSize(-height)
-          .outerTickSize(0)
-          .tickPadding(10)
-          // .ticks(ds.monthlySales.length-1)     DIDN'T IMPLEMENT THIS YET FROM THE TUTORIAL
-          .tickFormat(d3.time.format("%b"))
-          .ticks(ds.length - 1);
-
-      var yAxis = d3.svg.axis()
-          .scale(yScale)
-          .orient("left")
-          .innerTickSize(-width)
-          .outerTickSize(0)
-          .tickPadding(10);
-
-      // Line func
-      var line = d3.svg.line()
-          .x(function(d) { return xScale(getDate(d.date)); })
-          .y(function(d) { return yScale(d.count); })
-          .interpolate("linear");
-
-      // Create svg
-      var svg = d3.select("body").select("#svg-month");
-
-        svg.selectAll("g.x-axis").call(xAxis);
-
-        svg.selectAll("g.y-axis").call(yAxis);
-
-        svg.selectAll(".path-month")
-              .data([ds])
-              .transition()
-              .duration(3500)
-              // .ease("linear")
-              // .ease("elastic")
-              // .ease("circle")
-              .ease("bounce")
-            // .attr("class", "line")
-              .attr("d", line);
-
-      // var svg = d3.select("svg");
-      // svg.selectAll("*").remove();
-
-      var dots = svg.selectAll(".circle-svg")
-                      // .data(ds)     
-                      .transition()
-                      .duration(1000)
-                      .ease("linear")
-                      .attr({
-                        cx: function(d) { return xScale(getDate(d.date)); },
-                        cy: function(d) { return yScale(d.count); },
-                      });
-      var dots = svg.selectAll(".circle-svg")
-                      .data(ds)
-                      .transition()
-                      .duration(1000)
-                      .ease("linear")
-                      .attr({
-                        cx: function(d) { return xScale(getDate(d.date)); },
-                        cy: function(d) { return yScale(d.count); },
-                      });                     
-  };
-
-// var obj = new Object();
-//    obj.name = "Raj";
-//    obj.age  = 32;
-//    obj.married = false;
-//    var jsonString= JSON.stringify(obj);
-
-// var jsonString = JSON.stringify(ds2);
-
-// JSON.parse(jsonString);
-// decodedData = JSON.parse(jsonString);
-
-// decodedData.contents.forEach(function(ds){
-//   console.log(ds);
-// })
-
-
-  /*
-    Load the whole gtd dataset in JSON format
-   */
-  var gtdJSON = [];
-  d3.json("large_data/gtd.json", function(error, data){
-
-    if(error){
-      console.log(error);
-    } else {
-      console.log("************************************************");
-      console.log("Loaded the GTD full Dataset!!!");
-      console.log(data.contents);
-      gtdJSON = data;
-      console.log("************************************************\n\n\n\n");
-    }
-
-    // console.log("*******    gtdJSON = GTD full dataset      *******");
-    // data.contents.forEach(function(contents){
-    //   gtdJSON.push(contents);
-    // });
-    // console.log(gtdJSON);
-    // console.log("**************************************************\n\n\n\n");
-  });
-
-
-
-  /*
-    when pulling data from github use the api
-   */
-  
-  d3.json("https://api.github.com/repos/Ryan-Jellesed/gtd/contents/jsonFiles/MM_YY_Atacks.json", function(error, data) {
-     
-   if(error) {
-       console.log(error);
-   } else {
-       // console.log(data); //we're golden!
-   }
-
-    var decodedData = JSON.parse(window.atob(data.content));
-      // console.log("******  MM_YY_Atacks Dataset from Github **********\n\n\n");
-      // console.log("******            decodedData            **********");
-      // console.log(decodedData);
-      // console.log("***************************************************\n\n\n\n");
-      // console.log("******         decodedData.contents      **********");
-      // console.log(decodedData.contents);
-      // console.log("***************************************************\n\n\n\n");
-
-      var ds = decodedData.contents;
-      var year = 1970;
-      var dsYear = ds[year - 1970];
-      console.log(dsYear['monthlyCount']);
-
-
-      buildLineMonth(dsYear['monthlyCount']);
-
-
-      decodedData.contents.forEach(function(ds){
-
-          // console.log(ds);
-      //     // showHeader(ds);
-      //     // buildLine(ds);
-      });
-
-      
-
-      d3.select("#year-option")
-          .on("change", function(d,i){
-
-            //get selected option
-            var selYear = d3.select('#year-option').node().value;
-            var selDate = d3.select("#date-option").node().value;
-            // console.log(ds.monthlySales.length-sel);
-            // console.log(selYear);
-
-            var decodedData = JSON.parse(window.atob(data.content));
-            var ds = decodedData.contents;
-            year = selYear;
-            var date = selDate;
-            var dsYear = ds[year - 1970];
-
-            // dsYear = dsYear.monthlyCount.splice(0, dsYear.monthlyCount.length - date);
-            if(d3.select("#date-option").node().value === "-6"){
-              dsYear = dsYear.monthlyCount.splice(6, dsYear.monthlyCount.length - date);
-            } else {
-              dsYear = dsYear.monthlyCount.splice(0, dsYear.monthlyCount.length - date);
-            }
-            updateLineMonth(dsYear)
-          
-      });
-
-      d3.select("#month-option")
-          .on("change", function(d,i){
-
-                // get selected option
-            var selMonth = d3.select("#month-option").node().value;
-
-              console.log(selMonth);       
-      });
-
-      d3.select("#date-option")
-          .on("change", function(d,i){
-
-                // get selected option
-            var selDate = d3.select("#date-option").node().value;
-            var selYear = d3.select("#year-option").node().value;
-            var decodedData = JSON.parse(window.atob(data.content));
-
-            var ds = decodedData.contents
-            var year = selYear;
-            var date = selDate;
-            var dsYear = ds[year - 1970];
-
-
-            if(d3.select("#date-option").node().value === "-6"){
-              dsYear = dsYear.monthlyCount.splice(6, dsYear.monthlyCount.length - date);
-            } else if(d3.select("#date-option").node().value === "-3"){
-              dsYear = dsYear.monthlyCount.splice(9, dsYear.monthlyCount.length - date);
-            } else {
-              dsYear = dsYear.monthlyCount.splice(0, dsYear.monthlyCount.length - date);
-            }
-            updateLineMonth(dsYear);
-
-              // console.log(selDate);    
-      });
-
-      d3.select("#day-option")
-          .on("change", function(d,i){
-
-              // get selected option
-            var selDay = d3.select('#day-option').node().value;
-
-            // console.log(selDay);    
-      });
-
-
-  d3.json("https://api.github.com/repos/Ryan-Jellesed/gtd/contents/jsonFiles/attacksByYear.json", function(error, data) {
-     
-    if(error) {
-       console.log(error);
-    } else {
-       // console.log(data); //we're golden!
-       
-    }
-
-      var decodedData = JSON.parse(window.atob(data.content));
-      attacksByYear = decodedData;
-      return(attacksByYear);
-  });
-
-
-});
-
-
-
-
-
-
-
-
-
-
-d3.json("http://api.worldbank.org/v2/countries/eg/indicators/NY.GDP.MKTP.CD?date=1970&format=json", function(error, data) {
-     
-    if(error) {
-       console.log(error);
-    } else {
-       // console.log(data); //we're golden! 
-    }
-
-      // var decodedData = JSON.parse(window.atob(data.content));
-      countryLiteracyRate = data;
-      return(countryLiteracyRate);
-  });
-
-
-
-/*
-  function for saving JSON file
-  console.save(data, filename);
- */
-
-(function(console){
-
-    console.save = function(data, filename){
-
-        if(!data) {
-            console.error('Console.save: No data')
-            return;
-        }
-
-        if(!filename) filename = 'console.json'
-
-        if(typeof data === "object"){
-            data = JSON.stringify(data, undefined, 4)
-        }
-
-        var blob = new Blob([data], {type: 'text/json'}),
-            e    = document.createEvent('MouseEvents'),
-            a    = document.createElement('a')
-
-        a.download = filename
-        a.href = window.URL.createObjectURL(blob)
-        a.dataset.downloadurl =  ['text/json', a.download, a.href].join(':')
-        e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
-        a.dispatchEvent(e)
-    }
-})(console)
-
-function myFunction() {
-  var selectedYear = document.getElementById("year-option").value;
-  document.getElementById("demo").innerHTML = selectedYear;
-} 
-
-
-function insertCountry() {
-  // var selectedCountry = document.getElementsByClassName("country").class;
-  var selectedCountry = $("#country option:selected").html();
-  document.getElementById("data1").innerHTML = selectedCountry;
-}
-
-/*
-  this function gets the iso county code and year value from the selection option in the html and 
-  pulls the correct json file from the world bank data, returning the correct gdp for the country
-  and year
- */
-function selectCountryCode(){
-  selectCountryISO = document.getElementById("country").value;
-  selectCountryYear = document.getElementById("year-option").value;
-
-  // console.log(selectCountryISO);
-  if(document.getElementById("country").value === '99' || document.getElementById("country").value === "cs") {
-    document.getElementById("gdp").innerHTML = " _____ ";
-    document.getElementById("population-total").innerHTML = "  _____  ";
-  } else {
-    d3.json("http://api.worldbank.org/v2/countries/"+selectCountryISO+"/indicators/NY.GDP.MKTP.CD?date=" + selectCountryYear + "&format=json", function(error, data) {
-     
-      if(error) {
-         console.log(error);
-      } else {
-         // console.log(data); //we're golden! 
-      }
-
-      // var decodedData = JSON.parse(window.atob(data.content));
-      countryGDPyear = data;
-      // n = countryGDPyear[1][0].value / 1000000;
-      // n = n.toFixed().replace(/(\d)(?=(\d{3})+(,|$))/g, '$1,')
-      // countryGDP = n;
-
-      countryGDP = Math.round(countryGDPyear[1][0].value / 1000000);
-      countryGDP = (countryGDPyear[1][0].value / 1000000000).toFixed(4);
-
-      document.getElementById("gdp").innerHTML = countryGDP;
-    });
-
-    d3.json("https://api.worldbank.org/v2/countries/"+ selectCountryISO + "/indicators/SP.POP.TOTL?&format=json" + "&date=" + selectCountryYear, function(error, data) {
-
-      if(error){
-        console.log(error);
-      } else {
-        // console.log(data);
-      }
-
-      population = data[1][0].value;
-      population = (population / 1000000).toFixed(4);
-
-      document.getElementById("population-total").innerHTML = population;
-
-      return population;
-    });
-
-  }
-}
-
-  </script>
+<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-1.6.2.js"></script> -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+<script src="javascript/functions.js"></script>
+<script src="javascript/d3-charting.js"></script>
 
 <p id="hook"></p>
 
@@ -844,8 +143,8 @@ function selectCountryCode(){
     <div id='area-2'></div>
   </div>
   
-  <div>
-    <div>
+  <!-- <div> -->
+    <!-- <div>
       <p>API linked, World Bank Data: </p>
     </div>
 
@@ -856,15 +155,15 @@ function selectCountryCode(){
           <option value="max">Max</option>
           <option value="min">Min</option>
         </select>
-      </label>
+      </label> -->
 
-
-    <label for="">Regions: 
-      <select name="" id="regions">
+<!--     <label for="">Regions: 
+      <select name="regions_all" id="regions_all">
+        <option selected value="Please Select a Region">Please Select A Region</option>
         <option class="" value="99">All Regions</option>
         <option class="" value="12">Australasia & Oceania</option>
-        <option class="" value="2">Central America & Caribbean</option>
-        <option class="" value="7">Central Asia</option>
+        <option class="" value="2">Central America and Caribbean</option>
+        <option class="" value="7">Central-Asia</option>
         <option class="" value="4">East Asia</option>
         <option class="" value="9">Eastern Europe</option>
         <option class="" value="10">Middle East & North Africa</option>
@@ -875,222 +174,535 @@ function selectCountryCode(){
         <option class="" value="11">Sub-Saharan Africa</option>
         <option class="" value="8">Western Europe</option>
       </select>
-    </label>
+    </label> -->
 
-    <label for="">Country: 
-      <!-- <select name="" id="country" onchange="insertGDP(); selectCountryCode();"> -->
-      <select name="" id="country" onchange="selectCountryCode(); insertCountry();">
+  <select size="1" id="regions_all" title="" name="regions_all" onchange="clearInputs();">
+    <option value="">-Select A Region-</option>
+    <option value="all_countries">All</option>
+    <option value="north_america">North America</option>
+    <option value="central_america">Central America</option>
+    <option value="south_america">South America</option>
+    <option value="east_asia">East Asia</option>
+    <option value="southeast_asia">Southeast Asia</option>
+    <option value="south_asia">South Asia</option>
+    <option value="central_asia">Central Asia</option>
+    <option value="western_europe">Western Europe</option>
+    <option value="eastern_europe">Eastern Europe</option>
+    <option value="middle_east_and_north_africa">Middle East & North Africa</option>
+    <option value="sub_saharan_africa">Sub-Saharan Africa</option>
+    <option value="australasia_and_oceania">Australasia & Oceanaia</option> -->
+  </select>
+      
+  <div class="container">
+    <div class="all_countries">
+        All Countries
+    </div>
+    <div class="north_america">
+        North America
+    </div>
+    <div class="central_america">
+        Central America
+    </div>
+  </div>
+
+  <div class="container">
+
+     <div class="all_countries">
+      <select name="" id="country" class="country_code" onchange="selectCountryCode(); insertCountry();">
         <option class="all" value="99">All Countries</option>
-        <option class="South Asia" value="af" text="Afghanistan">Afghanistan</option>
-        <option class="Eastern Europe" value="al">Albania</option>
-        <option class="Middle East & North Africa" value="dz">Algeria</option>
-        <option class="Western Europe" value="ad">Andorra</option>
-        <option class="Sub-Saharan Africa" value="ao">Angola</option>
-        <option class="Central America & Caribbean" value="ag">Antigua and Barbuda</option>
-        <option class="South America" value="ar">Argentina</option>
-        <option class="Central Asia" value="am">Armenia</option>
-        <option class="Australasia & Oceania" value="au">Australia</option>
-        <option class="Western Europe" value="at">Austria</option>
-        <option class="Central Asia" value="az">Azerbaijan</option>
-        <option class="Central America & Caribbean" value="bs">Bahamas</option>
-        <option class="Middle East & North Africa" value="bh">Bahrain</option>
-        <option class="South Asia" value="bd">Bangladesh</option>
-        <option class="Central America & Caribbean" value="bb">Barbados</option>
-        <option class="Eastern Europe" value="by">Belarus</option>
-        <option class="Western Europe" value="be">Belgium</option>
-        <option class="Central America & Caribbean" value="bz">Belize</option>
-        <option class="Sub-Saharan Africa" value="bj">Benin</option>
-        <option class="South Asia" value="bt">Bhutan</option>
-        <option class="South America" value="bo">Bolivia</option>
-        <option class="Eastern Europe" value="ba">Bosnia-Herzegovina</option>
-        <option class="Sub-Saharan Africa" value="bw">Botswana</option>
-        <option class="South America" value="br">Brazil</option>
-        <option class="Southeast Asia" value="bn">Brunei</option>
-        <option class="Eastern Europe" value="bg">Bulgaria</option>
-        <option class="Sub-Saharan Africa" value="bf">Burkina Faso</option>
-        <option class="Sub-Saharan Africa" value="bi">Burundi</option>
-        <option class="Southeast Asia" value="kh">Cambodia</option>
-        <option class="Sub-Saharan Africa" value="cm">Cameroon</option>
-        <option class="North America" value="ca">Canada</option>
-        <option class="Sub-Saharan Africa" value="cf">Central African Republic</option>
-        <option class="Sub-Saharan Africa" value="td">Chad</option>
-        <option class="South America" value="cl">Chile</option>
-        <option class="East Asia" value="cn">China</option>
-        <option class="South America" value="co">Colombia</option>
-        <option class="Sub-Saharan Africa" value="km">Comoros</option>
-        <option class="Central America & Caribbean" value="cr">Costa Rica</option>
-        <option class="Eastern Europe" value="hr">Croatia</option>
-        <option class="Central America & Caribbean" value="cu">Cuba</option>
-        <option class="Western Europe" value="cy">Cyprus</option>
-        <option class="Eastern Europe" value="cz">Czech Republic</option>
-        <option class="Eastern Europe" value="cs">Czechoslovakia</option>
+        <option class="South-Asia" value="af" text="Afghanistan">Afghanistan</option>
+        <option class="Eastern-Europe" value="al">Albania</option>
+        <option class="Middle-East-and-North-Africa" value="dz">Algeria</option>
+        <option class="Western-Europe" value="ad">Andorra</option>
+        <option class="Sub-Saharan-Africa" value="ao">Angola</option>
+        <option class="Central-America-and-Caribbean" value="ag">Antigua and Barbuda</option>
+        <option class="South-America" value="ar">Argentina</option>
+        <option class="Central-Asia" value="am">Armenia</option>
+        <option class="Australasia-and-Oceania" value="au">Australia</option>
+        <option class="Western-Europe" value="at">Austria</option>
+        <option class="Central-Asia" value="az">Azerbaijan</option>
+        <option class="Central-America-and-Caribbean" value="bs">Bahamas</option>
+        <option class="Middle-East-and-North-Africa" value="bh">Bahrain</option>
+        <option class="South-Asia" value="bd">Bangladesh</option>
+        <option class="Central-America-and-Caribbean" value="bb">Barbados</option>
+        <option class="Eastern-Europe" value="by">Belarus</option>
+        <option class="Western-Europe" value="be">Belgium</option>
+        <option class="Central-America-and-Caribbean" value="bz">Belize</option>
+        <option class="Sub-SaharanAfrica" value="bj">Benin</option>
+        <option class="South-Asia" value="bt">Bhutan</option>
+        <option class="South-America" value="bo">Bolivia</option>
+        <option class="Eastern-Europe" value="ba">Bosnia-Herzegovina</option>
+        <option class="Sub-Saharan-Africa" value="bw">Botswana</option>
+        <option class="South-America" value="br">Brazil</option>
+        <option class="Southeast-Asia" value="bn">Brunei</option>
+        <option class="Eastern-Europe" value="bg">Bulgaria</option>
+        <option class="Sub-Saharan-Africa" value="bf">Burkina Faso</option>
+        <option class="Sub-Saharan-Africa" value="bi">Burundi</option>
+        <option class="Southeast-Asia" value="kh">Cambodia</option>
+        <option class="Sub-Saharan-Africa" value="cm">Cameroon</option>
+        <option class="North-America" value="ca">Canada</option>
+        <option class="Sub-Saharan-Africa" value="cf">Central African Republic</option>
+        <option class="Sub-Saharan-Africa" value="td">Chad</option>
+        <option class="South-America" value="cl">Chile</option>
+        <option class="East-Asia" value="cn">China</option>
+        <option class="South-America" value="co">Colombia</option>
+        <option class="Sub-Saharan-Africa" value="km">Comoros</option>
+        <option class="Central-America-and-Caribbean" value="cr">Costa Rica</option>
+        <option class="Eastern-Europe" value="hr">Croatia</option>
+        <option class="Central-America-and-Caribbean" value="cu">Cuba</option>
+        <option class="Western-Europe" value="cy">Cyprus</option>
+        <option class="Eastern-Europe" value="cz">Czech Republic</option>
+        <option class="Eastern-Europe" value="cs">Czechoslovakia</option>
 
-        <option class="Sub-Saharan Africa" value="229">Democratic Republic of the Congo</option>
-        <option class="Western Europe" value="55">Denmark</option>
-        <option class="Sub-Saharan Africa" value="56">Djibouti</option>
-        <option class="Central America & Caribbean" value="57">Dominica</option>
-        <option class="Central America & Caribbean" value="58">Dominican Republic</option>
-        <option class="Eastern Europe" value="499">East Germany (GDR)</option>
-        <option class="Southeast Asia" value="347">East Timor</option>
-        <option class="South America" value="59">Ecuador</option>
-        <option class="Middle East & North Africa" value="60">Egypt</option>
-        <option class="Central America & Caribbean" value="61">El Salvador</option>
-        <option class="Sub-Saharan Africa" value="62">Equatorial Guinea</option>
-        <option class="Sub-Saharan Africa" value="63">Eritrea</option>
-        <option class="Eastern Europe" value="64">Estonia</option>
-        <option class="Sub-Saharan Africa" value="65">Ethiopia</option>
-        <option class="South America" value="66">Falkland Islands</option>
-        <option class="Australasia & Oceania" value="67">Fiji</option>
-        <option class="Western Europe" value="68">Finland</option>
-        <option class="Western Europe" value="69">France</option>
-        <option class="South America" value="70">French Guiana</option>
-        <option class="Australasia & Oceania" value="71">French Polynesia</option>
-        <option class="Sub-Saharan Africa" value="72">Gabon</option>
-        <option class="Sub-Saharan Africa" value="73">Gambia</option>
-        <option class="Central Asia" value="74">Georgia</option>
-        <option class="Western Europe" value="75">Germany</option>
-        <option class="Sub-Saharan Africa" value="76">Ghana</option>
-        <option class="Western Europe" value="78">Greece</option>
-        <option class="Central America & Caribbean" value="80">Grenada</option>
-        <option class="Central America & Caribbean" value="81">Guadeloupe</option>
-        <option class="Central America & Caribbean" value="83">Guatemala</option>
-        <option class="Sub-Saharan Africa" value="84">Guinea</option>
-        <option class="Sub-Saharan Africa" value="85">Guinea-Bissau</option>
-        <option class="South America" value="86">Guyana</option>
-        <option class="Central America & Caribbean" value="87">Haiti</option>
-        <option class="Central America & Caribbean" value="88">Honduras</option>
-        <option class="East Asia" value="89">Hong Kong</option>
-        <option class="Eastern Europe" value="90">Hungary</option>
-        <option class="Western Europe" value="91">Iceland</option>
-        <option class="South Asia" value="92">India</option>
-        <option class="Southeast Asia" value="93">Indonesia</option>
-        <option class="Middle East & North Africa" value="422">International</option>
-        <option class="Middle East & North Africa" value="94">Iran</option>
-        <option class="Middle East & North Africa" value="95">Iraq</option>
-        <option class="Western Europe" value="96">Ireland</option>
-        <option class="Middle East & North Africa" value="97">Israel</option>
-        <option class="Western Europe" value="98">Italy</option>
-        <option class="Sub-Saharan Africa" value="99">Ivory Coast</option>
-        <option class="Central America & Caribbean" value="100">Jamaica</option>
-        <option class="East Asia" value="101">Japan</option>
-        <option class="Middle East & North Africa" value="102">Jordan</option>
-        <option class="Central Asia" value="103">Kazakhstan</option>
-        <option class="Sub-Saharan Africa" value="104">Kenya</option>
-        <option class="Eastern Europe" value="1003">Kosovo</option>
-        <option class="Middle East & North Africa" value="106">Kuwait</option>
-        <option class="Central Asia" value="107">Kyrgyzstan</option>
-        <option class="Southeast Asia" value="108">Laos</option>
-        <option class="Eastern Europe" value="109">Latvia</option>
-        <option class="Middle East & North Africa" value="110">Lebanon</option>
-        <option class="Sub-Saharan Africa" value="111">Lesotho</option>
-        <option class="Sub-Saharan Africa" value="112">Liberia</option>
-        <option class="Middle East & North Africa" value="113">Libya</option>
-        <option class="Eastern Europe" value="115">Lithuania</option>
-        <option class="Western Europe" value="116">Luxembourg</option>
-        <option class="East Asia" value="117">Macau</option>
-        <option class="Eastern Europe" value="118">Macedonia</option>
-        <option class="Sub-Saharan Africa" value="119">Madagascar</option>
-        <option class="Sub-Saharan Africa" value="120">Malawi</option>
-        <option class="Southeast Asia" value="121">Malaysia</option>
-        <option class="South Asia" value="122">Maldives</option>
-        <option class="Sub-Saharan Africa" value="123">Mali</option>
-        <option class="Western Europe" value="124">Malta</option>
-        <option class="Central America & Caribbean" value="127">Martinique</option>
-        <option class="Sub-Saharan Africa" value="128">Mauritania</option>
-        <option class="South Asia" value="129">Mauritius</option>
-        <option class="North America" value="130">Mexico</option>
-        <option class="Eastern Europe" value="132">Moldova</option>
-        <option class="Eastern Europe" value="1002">Montenegro</option>
-        <option class="Middle East & North Africa" value="136">Morocco</option>
-        <option class="Sub-Saharan Africa" value="137">Mozambique</option>
-        <option class="Southeast Asia" value="138">Myanmar</option>
-        <option class="Sub-Saharan Africa" value="139">Namibia</option>
-        <option class="South Asia" value="141">Nepal</option>
-        <option class="Western Europe" value="142">Netherlands</option>
-        <option class="Australasia & Oceania" value="143">New Caledonia</option>
-        <option class="Australasia & Oceania" value="532">New Hebrides</option>
-        <option class="Australasia & Oceania" value="144">New Zealand</option>
-        <option class="Central America & Caribbean" value="145">Nicaragua</option>
-        <option class="Sub-Saharan Africa" value="146">Niger</option>
-        <option class="Sub-Saharan Africa" value="147">Nigeria</option>
-        <option class="East Asia" value="149">North Korea</option>
-        <option class="Middle East & North Africa" value="377">North Yemen</option>
-        <option class="Western Europe" value="151">Norway</option>
-        <option class="South Asia" value="153">Pakistan</option>
-        <option class="Central America & Caribbean" value="156">Panama</option>
-        <option class="Australasia & Oceania" value="157">Papua New Guinea</option>
-        <option class="South America" value="158">Paraguay</option>
-        <option class="Sub-Saharan Africa" value="605">People's Republic of the Congo</option>
-        <option class="South America" value="159">Peru</option>
-        <option class="Southeast Asia" value="160">Philippines</option>
-        <option class="Eastern Europe" value="161">Poland</option>
-        <option class="Western Europe" value="162">Portugal</option>
-        <option class="Middle East & North Africa" value="164">Qatar</option>
-        <option class="Sub-Saharan Africa" value="47">Republic of the Congo</option>
-        <option class="Sub-Saharan Africa" value="403">Rhodesia</option>
-        <option class="Eastern Europe" value="166">Romania</option>
-        <option class="Eastern Europe" value="167">Russia</option>
-        <option class="Sub-Saharan Africa" value="168">Rwanda</option>
-        <option class="Middle East & North Africa" value="173">Saudi Arabia</option>
-        <option class="Sub-Saharan Africa" value="174">Senegal</option>
-        <option class="Eastern Europe" value="1001">Serbia</option>
-        <option class="Eastern Europe" value="175">Serbia-Montenegro</option>
-        <option class="Sub-Saharan Africa" value="176">Seychelles</option>
-        <option class="Sub-Saharan Africa" value="177">Sierra Leone</option>
-        <option class="Southeast Asia" value="178">Singapore</option>
-        <option class="Eastern Europe" value="179">Slovak Republic</option>
-        <option class="Eastern Europe" value="180">Slovenia</option>
-        <option class="Australasia & Oceania" value="181">Solomon Islands</option>
-        <option class="Sub-Saharan Africa" value="182">Somalia</option>
-        <option class="Sub-Saharan Africa" value="183">South Africa</option>
-        <option class="East Asia" value="184">South Korea</option>
-        <option class="Sub-Saharan Africa" value="1004">South Sudan</option>
-        <option class="Southeast Asia" value="428">South Vietnam</option>
-        <option class="Middle East & North Africa" value="406">South Yemen</option>
-        <option class="Eastern Europe" value="359">Soviet Union</option>
-        <option class="Western Europe" value="185">Spain</option>
-        <option class="South Asia" value="186">Sri Lanka</option>
-        <option class="Central America & Caribbean" value="189">St. Kitts and Nevis</option>
-        <option class="Central America & Caribbean" value="190">St. Lucia</option>
-        <option class="Sub-Saharan Africa" value="195">Sudan</option>
-        <option class="South America" value="196">Suriname</option>
-        <option class="Sub-Saharan Africa" value="197">Swaziland</option>
-        <option class="Western Europe" value="198">Sweden</option>
-        <option class="Western Europe" value="199">Switzerland</option>
-        <option class="Middle East & North Africa" value="200">Syria</option>
-        <option class="East Asia" value="201">Taiwan</option>
-        <option class="Central Asia" value="202">Tajikistan</option>
-        <option class="Sub-Saharan Africa" value="203">Tanzania</option>
-        <option class="Southeast Asia" value="205">Thailand</option>
-        <option class="Sub-Saharan Africa" value="204">Togo</option>
-        <option class="Central America & Caribbean" value="207">Trinidad and Tobago</option>
-        <option class="Middle East & North Africa" value="208">Tunisia</option>
-        <option class="Middle East & North Africa" value="209">Turkey</option>
-        <option class="Central Asia" value="210">Turkmenistan</option>
-        <option class="Sub-Saharan Africa" value="213">Uganda</option>
-        <option class="Eastern Europe" value="214">Ukraine</option>
-        <option class="Middle East & North Africa" value="215">United Arab Emirates</option>
-        <option class="Western Europe" value="603">United Kingdom</option>
-        <option class="North America" value="217">United States</option>
-        <option class="South America" value="218">Uruguay</option>
-        <option class="Central Asia" value="219">Uzbekistan</option>
-        <option class="Australasia & Oceania" value="220">Vanuatu</option>
-        <option class="Western Europe" value="221">Vatican City</option>
-        <option class="South America" value="222">Venezuela</option>
-        <option class="Southeast Asia" value="223">Vietnam</option>
-        <option class="Australasia & Oceania" value="226">Wallis and Futuna</option>
-        <option class="Middle East & North Africa" value="155">West Bank and Gaza Strip</option>
-        <option class="Western Europe" value="362">West Germany (FRG)</option>
-        <option class="Middle East & North Africa" value="349">Western Sahara</option>
-        <option class="Middle East & North Africa" value="228">Yemen</option>
-        <option class="Eastern Europe" value="235">Yugoslavia</option>
-        <option class="Sub-Saharan Africa" value="604">Zaire</option>
-        <option class="Sub-Saharan Africa" value="230">Zambia</option>
+        <option class="Sub-Saharan-Africa" value="229">Democratic Republic of the Congo</option>
+        <option class="Western-Europe" value="55">Denmark</option>
+        <option class="Sub-Saharan-Africa" value="56">Djibouti</option>
+        <option class="Central-America-and-Caribbean" value="57">Dominica</option>
+        <option class="Central-America-and-Caribbean" value="58">Dominican Republic</option>
+        <option class="Eastern-Europe" value="499">East Germany (GDR)</option>
+        <option class="Southeast-Asia" value="347">East Timor</option>
+        <option class="South-America" value="59">Ecuador</option>
+        <option class="Middle-East-and-North-Africa" value="60">Egypt</option>
+        <option class="Central-America-and-Caribbean" value="61">El Salvador</option>
+        <option class="Sub-Saharan-Africa" value="62">Equatorial Guinea</option>
+        <option class="Sub-Saharan-Africa" value="63">Eritrea</option>
+        <option class="Eastern-Europe" value="64">Estonia</option>
+        <option class="Sub-Saharan-Africa" value="65">Ethiopia</option>
+        <option class="South-America" value="66">Falkland Islands</option>
+        <option class="Australasia-and-Oceania" value="67">Fiji</option>
+        <option class="Western-Europe" value="68">Finland</option>
+        <option class="Western-Europe" value="69">France</option>
+        <option class="South-America" value="70">French Guiana</option>
+        <option class="Australasia-and-Oceania" value="71">French Polynesia</option>
+        <option class="Sub-Saharan-Africa" value="72">Gabon</option>
+        <option class="Sub-Saharan-Africa" value="73">Gambia</option>
+        <option class="Central-Asia" value="74">Georgia</option>
+        <option class="Western-Europe" value="75">Germany</option>
+        <option class="Sub-Saharan-Africa" value="76">Ghana</option>
+        <option class="Western-Europe" value="78">Greece</option>
+        <option class="Central-America-and-Caribbean" value="80">Grenada</option>
+        <option class="Central-America-and-Caribbean" value="81">Guadeloupe</option>
+        <option class="Central-America-and-Caribbean" value="83">Guatemala</option>
+        <option class="Sub-Saharan-Africa" value="84">Guinea</option>
+        <option class="Sub-Saharan-Africa" value="85">Guinea-Bissau</option>
+        <option class="South-America" value="86">Guyana</option>
+        <option class="Central-America-and-Caribbean" value="87">Haiti</option>
+        <option class="Central-America-and-Caribbean" value="88">Honduras</option>
+        <option class="East-Asia" value="89">Hong Kong</option>
+        <option class="Eastern-Europe" value="90">Hungary</option>
+        <option class="Western-Europe" value="91">Iceland</option>
+        <option class="South-Asia" value="92">India</option>
+        <option class="Southeast-Asia" value="93">Indonesia</option>
+        <option class="Middle-East-and-North-Africa" value="422">International</option>
+        <option class="Middle-East-and-North-Africa" value="94">Iran</option>
+        <option class="Middle-East-and-North-Africa" value="95">Iraq</option>
+        <option class="Western-Europe" value="96">Ireland</option>
+        <option class="Middle-East-and-North-Africa" value="97">Israel</option>
+        <option class="Western-Europe" value="98">Italy</option>
+        <option class="Sub-Saharan-Africa" value="99">Ivory Coast</option>
+        <option class="Central-America-and-Caribbean" value="100">Jamaica</option>
+        <option class="East-Asia" value="101">Japan</option>
+        <option class="Middle-East-and-North-Africa" value="102">Jordan</option>
+        <option class="Central-Asia" value="103">Kazakhstan</option>
+        <option class="Sub-Saharan-Africa" value="104">Kenya</option>
+        <option class="Eastern-Europe" value="1003">Kosovo</option>
+        <option class="Middle-East-and-North-Africa" value="106">Kuwait</option>
+        <option class="Central-Asia" value="107">Kyrgyzstan</option>
+        <option class="Southeast-Asia" value="108">Laos</option>
+        <option class="Eastern-Europe" value="109">Latvia</option>
+        <option class="Middle-East-and-North-Africa" value="110">Lebanon</option>
+        <option class="Sub-Saharan-Africa" value="111">Lesotho</option>
+        <option class="Sub-Saharan-Africa" value="112">Liberia</option>
+        <option class="Middle-East-and-North-Africa" value="113">Libya</option>
+        <option class="Eastern-Europe" value="115">Lithuania</option>
+        <option class="Western-Europe" value="116">Luxembourg</option>
+        <option class="East-Asia" value="117">Macau</option>
+        <option class="Eastern-Europe" value="118">Macedonia</option>
+        <option class="Sub-Saharan-Africa" value="119">Madagascar</option>
+        <option class="Sub-Saharan-Africa" value="120">Malawi</option>
+        <option class="Southeast-Asia" value="121">Malaysia</option>
+        <option class="South-Asia" value="122">Maldives</option>
+        <option class="Sub-Saharan-Africa" value="123">Mali</option>
+        <option class="Western-Europe" value="124">Malta</option>
+        <option class="Central-America-and-Caribbean" value="127">Martinique</option>
+        <option class="Sub-Saharan-Africa" value="128">Mauritania</option>
+        <option class="South-Asia" value="129">Mauritius</option>
+        <option class="North-America" value="mx">Mexico</option>
+        <option class="Eastern-Europe" value="132">Moldova</option>
+        <option class="Eastern-Europe" value="1002">Montenegro</option>
+        <option class="Middle-East-and-North-Africa" value="136">Morocco</option>
+        <option class="Sub-Saharan-Africa" value="137">Mozambique</option>
+        <option class="Southeast-Asia" value="138">Myanmar</option>
+        <option class="Sub-Saharan-Africa" value="139">Namibia</option>
+        <option class="South-Asia" value="141">Nepal</option>
+        <option class="Western-Europe" value="142">Netherlands</option>
+        <option class="Australasia-and-Oceania" value="143">New Caledonia</option>
+        <option class="Australasia-and-Oceania" value="532">New Hebrides</option>
+        <option class="Australasia-and-Oceania" value="144">New Zealand</option>
+        <option class="Central-America-and-Caribbean" value="145">Nicaragua</option>
+        <option class="Sub-Saharan-Africa" value="146">Niger</option>
+        <option class="Sub-Saharan-Africa" value="147">Nigeria</option>
+        <option class="East-Asia" value="149">North Korea</option>
+        <option class="Middle-East-and-North-Africa" value="377">North Yemen</option>
+        <option class="Western-Europe" value="151">Norway</option>
+        <option class="South-Asia" value="153">Pakistan</option>
+        <option class="Central-America-and-Caribbean" value="156">Panama</option>
+        <option class="Australasia-and-Oceania" value="157">Papua New Guinea</option>
+        <option class="South-America" value="158">Paraguay</option>
+        <option class="Sub-Saharan-Africa" value="605">People's Republic of the Congo</option>
+        <option class="South-America" value="159">Peru</option>
+        <option class="Southeast-Asia" value="160">Philippines</option>
+        <option class="Eastern-Europe" value="161">Poland</option>
+        <option class="Western-Europe" value="162">Portugal</option>
+        <option class="Middle-East-and-North-Africa" value="164">Qatar</option>
+        <option class="Sub-Saharan-Africa" value="47">Republic of the Congo</option>
+        <option class="Sub-Saharan-Africa" value="403">Rhodesia</option>
+        <option class="Eastern-Europe" value="166">Romania</option>
+        <option class="Eastern-Europe" value="167">Russia</option>
+        <option class="Sub-Saharan-Africa" value="168">Rwanda</option>
+        <option class="Middle-East-and-North-Africa" value="173">Saudi Arabia</option>
+        <option class="Sub-Saharan-Africa" value="174">Senegal</option>
+        <option class="Eastern-Europe" value="1001">Serbia</option>
+        <option class="Eastern-Europe" value="175">Serbia-Montenegro</option>
+        <option class="Sub-Saharan-Africa" value="176">Seychelles</option>
+        <option class="Sub-Saharan-Africa" value="177">Sierra Leone</option>
+        <option class="Southeast-Asia" value="178">Singapore</option>
+        <option class="Eastern-Europe" value="179">Slovak Republic</option>
+        <option class="Eastern-Europe" value="180">Slovenia</option>
+        <option class="Australasia-and-Oceania" value="181">Solomon Islands</option>
+        <option class="Sub-Saharan-Africa" value="182">Somalia</option>
+        <option class="Sub-Saharan-Africa" value="183">South Africa</option>
+        <option class="East-Asia" value="184">South Korea</option>
+        <option class="Sub-Saharan-Africa" value="1004">South Sudan</option>
+        <option class="Southeast-Asia" value="428">South Vietnam</option>
+        <option class="Middle-East-and-North-Africa" value="406">South Yemen</option>
+        <option class="Eastern-Europe" value="359">Soviet Union</option>
+        <option class="Western-Europe" value="185">Spain</option>
+        <option class="South-Asia" value="186">Sri Lanka</option>
+        <option class="Central-America-and-Caribbean" value="189">St. Kitts and Nevis</option>
+        <option class="Central-America-and-Caribbean" value="190">St. Lucia</option>
+        <option class="Sub-Saharan-Africa" value="195">Sudan</option>
+        <option class="South-America" value="196">Suriname</option>
+        <option class="Sub-Saharan-Africa" value="197">Swaziland</option>
+        <option class="Western-Europe" value="198">Sweden</option>
+        <option class="Western-Europe" value="199">Switzerland</option>
+        <option class="Middle-East-and-North-Africa" value="200">Syria</option>
+        <option class="East-Asia" value="201">Taiwan</option>
+        <option class="Central-Asia" value="202">Tajikistan</option>
+        <option class="Sub-Saharan-Africa" value="203">Tanzania</option>
+        <option class="Southeast-Asia" value="205">Thailand</option>
+        <option class="Sub-Saharan-Africa" value="204">Togo</option>
+        <option class="Central-America-and-Caribbean" value="207">Trinidad and Tobago</option>
+        <option class="Middle-East-and-North-Africa" value="208">Tunisia</option>
+        <option class="Middle-East-and-North-Africa" value="209">Turkey</option>
+        <option class="Central-Asia" value="210">Turkmenistan</option>
+        <option class="Sub-Saharan-Africa" value="213">Uganda</option>
+        <option class="Eastern-Europe" value="214">Ukraine</option>
+        <option class="Middle-East-and-North-Africa" value="215">United Arab Emirates</option>
+        <option class="Western-Europe" value="603">United Kingdom</option>
+        <option class="North-America" value="us">United States</option>
+        <option class="South-America" value="218">Uruguay</option>
+        <option class="Central-Asia" value="219">Uzbekistan</option>
+        <option class="Australasia-and-Oceania" value="220">Vanuatu</option>
+        <option class="Western-Europe" value="221">Vatican City</option>
+        <option class="South-America" value="222">Venezuela</option>
+        <option class="Southeast-Asia" value="223">Vietnam</option>
+        <option class="Australasia-and-Oceania" value="226">Wallis and Futuna</option>
+        <option class="Middle-East-and-North-Africa" value="155">West Bank and Gaza Strip</option>
+        <option class="Western-Europe" value="362">West Germany (FRG)</option>
+        <option class="Middle-East-and-North-Africa" value="349">Western Sahara</option>
+        <option class="Middle-East-and-North-Africa" value="228">Yemen</option>
+        <option class="Eastern-Europe" value="235">Yugoslavia</option>
+        <option class="Sub-Saharan-Africa" value="604">Zaire</option>
+        <option class="Sub-Saharan-Africa" value="230">Zambia</option>
         <option class="Sub-Saharan Africa" value="231">Zimbabwe</option> 
       </select>
-    </label>
+    </div>
 
-  </div>
+    <div class="north_america">
+        <select id="country" class="country_code" onchange="selectCountryCode(); insertCountry();">
+          <option value="all">All</option>
+          <!-- <option value="canada">Canada</option> -->
+          <option id="canada" value="ca">Canada</option>
+          <option value="mx">Mexico</option>
+          <option value="us">United States</option>
+        </select>
+    </div>
+
+    <div class="central_america">
+        <select onchange="selectCountryCode(); insertCountry();">
+        <option value="all">All</option>
+        <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+        <option value="Bahamas">Bahamas</option>
+        <option value="Barbados">Barbados</option>
+        <option value="Belize">Belize</option>
+        <option value="Cayman Islands">Cayman Islands</option>
+        <option value="Costa Rica">Costa Rica</option>
+        <option value="Cuba">Cuba</option>
+        <option value="Dominica">Dominica</option>
+        <option value="Dominican Republic">Dominican Republic</option>
+        <option value="El Salvador">El Salvador</option>
+        <option value="Grenada">Grenada</option>
+        <option value="Guadeloupe">Guadeloupe</option>
+        <option value="Guatemala">Guatemala</option>
+        <option value="Haiti">Haiti</option>
+        <option value="Honduras">Honduras</option>
+        <option value="Jamaica">Jamaica</option>
+        <option value="Martinique">Martinique</option>
+        <option value="Nicaragua">Nicaragua</option>
+        <option value="Panama">Panama</option>
+        <option value="St. Kitts and Nevis">St. Kitts and Nevis</option>
+        <option value="St. Lucia">St. Lucia</option>
+        <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+        </select>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+     
+
+
+    <!-- <label for="">Country:  -->
+      <!-- <select name="" id="country" onchange="insertGDP(); selectCountryCode();"> -->
+<!--       <select name="" id="country" onchange="selectCountryCode(); insertCountry();">
+        <option class="all" value="99">All Countries</option>
+        <option class="South-Asia" value="af" text="Afghanistan">Afghanistan</option>
+        <option class="Eastern-Europe" value="al">Albania</option>
+        <option class="Middle-East-and-North-Africa" value="dz">Algeria</option>
+        <option class="Western-Europe" value="ad">Andorra</option>
+        <option class="Sub-Saharan-Africa" value="ao">Angola</option>
+        <option class="Central-America-and-Caribbean" value="ag">Antigua and Barbuda</option>
+        <option class="South-America" value="ar">Argentina</option>
+        <option class="Central-Asia" value="am">Armenia</option>
+        <option class="Australasia-and-Oceania" value="au">Australia</option>
+        <option class="Western-Europe" value="at">Austria</option>
+        <option class="Central-Asia" value="az">Azerbaijan</option>
+        <option class="Central-America-and-Caribbean" value="bs">Bahamas</option>
+        <option class="Middle-East-and-North-Africa" value="bh">Bahrain</option>
+        <option class="South-Asia" value="bd">Bangladesh</option>
+        <option class="Central-America-and-Caribbean" value="bb">Barbados</option>
+        <option class="Eastern-Europe" value="by">Belarus</option>
+        <option class="Western-Europe" value="be">Belgium</option>
+        <option class="Central-America-and-Caribbean" value="bz">Belize</option>
+        <option class="Sub-SaharanAfrica" value="bj">Benin</option>
+        <option class="South-Asia" value="bt">Bhutan</option>
+        <option class="South-America" value="bo">Bolivia</option>
+        <option class="Eastern-Europe" value="ba">Bosnia-Herzegovina</option>
+        <option class="Sub-Saharan-Africa" value="bw">Botswana</option>
+        <option class="South-America" value="br">Brazil</option>
+        <option class="Southeast-Asia" value="bn">Brunei</option>
+        <option class="Eastern-Europe" value="bg">Bulgaria</option>
+        <option class="Sub-Saharan-Africa" value="bf">Burkina Faso</option>
+        <option class="Sub-Saharan-Africa" value="bi">Burundi</option>
+        <option class="Southeast-Asia" value="kh">Cambodia</option>
+        <option class="Sub-Saharan-Africa" value="cm">Cameroon</option>
+        <option class="North-America" value="ca">Canada</option>
+        <option class="Sub-Saharan-Africa" value="cf">Central African Republic</option>
+        <option class="Sub-Saharan-Africa" value="td">Chad</option>
+        <option class="South-America" value="cl">Chile</option>
+        <option class="East-Asia" value="cn">China</option>
+        <option class="South-America" value="co">Colombia</option>
+        <option class="Sub-Saharan-Africa" value="km">Comoros</option>
+        <option class="Central-America-and-Caribbean" value="cr">Costa Rica</option>
+        <option class="Eastern-Europe" value="hr">Croatia</option>
+        <option class="Central-America-and-Caribbean" value="cu">Cuba</option>
+        <option class="Western-Europe" value="cy">Cyprus</option>
+        <option class="Eastern-Europe" value="cz">Czech Republic</option>
+        <option class="Eastern-Europe" value="cs">Czechoslovakia</option>
+
+        <option class="Sub-Saharan-Africa" value="229">Democratic Republic of the Congo</option>
+        <option class="Western-Europe" value="55">Denmark</option>
+        <option class="Sub-Saharan-Africa" value="56">Djibouti</option>
+        <option class="Central-America-and-Caribbean" value="57">Dominica</option>
+        <option class="Central-America-and-Caribbean" value="58">Dominican Republic</option>
+        <option class="Eastern-Europe" value="499">East Germany (GDR)</option>
+        <option class="Southeast-Asia" value="347">East Timor</option>
+        <option class="South-America" value="59">Ecuador</option>
+        <option class="Middle-East-and-North-Africa" value="60">Egypt</option>
+        <option class="Central-America-and-Caribbean" value="61">El Salvador</option>
+        <option class="Sub-Saharan-Africa" value="62">Equatorial Guinea</option>
+        <option class="Sub-Saharan-Africa" value="63">Eritrea</option>
+        <option class="Eastern-Europe" value="64">Estonia</option>
+        <option class="Sub-Saharan-Africa" value="65">Ethiopia</option>
+        <option class="South-America" value="66">Falkland Islands</option>
+        <option class="Australasia-and-Oceania" value="67">Fiji</option>
+        <option class="Western-Europe" value="68">Finland</option>
+        <option class="Western-Europe" value="69">France</option>
+        <option class="South-America" value="70">French Guiana</option>
+        <option class="Australasia-and-Oceania" value="71">French Polynesia</option>
+        <option class="Sub-Saharan-Africa" value="72">Gabon</option>
+        <option class="Sub-Saharan-Africa" value="73">Gambia</option>
+        <option class="Central-Asia" value="74">Georgia</option>
+        <option class="Western-Europe" value="75">Germany</option>
+        <option class="Sub-Saharan-Africa" value="76">Ghana</option>
+        <option class="Western-Europe" value="78">Greece</option>
+        <option class="Central-America-and-Caribbean" value="80">Grenada</option>
+        <option class="Central-America-and-Caribbean" value="81">Guadeloupe</option>
+        <option class="Central-America-and-Caribbean" value="83">Guatemala</option>
+        <option class="Sub-Saharan-Africa" value="84">Guinea</option>
+        <option class="Sub-Saharan-Africa" value="85">Guinea-Bissau</option>
+        <option class="South-America" value="86">Guyana</option>
+        <option class="Central-America-and-Caribbean" value="87">Haiti</option>
+        <option class="Central-America-and-Caribbean" value="88">Honduras</option>
+        <option class="East-Asia" value="89">Hong Kong</option>
+        <option class="Eastern-Europe" value="90">Hungary</option>
+        <option class="Western-Europe" value="91">Iceland</option>
+        <option class="South-Asia" value="92">India</option>
+        <option class="Southeast-Asia" value="93">Indonesia</option>
+        <option class="Middle-East-and-North-Africa" value="422">International</option>
+        <option class="Middle-East-and-North-Africa" value="94">Iran</option>
+        <option class="Middle-East-and-North-Africa" value="95">Iraq</option>
+        <option class="Western-Europe" value="96">Ireland</option>
+        <option class="Middle-East-and-North-Africa" value="97">Israel</option>
+        <option class="Western-Europe" value="98">Italy</option>
+        <option class="Sub-Saharan-Africa" value="99">Ivory Coast</option>
+        <option class="Central-America-and-Caribbean" value="100">Jamaica</option>
+        <option class="East-Asia" value="101">Japan</option>
+        <option class="Middle-East-and-North-Africa" value="102">Jordan</option>
+        <option class="Central-Asia" value="103">Kazakhstan</option>
+        <option class="Sub-Saharan-Africa" value="104">Kenya</option>
+        <option class="Eastern-Europe" value="1003">Kosovo</option>
+        <option class="Middle-East-and-North-Africa" value="106">Kuwait</option>
+        <option class="Central-Asia" value="107">Kyrgyzstan</option>
+        <option class="Southeast-Asia" value="108">Laos</option>
+        <option class="Eastern-Europe" value="109">Latvia</option>
+        <option class="Middle-East-and-North-Africa" value="110">Lebanon</option>
+        <option class="Sub-Saharan-Africa" value="111">Lesotho</option>
+        <option class="Sub-Saharan-Africa" value="112">Liberia</option>
+        <option class="Middle-East-and-North-Africa" value="113">Libya</option>
+        <option class="Eastern-Europe" value="115">Lithuania</option>
+        <option class="Western-Europe" value="116">Luxembourg</option>
+        <option class="East-Asia" value="117">Macau</option>
+        <option class="Eastern-Europe" value="118">Macedonia</option>
+        <option class="Sub-Saharan-Africa" value="119">Madagascar</option>
+        <option class="Sub-Saharan-Africa" value="120">Malawi</option>
+        <option class="Southeast-Asia" value="121">Malaysia</option>
+        <option class="South-Asia" value="122">Maldives</option>
+        <option class="Sub-Saharan-Africa" value="123">Mali</option>
+        <option class="Western-Europe" value="124">Malta</option>
+        <option class="Central-America-and-Caribbean" value="127">Martinique</option>
+        <option class="Sub-Saharan-Africa" value="128">Mauritania</option>
+        <option class="South-Asia" value="129">Mauritius</option>
+        <option class="North-America" value="130">Mexico</option>
+        <option class="Eastern-Europe" value="132">Moldova</option>
+        <option class="Eastern-Europe" value="1002">Montenegro</option>
+        <option class="Middle-East-and-North-Africa" value="136">Morocco</option>
+        <option class="Sub-Saharan-Africa" value="137">Mozambique</option>
+        <option class="Southeast-Asia" value="138">Myanmar</option>
+        <option class="Sub-Saharan-Africa" value="139">Namibia</option>
+        <option class="South-Asia" value="141">Nepal</option>
+        <option class="Western-Europe" value="142">Netherlands</option>
+        <option class="Australasia-and-Oceania" value="143">New Caledonia</option>
+        <option class="Australasia-and-Oceania" value="532">New Hebrides</option>
+        <option class="Australasia-and-Oceania" value="144">New Zealand</option>
+        <option class="Central-America-and-Caribbean" value="145">Nicaragua</option>
+        <option class="Sub-Saharan-Africa" value="146">Niger</option>
+        <option class="Sub-Saharan-Africa" value="147">Nigeria</option>
+        <option class="East-Asia" value="149">North Korea</option>
+        <option class="Middle-East-and-North-Africa" value="377">North Yemen</option>
+        <option class="Western-Europe" value="151">Norway</option>
+        <option class="South-Asia" value="153">Pakistan</option>
+        <option class="Central-America-and-Caribbean" value="156">Panama</option>
+        <option class="Australasia-and-Oceania" value="157">Papua New Guinea</option>
+        <option class="South-America" value="158">Paraguay</option>
+        <option class="Sub-Saharan-Africa" value="605">People's Republic of the Congo</option>
+        <option class="South-America" value="159">Peru</option>
+        <option class="Southeast-Asia" value="160">Philippines</option>
+        <option class="Eastern-Europe" value="161">Poland</option>
+        <option class="Western-Europe" value="162">Portugal</option>
+        <option class="Middle-East-and-North-Africa" value="164">Qatar</option>
+        <option class="Sub-Saharan-Africa" value="47">Republic of the Congo</option>
+        <option class="Sub-Saharan-Africa" value="403">Rhodesia</option>
+        <option class="Eastern-Europe" value="166">Romania</option>
+        <option class="Eastern-Europe" value="167">Russia</option>
+        <option class="Sub-Saharan-Africa" value="168">Rwanda</option>
+        <option class="Middle-East-and-North-Africa" value="173">Saudi Arabia</option>
+        <option class="Sub-Saharan-Africa" value="174">Senegal</option>
+        <option class="Eastern-Europe" value="1001">Serbia</option>
+        <option class="Eastern-Europe" value="175">Serbia-Montenegro</option>
+        <option class="Sub-Saharan-Africa" value="176">Seychelles</option>
+        <option class="Sub-Saharan-Africa" value="177">Sierra Leone</option>
+        <option class="Southeast-Asia" value="178">Singapore</option>
+        <option class="Eastern-Europe" value="179">Slovak Republic</option>
+        <option class="Eastern-Europe" value="180">Slovenia</option>
+        <option class="Australasia-and-Oceania" value="181">Solomon Islands</option>
+        <option class="Sub-Saharan-Africa" value="182">Somalia</option>
+        <option class="Sub-Saharan-Africa" value="183">South Africa</option>
+        <option class="East-Asia" value="184">South Korea</option>
+        <option class="Sub-Saharan-Africa" value="1004">South Sudan</option>
+        <option class="Southeast-Asia" value="428">South Vietnam</option>
+        <option class="Middle-East-and-North-Africa" value="406">South Yemen</option>
+        <option class="Eastern-Europe" value="359">Soviet Union</option>
+        <option class="Western-Europe" value="185">Spain</option>
+        <option class="South-Asia" value="186">Sri Lanka</option>
+        <option class="Central-America-and-Caribbean" value="189">St. Kitts and Nevis</option>
+        <option class="Central-America-and-Caribbean" value="190">St. Lucia</option>
+        <option class="Sub-Saharan-Africa" value="195">Sudan</option>
+        <option class="South-America" value="196">Suriname</option>
+        <option class="Sub-Saharan-Africa" value="197">Swaziland</option>
+        <option class="Western-Europe" value="198">Sweden</option>
+        <option class="Western-Europe" value="199">Switzerland</option>
+        <option class="Middle-East-and-North-Africa" value="200">Syria</option>
+        <option class="East-Asia" value="201">Taiwan</option>
+        <option class="Central-Asia" value="202">Tajikistan</option>
+        <option class="Sub-Saharan-Africa" value="203">Tanzania</option>
+        <option class="Southeast-Asia" value="205">Thailand</option>
+        <option class="Sub-Saharan-Africa" value="204">Togo</option>
+        <option class="Central-America-and-Caribbean" value="207">Trinidad and Tobago</option>
+        <option class="Middle-East-and-North-Africa" value="208">Tunisia</option>
+        <option class="Middle-East-and-North-Africa" value="209">Turkey</option>
+        <option class="Central-Asia" value="210">Turkmenistan</option>
+        <option class="Sub-Saharan-Africa" value="213">Uganda</option>
+        <option class="Eastern-Europe" value="214">Ukraine</option>
+        <option class="Middle-East-and-North-Africa" value="215">United Arab Emirates</option>
+        <option class="Western-Europe" value="603">United Kingdom</option>
+        <option class="North-America" value="217">United States</option>
+        <option class="South-America" value="218">Uruguay</option>
+        <option class="Central-Asia" value="219">Uzbekistan</option>
+        <option class="Australasia-and-Oceania" value="220">Vanuatu</option>
+        <option class="Western-Europe" value="221">Vatican City</option>
+        <option class="South-America" value="222">Venezuela</option>
+        <option class="Southeast-Asia" value="223">Vietnam</option>
+        <option class="Australasia-and-Oceania" value="226">Wallis and Futuna</option>
+        <option class="Middle-East-and-North-Africa" value="155">West Bank and Gaza Strip</option>
+        <option class="Western-Europe" value="362">West Germany (FRG)</option>
+        <option class="Middle-East-and-North-Africa" value="349">Western Sahara</option>
+        <option class="Middle-East-and-North-Africa" value="228">Yemen</option>
+        <option class="Eastern-Europe" value="235">Yugoslavia</option>
+        <option class="Sub-Saharan-Africa" value="604">Zaire</option>
+        <option class="Sub-Saharan-Africa" value="230">Zambia</option>
+        <option class="Sub-Saharan Africa" value="231">Zimbabwe</option> 
+      </select>
+    </label> -->
+
+    <!-- <label for="">Weapon Type:
+      <select name="" id="weapon_type" onchange="">
+        <option value="">All Weapon Types</option>
+        <option value="">Biological</option>
+        <option value="">Chemical</option>
+        <option value="">Radiological</option>
+        <option value="">Nuclear</option>
+        <option value="">Firearms</option>
+        <option value="">Explosives/Bombs/Dynamite</option>
+        <option value="">Fake Weapons</option>
+        <option value="">Incendiary</option>
+        <option value="">Melee</option>
+        <option value="">Vehicle</option>
+        <option value="">Sabotage Equipment</option>
+        <option value="">Other</option>
+        <option value="">Unknown</option>
+      </select>
+    </label> -->
+
+  <!-- </div> -->
 
     <br>
     <div id="world-bank-output">
@@ -1107,10 +719,7 @@ function selectCountryCode(){
 
 
 
-<script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
+
 </body>
 </html>
 
