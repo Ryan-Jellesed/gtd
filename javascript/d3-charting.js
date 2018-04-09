@@ -388,19 +388,21 @@ $(document).ready(function() {
     if(error){
       console.log(error);
     } else {
-      console.log("************************************************");
-      console.log("Loaded the GTD full Dataset!!!");
-      console.log(data.contents);
-      gtdJSON = data;
-      console.log("************************************************\n\n\n\n");
+      // console.log("************************************************");
+      // console.log("Loaded the GTD full Dataset!!!");
+      // console.log(data.contents);
+      // gtdJSON = data;
+      // console.log("************************************************\n\n\n\n");
+    
+      console.log("*******    gtdJSON = GTD full dataset      *******");
+      data.contents.forEach(function(contents){
+        gtdJSON.push(contents);
+      });
+      console.log(gtdJSON);
+      console.log("**************************************************\n\n\n\n");
+
     }
 
-    // console.log("*******    gtdJSON = GTD full dataset      *******");
-    // data.contents.forEach(function(contents){
-    //   gtdJSON.push(contents);
-    // });
-    // console.log(gtdJSON);
-    // console.log("**************************************************\n\n\n\n");
   });
 
 
