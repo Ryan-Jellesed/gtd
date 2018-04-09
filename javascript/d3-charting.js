@@ -595,54 +595,55 @@ function insertCountry() {
   pulls the correct json file from the world bank data, returning the correct gdp for the country
   and year
  */
-function selectCountryCode(){
 
-  selectCountryISO = document.getElementById("country").value;
-  selectCountryYear = document.getElementById("year-option").value;
+// function selectCountryCode(){
 
-  // console.log(selectCountryISO);
-  if(document.getElementById("country").value === '99' || document.getElementById("country").value === "cs") {
-    document.getElementById("gdp").innerHTML = " _____ ";
-    document.getElementById("population-total").innerHTML = "  _____  ";
-  } else {
-    d3.json("http://api.worldbank.org/v2/countries/"+selectCountryISO+"/indicators/NY.GDP.MKTP.CD?date=" + selectCountryYear + "&format=json", function(error, data) {
+//   selectCountryISO = document.getElementById("country").value;
+//   selectCountryYear = document.getElementById("year-option").value;
+
+//   // console.log(selectCountryISO);
+//   if(document.getElementById("country").value === '99' || document.getElementById("country").value === "cs") {
+//     document.getElementById("gdp").innerHTML = " _____ ";
+//     document.getElementById("population-total").innerHTML = "  _____  ";
+//   } else {
+//     d3.json("http://api.worldbank.org/v2/countries/"+selectCountryISO+"/indicators/NY.GDP.MKTP.CD?date=" + selectCountryYear + "&format=json", function(error, data) {
      
-      if(error) {
-         console.log(error);
-      } else {
-         // console.log(data); //we're golden! 
-      }
+//       if(error) {
+//          console.log(error);
+//       } else {
+//          // console.log(data); //we're golden! 
+//       }
 
-      // var decodedData = JSON.parse(window.atob(data.content));
-      countryGDPyear = data;
-      // n = countryGDPyear[1][0].value / 1000000;
-      // n = n.toFixed().replace(/(\d)(?=(\d{3})+(,|$))/g, '$1,')
-      // countryGDP = n;
+//       // var decodedData = JSON.parse(window.atob(data.content));
+//       countryGDPyear = data;
+//       // n = countryGDPyear[1][0].value / 1000000;
+//       // n = n.toFixed().replace(/(\d)(?=(\d{3})+(,|$))/g, '$1,')
+//       // countryGDP = n;
 
-      countryGDP = Math.round(countryGDPyear[1][0].value / 1000000);
-      countryGDP = (countryGDPyear[1][0].value / 1000000000).toFixed(4);
+//       countryGDP = Math.round(countryGDPyear[1][0].value / 1000000);
+//       countryGDP = (countryGDPyear[1][0].value / 1000000000).toFixed(4);
 
-      document.getElementById("gdp").innerHTML = countryGDP;
-    });
+//       document.getElementById("gdp").innerHTML = countryGDP;
+//     });
 
-    d3.json("https://api.worldbank.org/v2/countries/"+ selectCountryISO + "/indicators/SP.POP.TOTL?&format=json" + "&date=" + selectCountryYear, function(error, data) {
+//     d3.json("https://api.worldbank.org/v2/countries/"+ selectCountryISO + "/indicators/SP.POP.TOTL?&format=json" + "&date=" + selectCountryYear, function(error, data) {
 
-      if(error){
-        console.log(error);
-      } else {
-        // console.log(data);
-      }
+//       if(error){
+//         console.log(error);
+//       } else {
+//         // console.log(data);
+//       }
 
-      population = data[1][0].value;
-      population = (population / 1000000).toFixed(4);
+//       population = data[1][0].value;
+//       population = (population / 1000000).toFixed(4);
 
-      document.getElementById("population-total").innerHTML = population;
+//       document.getElementById("population-total").innerHTML = population;
 
-      return population;
-    });
+//       return population;
+//     });
 
-  }
-}
+//   }
+// }
 
 
 function clearInputs() {
@@ -654,17 +655,82 @@ function clearInputs() {
 
 
 
-function selectNorthAmericaCountryCode() {
+// function selectNorthAmericaCountryCode() {
 
-  selectCountryISO = document.getElementById("north_america").value;
-  selectCountryYear = document.getElementById("year-option").value;
+//   selectCountryISO = document.getElementById("north_america").value;
+//   selectCountryYear = document.getElementById("year-option").value;
+
+//   // console.log(selectCountryISO);
+//   if(document.getElementById("north_america").value === '99' || document.getElementById("north_america").value === "cs") {
+//     document.getElementById("gdp").innerHTML = " _____ ";
+//     document.getElementById("population-total").innerHTML = "  _____  ";
+//   } else {
+//     d3.json("http://api.worldbank.org/v2/countries/"+selectCountryISO+"/indicators/NY.GDP.MKTP.CD?date=" + selectCountryYear + "&format=json", function(error, data) {
+     
+//       if(error) {
+//          console.log(error);
+//       } else {
+//          // console.log(data); //we're golden! 
+//       }
+
+//       // var decodedData = JSON.parse(window.atob(data.content));
+//       countryGDPyear = data;
+//       // n = countryGDPyear[1][0].value / 1000000;
+//       // n = n.toFixed().replace(/(\d)(?=(\d{3})+(,|$))/g, '$1,')
+//       // countryGDP = n;
+
+//       countryGDP = Math.round(countryGDPyear[1][0].value / 1000000);
+//       countryGDP = (countryGDPyear[1][0].value / 1000000000).toFixed(4);
+
+//       document.getElementById("gdp").innerHTML = countryGDP;
+//     });
+
+//     d3.json("https://api.worldbank.org/v2/countries/"+ selectCountryISO + "/indicators/SP.POP.TOTL?&format=json" + "&date=" + selectCountryYear, function(error, data) {
+
+//       if(error){
+//         console.log(error);
+//       } else {
+//         // console.log(data);
+//       }
+
+//       population = data[1][0].value;
+//       population = (population / 1000000).toFixed(4);
+
+//       document.getElementById("population-total").innerHTML = population;
+
+//       return population;
+//     });
+
+//   }
+// }
+countryCode = "99";
+yearCode = "1970";
+
+function setCCode(x){
+  countryCode = x;
+};
+
+function setYCode(x){
+  yearCode = x;
+}
+
+function selectCCode() {
+  // x = toString(idName);
+  
+  CCode = countryCode;
+  YCode = yearCode;
+  console.log(YCode);
+  console.log(CCode);
+  // selectCountryISO = document.getElementById('"' + x + '"').value;
+
+  // selectCountryYear = document.getElementById("year-option").value;
 
   // console.log(selectCountryISO);
-  if(document.getElementById("north_america").value === '99' || document.getElementById("north_america").value === "cs") {
+  if(CCode === '99' || CCode === "cs") {
     document.getElementById("gdp").innerHTML = " _____ ";
     document.getElementById("population-total").innerHTML = "  _____  ";
   } else {
-    d3.json("http://api.worldbank.org/v2/countries/"+selectCountryISO+"/indicators/NY.GDP.MKTP.CD?date=" + selectCountryYear + "&format=json", function(error, data) {
+    d3.json("http://api.worldbank.org/v2/countries/"+ CCode +"/indicators/NY.GDP.MKTP.CD?date=" + YCode + "&format=json", function(error, data) {
      
       if(error) {
          console.log(error);
@@ -684,7 +750,7 @@ function selectNorthAmericaCountryCode() {
       document.getElementById("gdp").innerHTML = countryGDP;
     });
 
-    d3.json("https://api.worldbank.org/v2/countries/"+ selectCountryISO + "/indicators/SP.POP.TOTL?&format=json" + "&date=" + selectCountryYear, function(error, data) {
+    d3.json("https://api.worldbank.org/v2/countries/"+ CCode + "/indicators/SP.POP.TOTL?&format=json" + "&date=" + YCode, function(error, data) {
 
       if(error){
         console.log(error);
@@ -702,3 +768,6 @@ function selectNorthAmericaCountryCode() {
 
   }
 }
+
+
+
