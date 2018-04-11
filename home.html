@@ -121,7 +121,7 @@
         </div>
 
         <label for="year-option">Year:
-          <select id="year-option"  onchange="myFunction(); setYCode(this.value); selectCCode(); ">
+          <select id="year-option"  onchange="myFunction(); setYCode(this.value); selectCCode(); regionLatLon(); updateGraph();">
           <!-- <select id="year-option"  onchange="myFunction(); selectCCode(this.value); selectNorthAmericaCountryCode();">   -->
             <option value="1970">1970</option>
             <option value="1971">1971</option>
@@ -227,8 +227,7 @@
         </label> -->    
       </div>
     </p>
-    <div id='area-1'></div>
-    <div id='area-2'></div>
+
   </div>
   
   <!-- <div> -->
@@ -264,7 +263,7 @@
       </select>
     </label> -->
 
-  <select size="1" id="regions_all" title="" name="regions_all" onchange="clearInputs();">
+  <select size="1" id="regions_all" title="" name="regions_all" onchange="clearInputs(); selectRegion(this);">
     <option value="">-Select A Region-</option>
     <option value="all_countries">All</option>
     <option value="north_america">North America</option>
@@ -563,6 +562,10 @@
       </div>
     </div>
 
+<div position:relative; width = "100%" height = "500px">
+    <div id='area-1' width = "960px" height = "500px" style="float:left"></div>
+    <div id='area-2' width = "960px" height = "500px" ></div>
+</div>
 
 </body>
 </html>

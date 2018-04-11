@@ -658,6 +658,8 @@ function insertCountry(sel) {
 // }
 
 
+// clears the country name and descriptive stats pulled from the world bank when the 
+// region is updated
 function clearInputs() {
   document.getElementById("data1").innerHTML = " _____ ";
   document.getElementById("gdp").innerHTML = " _____ ";
@@ -822,36 +824,132 @@ function selectCCode() {
 
   });
 
+// this code sets a global region variable
+// the selectRegion function will grab the region from the select drop down and store
+// it in the regionSelected Variable
+var regionSelected = "";
+var selectRegion = function(sel){
+  regionSelected = sel.options[sel.selectedIndex].text;
+  console.log(regionSelected);
+  return regionSelected;
+};
 
-var region_lat_long = function(){
-  var myArray = [];
+// this code block will set up an array of lat lon value to be used in plotting on the map
+// it iterates over the gtdJSON file and pushes the lat lon data to the new array 
+latLonArray = [];
+var regionLatLon = function(){
+  // var latLonArray = [];
   var selectedYear = document.getElementById("year-option").value;
-  var selectedRegion = document.getElementById("regions_all").value;
+  // var selectedRegion = document.getElementById("regions_all").value;
   for(i = 0; i < gtdJSON.length; i++){
 
-    if(gtdJSON[i]['iyear'] === selectedYear & gtdJSON[i]['latitude'] !== "" & gtdJSON[i]['region_txt'] === selectedRegion) {
-      myArray.push({
-                    lat: gtdJSON[i]['latitude'],
-                    lon: gtdJSON[i]['longitude']
+    if(gtdJSON[i]['iyear'] === selectedYear & gtdJSON[i]['latitude'] !== "" & gtdJSON[i]['region_txt'] === regionSelected) {
+      latLonArray.push({
+                    lon: parseFloat(gtdJSON[i]['longitude']),
+                    lat: parseFloat(gtdJSON[i]['latitude']),
+                    city: gtdJSON[i]['city'],
+                    state: gtdJSON[i]['provstate'],
+                    target: gtdJSON[i]['target1'],
+                    group_name: gtdJSON[i]['gname'],
+                    motive: gtdJSON[i]['motive'],
+                    attack_type: gtdJSON[i]['attacktype1_txt'],
+                    weapon_type: gtdJSON[i]['weaptype1'],
+                    number_killed: gtdJSON[i]['nkill'],
+                    summary: gtdJSON[i]['summary'],
+                    additional_notes: gtdJSON[i]['addnotes']
                   });
     }
   };
-  return myArray;
+  console.log(latLonArray);
+  return latLonArray;
 };
 
 
-// var update_region_map = functions(ds){
-  
-//   var selectedYear = document.getElementById("year-option").value;
-//   for(i = 0; i < gtdJSON.length; i++){
-//     if(gtdJSON[0]['iyear'] == selectedYear) {
+var updateGraph = function(){
 
-//     }
-//   };
+        var width = 960,
+        height = 500;
 
+        var tooltip = d3.select("body").append("div")
+                      .attr("class", "tooltip")
+                      .style("opacity", 0)
 
-// };
+        var projection = d3.geo.albers()
+            .center([-20, 40])
+            // .rotate([4.4, 0])
+            .parallels([50,60])
+            .scale(350)
+            .translate([width / 2, height / 2]);
 
+        var path = d3.geo.path()
+            .projection(projection);
+
+        var svg = d3.select("#area-2").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+          .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        d3.json("north_america.json", function(error, north_america) {
+          if (error) return console.error(error);
+          console.log(north_america);
+
+          var subunits = topojson.feature(north_america, north_america.objects.subunits);
+          console.log(subunits);
+          svg.append("path")
+                .datum(subunits)
+                .attr("d", path);
+
+          svg.selectAll(".subunit")
+                .data(topojson.feature(north_america, north_america.objects.subunits).features)
+              .enter().append("path")
+                .attr("class", function(d) { return "subunit " + d.id; })
+                .attr("d", path);
+
+          svg.selectAll("circle")
+                .data(latLonArray)
+                .enter()
+                .append("circle")
+                // .attr("cx", function(d) { console.log(projection(d)); return projection(d)[0]; })
+                // .attr("cy", function(d) { return projection(d)[1]; })
+                // 
+                // .attr("cy", function(d) { console.log(d.lon); return projection(d.lon); })
+                // .attr("cx", function(d) { return projection(d.lat); })
+                // .attr("id", function(d) { return d.summary })
+                .attr("r", "2px")
+                .attr("fill", "red")
+                .on("mouseover", function(d){
+
+                  tooltip.transition()
+                            .duration(500)
+                            .style("opacity", .85)
+                  tooltip.html("<strong>Summary: " + d.summary)
+                            .style("left", (d3.event.pageX) + "px")
+                            .style("top", (d3.event.pageY - 28) + "px");
+                })
+                .on("mouseout", function(d){
+                  tooltip.transition()
+                            .duration(300)
+                            .style("opacity", 0);
+                })
+
+                .attr("transform", function(d) {
+                  return "translate(" + projection([
+                      d.lon,
+                      d.lat
+                    ]) + ")";
+                });
+
+        });
+};
+
+  d3.select("#year-option")
+      .on("change", function(d,i) {
+
+      updateGraph();        
+
+  });
 
 
 
