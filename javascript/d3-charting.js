@@ -773,3 +773,42 @@ function selectCCode() {
 
 
 
+ var width = 960,
+      height = 500;
+
+  var projection = d3.geo.albers()
+      .center([-20, 40])
+      // .rotate([4.4, 0])
+      .parallels([50,60])
+      .scale(350)
+      .translate([width / 2, height / 2]);
+
+  var path = d3.geo.path()
+      .projection(projection);
+
+  var svg = d3.select("#area-2").append("svg")
+      .attr("width", width)
+      .attr("height", height)
+    .append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+  d3.json("north_america.json", function(error, north_america) {
+    if (error) return console.error(error);
+    console.log(north_america);
+
+    var subunits = topojson.feature(north_america, north_america.objects.subunits);
+    console.log(subunits);
+    svg.append("path")
+          .datum(subunits)
+          .attr("d", path);
+
+    svg.selectAll(".subunit")
+          .data(topojson.feature(north_america, north_america.objects.subunits).features)
+        .enter().append("path")
+          .attr("class", function(d) { return "subunit " + d.id; })
+          .attr("d", path);
+
+  });
+
+

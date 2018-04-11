@@ -1,4 +1,19 @@
 
+.subunit.USB { 
+  fill: #ddc; 
+}
+.subunit.USK { 
+  fill: #ddc; 
+}
+.subunit.USH { 
+  fill: #ddc; 
+}
+.subunit.CAN { 
+  fill: #cdd; 
+}
+.subunit.MEX { 
+  fill: #cdc; }
+
   #region2 {
     display:  none;
   }
