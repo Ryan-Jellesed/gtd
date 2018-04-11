@@ -586,11 +586,21 @@ function myFunction() {
 } 
 
 
-function insertCountry() {
+// gets the value that is in the rendered html not the value="" from within the tag
+function getOptionIndexValue(sel){
+        countrySelected = sel.options[sel.selectedIndex].text;
+        return countrySelected;
+  };
+
+function insertCountry(sel) {
   // var selectedCountry = document.getElementsByClassName("country").class;
-  var selectedCountry = $("#country option:selected").html();
+  // var selectedCountry = $("#country option:selected").html();
+  getOptionIndexValue(sel)
+  selectedCountry = countrySelected;
   document.getElementById("data1").innerHTML = selectedCountry;
 }
+
+
 
 /*
   this function gets the iso county code and year value from the selection option in the html and 
@@ -649,6 +659,7 @@ function insertCountry() {
 
 
 function clearInputs() {
+  document.getElementById("data1").innerHTML = " _____ ";
   document.getElementById("gdp").innerHTML = " _____ ";
   document.getElementById("population-total").innerHTML = "  _____  ";
 }
@@ -810,5 +821,41 @@ function selectCCode() {
           .attr("d", path);
 
   });
+
+
+var region_lat_long = function(){
+  var myArray = [];
+  var selectedYear = document.getElementById("year-option").value;
+  var selectedRegion = document.getElementById("regions_all").value;
+  for(i = 0; i < gtdJSON.length; i++){
+
+    if(gtdJSON[i]['iyear'] === selectedYear & gtdJSON[i]['latitude'] !== "" & gtdJSON[i]['region_txt'] === selectedRegion) {
+      myArray.push({
+                    lat: gtdJSON[i]['latitude'],
+                    lon: gtdJSON[i]['longitude']
+                  });
+    }
+  };
+  return myArray;
+};
+
+
+// var update_region_map = functions(ds){
+  
+//   var selectedYear = document.getElementById("year-option").value;
+//   for(i = 0; i < gtdJSON.length; i++){
+//     if(gtdJSON[0]['iyear'] == selectedYear) {
+
+//     }
+//   };
+
+
+// };
+
+
+
+
+
+
 
 

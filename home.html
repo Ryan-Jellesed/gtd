@@ -297,7 +297,7 @@
 
     <div class="all_countries">
         <!-- <select name="" id="country" class="country_code" onchange="selectCountryCode(); insertCountry();"> -->
-        <select name="" id="country" class="country_code" onchange="setCCode(this.value); selectCCode(); insertCountry();">    
+        <select name="" id="country" class="country_code" onchange="setCCode(this.value); selectCCode(); insertCountry(this);">    
             <option class="all" value="99">All Countries</option>
             <option class="South-Asia" value="af" text="Afghanistan">Afghanistan</option>
             <option class="Eastern-Europe" value="al">Albania</option>
@@ -511,7 +511,7 @@
     </div>
 
     <div class="north_america">
-        <select id="north_america"  onchange="setCCode(this.value); selectCCode(); insertCountry();">
+        <select id="north_america"  onchange="setCCode(this.value); selectCCode(); insertCountry(this);">
         <!-- <select id="north_america"  onchange="selectNorthAmericaCountryCode(); insertCountry();">     -->
           <option value="99">All</option>
           <option value="ca">Canada</option>
@@ -521,7 +521,7 @@
     </div>
 
     <div class="central_america">
-       <select onchange="setCCode(this.value); selectCCode(); insertCountry();">
+       <select onchange="setCCode(this.value); selectCCode(); insertCountry(this);">
        <!-- <select onchange="selectCentralAmericaCountryCode(); insertCountry();">  -->
         <option value="99">All</option>
         <option value="ag">Antigua and Barbuda</option>
