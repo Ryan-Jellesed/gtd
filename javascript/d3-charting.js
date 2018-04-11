@@ -853,7 +853,7 @@ var regionLatLon = function(){
                     group_name: gtdJSON[i]['gname'],
                     motive: gtdJSON[i]['motive'],
                     attack_type: gtdJSON[i]['attacktype1_txt'],
-                    weapon_type: gtdJSON[i]['weaptype1'],
+                    weapon_type: gtdJSON[i]['weaptype1_txt'],
                     number_killed: gtdJSON[i]['nkill'],
                     summary: gtdJSON[i]['summary'],
                     additional_notes: gtdJSON[i]['addnotes']
@@ -917,19 +917,29 @@ var updateGraph = function(){
                 // .attr("cy", function(d) { console.log(d.lon); return projection(d.lon); })
                 // .attr("cx", function(d) { return projection(d.lat); })
                 // .attr("id", function(d) { return d.summary })
-                .attr("r", "2px")
+                .attr("r", "4px")
                 .attr("fill", "red")
                 .on("mouseover", function(d){
 
                   tooltip.transition()
                             .duration(500)
                             .style("opacity", .85)
-                  tooltip.html("<strong>Summary: " + d.summary)
+                  tooltip.html("<strong>City: " + d.city + "<br>" +
+                               "<br><strong>State: " + d.state + "<br>" +
+                               "<br><strong>Target: " + d.target + "<br>" + 
+                               "<br><strong>Group Name: " + d.group_name + "<br>" +
+                               "<br><strong>Attack Type: " + d.attack_type + "<br>" +
+                               "<br><strong>Weapon Type: " + d.weapon_type + "<br>" + 
+                               "<br><strong>Motive: " + d.motive + "<br>" + 
+                               "<br><strong>Number Killed: " + d.number_killed + "<br>" +
+                               "<br><strong>Summary: " + d.summary + "<br>" + 
+                               "<br><strong>Additional Notes: " + d.additional_notes + "<br>")
                             .style("left", (d3.event.pageX) + "px")
                             .style("top", (d3.event.pageY - 28) + "px");
                 })
                 .on("mouseout", function(d){
                   tooltip.transition()
+                            .delay(500)
                             .duration(300)
                             .style("opacity", 0);
                 })
