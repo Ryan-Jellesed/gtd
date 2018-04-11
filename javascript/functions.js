@@ -546,6 +546,9 @@ var tallyColumn = function(arr) {
 }
 
 
+
+
+
 // $(document).ready(function() {
 //     $('#regions_all').bind('change', function() {
 //         var elements = $('div.container').children().hide(); // hide all the elements
