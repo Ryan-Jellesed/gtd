@@ -546,7 +546,32 @@ var tallyColumn = function(arr) {
 }
 
 
+// this function creatres an array to tally 
+var createSubArray = function(arr, sel){
+  
+  myarray = [];
 
+  for(i = 0; i < arr.length; i ++){
+    
+    myarray.push(arr[i][sel]);
+//    console.log(x);
+  };
+  return myarray;
+};
+
+var tallyArray = function(arr){
+  tallyColumn(arr);
+  tally = countedNames;
+  return tally;
+};
+
+
+
+const wait = (ms) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+};
 
 
 // $(document).ready(function() {
