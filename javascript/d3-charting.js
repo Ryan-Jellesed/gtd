@@ -380,6 +380,11 @@
 // })
 
 
+
+  
+
+
+
   /*
     Load the whole gtd dataset in JSON format
    */
@@ -431,6 +436,7 @@
       var ds = decodedData.contents;
       var year = 1970;
       var dsYear = ds[year - 1970];
+      console.log("this is what you need");
       console.log(dsYear['monthlyCount']);
 
 
@@ -513,6 +519,13 @@
 
             // console.log(selDay);    
       });
+
+      d3.select("#year2-option")
+          .on("change", function(d,i) {
+
+            
+
+          });
 
 
   d3.json("https://api.github.com/repos/Ryan-Jellesed/gtd/contents/jsonFiles/attacksByYear.json", function(error, data) {
