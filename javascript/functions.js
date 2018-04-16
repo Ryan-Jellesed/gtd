@@ -1,3 +1,17 @@
+$(document).ready(function() {
+    $('#regions_all').bind('change', function() {
+        var elements = $('div.container').children().hide(); // hide all the elements
+        var value = $(this).val();
+
+        if (value.length) { // if somethings' selected
+            elements.filter('.' + value).show(); // show the ones we want
+        }
+    }).trigger('change');
+});
+
+
+
+
 var countAttacksPerCountry = function(country){
   counter = 0;
   for(i = 0; i < gtdJSON.length; i++){
@@ -574,16 +588,6 @@ const wait = (ms) => {
 };
 
 
-// $(document).ready(function() {
-//     $('#regions_all').bind('change', function() {
-//         var elements = $('div.container').children().hide(); // hide all the elements
-//         var value = $(this).val();
-
-//         if (value.length) { // if somethings' selected
-//             elements.filter('.' + value).show(); // show the ones we want
-//         }
-//     }).trigger('change');
-// });
 
 
 

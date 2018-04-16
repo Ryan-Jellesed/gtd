@@ -68,6 +68,7 @@ var tooltip_object = function(){
       toolTipArray.push({
                     lon: parseFloat(gtdJSON[i]['longitude']),
                     lat: parseFloat(gtdJSON[i]['latitude']),
+                    date: String(gtdJSON[i]['imonth']) + "/" + String(gtdJSON[i]['iday']) + "/" + String(gtdJSON[i]['iyear']),
                     city: gtdJSON[i]['city'],
                     state: gtdJSON[i]['provstate'],
                     target: gtdJSON[i]['target1'],

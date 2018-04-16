@@ -38,6 +38,7 @@ var tooltip_object = function(){
         toolTipArray.push({
                       lon: parseFloat(gtdJSON[i]['longitude']),
                       lat: parseFloat(gtdJSON[i]['latitude']),
+                      date: String(gtdJSON[i]['imonth']) + "/" + String(gtdJSON[i]['iday']) + "/" + String(gtdJSON[i]['iyear']),
                       city: gtdJSON[i]['city'],
                       state: gtdJSON[i]['provstate'],
                       target: gtdJSON[i]['target1'],
@@ -108,6 +109,58 @@ var graph1 = function(ds){
         
 
 };
+
+
+
+var updategraph1 = function(ds){
+      
+      
+      
+
+      var width = 960,
+          height = 500;
+
+      var projection = d3.geo.albers()
+          .center([-20, 40])
+          // .rotate([4.4, 0])
+          .parallels([50,60])
+          .scale(350)
+          .translate([width / 2, height / 2]);
+
+
+
+      var path = d3.geo.path()
+          .projection(projection);
+
+      var svg = d3.select("body").append("svg")
+          .attr("width", width)
+          .attr("height", height)
+          .attr("id", "graph_north_america");
+        // .append("svg")
+        //   .attr("width", width)
+        //   .attr("height", height);
+
+
+
+        var subunits = topojson.feature(ds, ds.objects.subunits);
+        
+
+
+        console.log(subunits);
+        svg.append("path")
+              .datum(subunits)
+              .attr("d", path);
+
+        svg.selectAll(".subunit")
+              .data(topojson.feature(ds, ds.objects.subunits).features)
+            .enter().append("path")
+              .attr("class", function(d) { return "subunit " + d.id; })
+              .attr("d", path);
+
+        
+
+};
+
 
 
 

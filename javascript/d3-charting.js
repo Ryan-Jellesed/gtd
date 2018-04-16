@@ -1,13 +1,4 @@
-$(document).ready(function() {
-    $('#regions_all').bind('change', function() {
-        var elements = $('div.container').children().hide(); // hide all the elements
-        var value = $(this).val();
 
-        if (value.length) { // if somethings' selected
-            elements.filter('.' + value).show(); // show the ones we want
-        }
-    }).trigger('change');
-});
 
 
 
@@ -152,7 +143,7 @@ $(document).ready(function() {
     console.log("min date: " + minDate);
     console.log("max date: " + maxDate);
 
-    var tooltip = d3.select("#area-1").append("div")
+    var tooltip = d3.select("body").append("div")
                       .attr("class", "tooltip")
                       .style("opacity", 0)
 
@@ -255,13 +246,23 @@ $(document).ready(function() {
             .style("text-decoration", "underline")
             .text("Count of Global Terror Attacks 1970 - 2016 ")
       svg.append("text")
-            .attr("x", (width - 70 ))
+            .attr("x", (width - 60 ))
             .attr("y", 0 - (margin.top /5))
             .attr("text-anchor", "right")
             .style("font-size", "30px")
             .style("text-decoration", "bold")
+            .style("fill", "black")
             .text("1970")
             .attr("id", "demo")
+      svg.append("text")
+            .attr("x", (width - 150 ))
+            .attr("y", 0 - (margin.top /5))
+            .attr("text-anchor", "right")
+            .style("font-size", "30px")
+            .style("text-decoration", "bold")
+            // .text("1970")
+            .style("fill", "red")
+            .attr("id", "demo2")
       // svg.append("text")
       //       .attr("x", (width - 70 ))
       //       .attr("y", 0 - (margin.top /5))
@@ -279,14 +280,14 @@ $(document).ready(function() {
       // base = 1970;
       // dataset = contents[year - base].month;
       // data = dataset.month;
-      // console.log(ds)
+      console.log(ds)
 
       var minDate = getDate(ds[0].date);
 
       var maxDate = getDate(ds[ds.length - 1].date);
 
-      // console.log("min date: " + minDate);
-      // console.log("max date: " + maxDate);
+      console.log("min date: " + minDate);
+      console.log("max date: " + maxDate);
 
       // Scales
       var xScale = d3.time.scale()
@@ -332,7 +333,7 @@ $(document).ready(function() {
         svg.selectAll(".path-month")
               .data([ds])
               .transition()
-              .duration(8000)
+              .duration(3500)
               // .ease("linear")
               // .ease("elastic")
               // .ease("circle")
@@ -340,18 +341,18 @@ $(document).ready(function() {
             // .attr("class", "line")
               .attr("d", line);
 
-      var svg = d3.select("svg");
-      svg.selectAll("*").remove();
+      // var svg = d3.select("svg");
+      // svg.selectAll("*").remove();
 
-      // var dots = svg.selectAll(".circle-svg")
-      //                 // .data(ds)     
-      //                 .transition()
-      //                 .duration(1000)
-      //                 .ease("linear")
-      //                 .attr({
-      //                   cx: function(d) { return xScale(getDate(d.date)); },
-      //                   cy: function(d) { return yScale(d.count); },
-      //                 });
+      var dots = svg.selectAll(".circle-svg")
+                      // .data(ds)     
+                      .transition()
+                      .duration(1000)
+                      .ease("linear")
+                      .attr({
+                        cx: function(d) { return xScale(getDate(d.date)); },
+                        cy: function(d) { return yScale(d.count); },
+                      });
       var dots = svg.selectAll(".circle-svg")
                       .data(ds)
                       .transition()
@@ -577,26 +578,46 @@ d3.json("http://api.worldbank.org/v2/countries/eg/indicators/NY.GDP.MKTP.CD?date
         e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
         a.dispatchEvent(e)
     }
-})(console)
+})(console);
 
 
 function myFunction() {
   var selectedYear = document.getElementById("year-option").value;
+
   document.getElementById("demo").innerHTML = selectedYear;
-} 
+}; 
+
+var compareYears = function () {
+  var selectedYear = document.getElementById("year-option").value;
+  var selectedYear2 = document.getElementById("year2-option").value;
+  if(selectedYear2 === "99"){
+    document.getElementById("demo").innerHTML = selectedYear;
+    document.getElementById("demo").style.fill = "black";
+    document.getElementById("demo2").innerHTML = "";
+  } else {
+    
+    // document.getElementById("year2-option").style.color = "red";
+    // document.getElementById("demo").style.color = "blue";
+    document.getElementById("demo").style.fill = "blue";
+    document.getElementById("demo").innerHTML = selectedYear;
+    document.getElementById("demo2").innerHTML = selectedYear2;
+
+  }
+};
+
 
 
 // gets the value that is in the rendered html not the value="" from within the tag
 function getOptionIndexValue(sel){
-        countrySelected = sel.options[sel.selectedIndex].text;
-        return countrySelected;
+        selected = sel.options[sel.selectedIndex].text;
+        return selected;
   };
 
 function insertCountry(sel) {
   // var selectedCountry = document.getElementsByClassName("country").class;
   // var selectedCountry = $("#country option:selected").html();
   getOptionIndexValue(sel)
-  selectedCountry = countrySelected;
+  selectedCountry = selected;
   document.getElementById("data1").innerHTML = selectedCountry;
 }
 
@@ -658,8 +679,6 @@ function insertCountry(sel) {
 // }
 
 
-// clears the country name and descriptive stats pulled from the world bank when the 
-// region is updated
 function clearInputs() {
   document.getElementById("data1").innerHTML = " _____ ";
   document.getElementById("gdp").innerHTML = " _____ ";
@@ -741,7 +760,7 @@ function selectCCode() {
   // selectCountryYear = document.getElementById("year-option").value;
 
   // console.log(selectCountryISO);
-  if(CCode === '99' || CCode === "cs") {
+  if(CCode === '99' || CCode === "cs" || YCode === "99") {
     document.getElementById("gdp").innerHTML = " _____ ";
     document.getElementById("population-total").innerHTML = "  _____  ";
   } else {
@@ -786,8 +805,43 @@ function selectCCode() {
 
 
 
+ // var width = 960,
+ //      height = 500;
 
+ //  var projection = d3.geo.albers()
+ //      .center([-20, 40])
+ //      // .rotate([4.4, 0])
+ //      .parallels([50,60])
+ //      .scale(350)
+ //      .translate([width / 2, height / 2]);
 
+ //  var path = d3.geo.path()
+ //      .projection(projection);
+
+ //  var svg = d3.select("#area-2").append("svg")
+ //      .attr("width", width)
+ //      .attr("height", height)
+ //    .append("svg")
+ //      .attr("width", width)
+ //      .attr("height", height);
+
+ //  d3.json("north_america.json", function(error, north_america) {
+ //    if (error) return console.error(error);
+ //    console.log(north_america);
+
+ //    var subunits = topojson.feature(north_america, north_america.objects.subunits);
+ //    console.log(subunits);
+ //    svg.append("path")
+ //          .datum(subunits)
+ //          .attr("d", path);
+
+ //    svg.selectAll(".subunit")
+ //          .data(topojson.feature(north_america, north_america.objects.subunits).features)
+ //        .enter().append("path")
+ //          .attr("class", function(d) { return "subunit " + d.id; })
+ //          .attr("d", path);
+
+ //  });
 
 
 // this code sets a global region variable
@@ -811,183 +865,32 @@ var regionLatLon = function(){
 
     if(gtdJSON[i]['iyear'] === selectedYear & gtdJSON[i]['latitude'] !== "" & gtdJSON[i]['region_txt'] === regionSelected) {
       latLonArray.push({
-                    lon: parseFloat(gtdJSON[i]['longitude']),
-                    lat: parseFloat(gtdJSON[i]['latitude']),
-                    city: gtdJSON[i]['city'],
-                    state: gtdJSON[i]['provstate'],
-                    target: gtdJSON[i]['target1'],
-                    group_name: gtdJSON[i]['gname'],
-                    motive: gtdJSON[i]['motive'],
-                    attack_type: gtdJSON[i]['attacktype1_txt'],
-                    weapon_type: gtdJSON[i]['weaptype1_txt'],
-                    number_killed: gtdJSON[i]['nkill'],
-                    summary: gtdJSON[i]['summary'],
-                    additional_notes: gtdJSON[i]['addnotes']
-                  });
+                      lon: parseFloat(gtdJSON[i]['longitude']),
+                      lat: parseFloat(gtdJSON[i]['latitude']),
+                      date: String(gtdJSON[i]['imonth']) + "/" + String(gtdJSON[i]['iday']) + "/" + String(gtdJSON[i]['iyear']),
+                      city: gtdJSON[i]['city'],
+                      state: gtdJSON[i]['provstate'],
+                      target: gtdJSON[i]['target1'],
+                      group_name: gtdJSON[i]['gname'],
+                      motive: gtdJSON[i]['motive'],
+                      attack_type: gtdJSON[i]['attacktype1_txt'],
+                      weapon_type: gtdJSON[i]['weaptype1_txt'],
+                      number_killed: gtdJSON[i]['nkill'],
+                      summary: gtdJSON[i]['summary'],
+                      additional_notes: gtdJSON[i]['addnotes']
+                });
     }
   };
   console.log(latLonArray);
   return latLonArray;
 };
 
+d3.select('id', 'regions_all')
+    . on('change', function(d,i) {
 
+      regionLatLon();
 
-
-
-
-var buildGraph = function(data) {
-
-  var width = 960,
-      height = 500;
-
-    var projection = d3.geo.albers()
-        .center([-20, 40])
-        // .rotate([4.4, 0])
-        .parallels([50,60])
-        .scale(350)
-        .translate([width / 2, height / 2]);
-
-    var path = d3.geo.path()
-        .projection(projection);
-
-    var svg = d3.select("#area-2").append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .attr("id", "region-graph")
-      // .append("svg")
-      //   .attr("width", width)
-      //   .attr("height", height);
-
-    var subunits = topojson.feature(data, data.objects.subunits);
-    
-    console.log("these are the " + subunits);
-    
-    svg.append("path")
-          .datum(subunits)
-          .attr("d", path);
-
-    svg.selectAll(".subunit")
-          .data(topojson.feature(data, data.objects.subunits).features)
-        .enter().append("path")
-          .attr("class", function(d) { return "subunit " + d.id; })
-          .attr("d", path);
-
-};
-
-
-
-var updateGraph = async function(data){
-        
-        // wait 4 seconds before updating the graph, doing this becuase the line chart needs time to build
-        await wait(2000);
-
-        var width = 960,
-            height = 500;
-
-        
-
-        var projection = d3.geo.albers()
-            .center([-20, 40])
-            // .rotate([4.4, 0])
-            .parallels([50,60])
-            .scale(350)
-            .translate([width / 2, height / 2]);
-
-        var path = d3.geo.path()
-            .projection(projection);
-
-        // var svg = d3.select("#region-graph").append("svg")
-        //     .attr("width", width)
-        //     .attr("height", height);
-
-          // .append("svg")
-          //   .attr("width", width)
-          //   .attr("height", height);
-       
-          var d3_tip = d3.select("#region-graph").append("div")
-                      .attr("class", "tooltip-graph")
-                      .style("opacity", 0)
-
-          var subunits = topojson.feature(data, data.objects.subunits);
-          console.log(subunits);
-          svg.append("path")
-                .datum(subunits)
-                .attr("d", path);
-
-          svg.selectAll(".subunit")
-                .data(topojson.feature(data, data.objects.subunits).features)
-              .enter().append("path")
-                .attr("class", function(d) { return "subunit " + d.id; })
-                .attr("d", path);
-
-          svg.selectAll("circle")
-                .data(latLonArray)
-                .enter()
-                .append("circle")
-                // .attr("cx", function(d) { console.log(projection(d)); return projection(d)[0]; })
-                // .attr("cy", function(d) { return projection(d)[1]; })
-                // 
-                // .attr("cy", function(d) { console.log(d.lon); return projection(d.lon); })
-                // .attr("cx", function(d) { return projection(d.lat); })
-                // .attr("id", function(d) { return d.summary })
-                .attr("r", "4px")
-                .attr("fill", "red")
-                .on("mouseover", function(d){
-
-                  d3_tip.transition()
-                            .duration(500)
-                            .style("opacity", .85)
-                  d3_tip.html("<strong>City: " + d.city + "<br>" +
-                               "<br><strong>State: " + d.state + "<br>" +
-                               "<br><strong>Target: " + d.target + "<br>" + 
-                               "<br><strong>Group Name: " + d.group_name + "<br>" +
-                               "<br><strong>Attack Type: " + d.attack_type + "<br>" +
-                               "<br><strong>Weapon Type: " + d.weapon_type + "<br>" + 
-                               "<br><strong>Motive: " + d.motive + "<br>" + 
-                               "<br><strong>Number Killed: " + d.number_killed + "<br>" +
-                               "<br><strong>Summary: " + d.summary + "<br>" + 
-                               "<br><strong>Additional Notes: " + d.additional_notes + "<br>")
-                            .style("left", (d3.event.pageX) + "px")
-                            .style("top", (d3.event.pageY - 28) + "px");
-                })
-                .on("mouseout", function(d){
-                  d3_tip.transition()
-                            .delay(500)
-                            .duration(300)
-                            .style("opacity", 0);
-                })
-
-                .attr("transform", function(d) {
-                  return "translate(" + projection([
-                      d.lon,
-                      d.lat
-                    ]) + ")";
-                });       
-};
-
-
-// load the geoJson from file
-d3.json("../north_america.json", function(error, ds) {
-  if (error) return console.error(error);
-  // console.log("Hello Ryan");
-  console.log(ds);
-
-  // call the build graph function and build the graph by region
-  buildGraph(ds);
-
-  d3.select("#year-option")
-        .on("change", function(d,i){
-
-          updateGraph(ds);
-          
-        });
-
-
-});
-
-
-
-
+  }); 
 
 
 
