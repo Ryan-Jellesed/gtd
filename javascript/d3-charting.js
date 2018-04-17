@@ -322,6 +322,8 @@
           .x(function(d) { return xScale(getDate(d.date)); })
           .y(function(d) { return yScale(d.count); })
           .interpolate("linear");
+          // .interpolate("step-before");
+          // .interpolate("cardinal");
 
       // Create svg
       var svg = d3.select("body").select("#svg-month");
@@ -415,16 +417,19 @@
   /*
     when pulling data from github use the api
    */
-  
-  d3.json("https://api.github.com/repos/Ryan-Jellesed/gtd/contents/jsonFiles/MM_YY_Atacks.json", function(error, data) {
-     
+
+  // d3.json("https://api.github.com/repos/Ryan-Jellesed/gtd/contents/jsonFiles/MM_YY_Atacks.json", function(error, data) {
+  d3.json("jsonFiles/MM_YY_Atacks.json", function(error, data) {
+
    if(error) {
        console.log(error);
    } else {
        // console.log(data); //we're golden!
    }
 
-    var decodedData = JSON.parse(window.atob(data.content));
+    // var decodedData = JSON.parse(window.atob(data.content));
+    var decodedData = data;
+
       // console.log("******  MM_YY_Atacks Dataset from Github **********\n\n\n");
       // console.log("******            decodedData            **********");
       // console.log(decodedData);
@@ -434,6 +439,8 @@
       // console.log("***************************************************\n\n\n\n");
 
       var ds = decodedData.contents;
+      console.log("1");
+      console.log(ds);
       var year = 1970;
       var dsYear = ds[year - 1970];
       console.log("this is what you need");
@@ -443,12 +450,12 @@
       buildLineMonth(dsYear['monthlyCount']);
 
 
-      decodedData.contents.forEach(function(ds){
+      // decodedData.contents.forEach(function(ds){
 
-          // console.log(ds);
-      //     // showHeader(ds);
-      //     // buildLine(ds);
-      });
+      //     // console.log(ds);
+      // //     // showHeader(ds);
+      // //     // buildLine(ds);
+      // });
 
 
       d3.select("#year-option")
@@ -459,20 +466,42 @@
             var selDate = d3.select("#date-option").node().value;
             // console.log(ds.monthlySales.length-sel);
             // console.log(selYear);
+            // console.log(data);
 
-            var decodedData = JSON.parse(window.atob(data.content));
-            var ds = decodedData.contents;
+            // var decodedData = JSON.parse(window.atob(data.content));
+            var decodedData = data;
+            // console.log(decodedData);
+
+            
+            ds = decodedData.contents;
+            // console.log(ds);
+
+            // var ds = decodedData;
+            // console.log("below is the ds dataset");
+            // console.log(ds);
+            // return ds;
             year = selYear;
-            var date = selDate;
-            var dsYear = ds[year - 1970];
+            console.log("year");
+            console.log(year);
 
-            // dsYear = dsYear.monthlyCount.splice(0, dsYear.monthlyCount.length - date);
-            if(d3.select("#date-option").node().value === "-6"){
-              dsYear = dsYear.monthlyCount.splice(6, dsYear.monthlyCount.length - date);
-            } else {
-              dsYear = dsYear.monthlyCount.splice(0, dsYear.monthlyCount.length - date);
-            }
-            updateLineMonth(dsYear)
+            var date = selDate;
+            console.log("date");
+            console.log(date);
+
+            var dsYear = ds[year - 1970];
+            console.log("dsYear");
+            console.log(dsYear);
+
+            console.log("dsYear['monthlyCount] ---- below");
+            console.log(dsYear['monthlyCount']);
+
+            // dsYear = dsYear.monthlyCount.slice(0, dsYear.monthlyCount.length - date);
+            // if(d3.select("#date-option").node().value === "-6"){
+            //   dsYear = dsYear.monthlyCount.slice(6, dsYear.monthlyCount.length - date);
+            // } else {
+            //   dsYear = dsYear.monthlyCount.slice(0, dsYear.monthlyCount.length - date);
+            // }
+            updateLineMonth(dsYear['monthlyCount']);
           
       });
 
@@ -491,7 +520,9 @@
                 // get selected option
             var selDate = d3.select("#date-option").node().value;
             var selYear = d3.select("#year-option").node().value;
-            var decodedData = JSON.parse(window.atob(data.content));
+            // var decodedData = JSON.parse(window.atob(data.content));
+
+            var decodedData = data;
 
             var ds = decodedData.contents
             var year = selYear;
@@ -500,11 +531,11 @@
 
 
             if(d3.select("#date-option").node().value === "-6"){
-              dsYear = dsYear.monthlyCount.splice(6, dsYear.monthlyCount.length - date);
+              dsYear = dsYear.monthlyCount.slice(6, dsYear.monthlyCount.length - date);
             } else if(d3.select("#date-option").node().value === "-3"){
-              dsYear = dsYear.monthlyCount.splice(9, dsYear.monthlyCount.length - date);
+              dsYear = dsYear.monthlyCount.slice(9, dsYear.monthlyCount.length - date);
             } else {
-              dsYear = dsYear.monthlyCount.splice(0, dsYear.monthlyCount.length - date);
+              dsYear = dsYear.monthlyCount.slice(0, dsYear.monthlyCount.length - date);
             }
             updateLineMonth(dsYear);
 
@@ -523,12 +554,13 @@
       d3.select("#year2-option")
           .on("change", function(d,i) {
 
-            
+
 
           });
 
 
-  d3.json("https://api.github.com/repos/Ryan-Jellesed/gtd/contents/jsonFiles/attacksByYear.json", function(error, data) {
+  // d3.json("https://api.github.com/repos/Ryan-Jellesed/gtd/contents/jsonFiles/attacksByYear.json", function(error, data) {
+  d3.json("jsonFiles/attacksByYear.json", function(error, data) {
      
     if(error) {
        console.log(error);
@@ -537,7 +569,9 @@
        
     }
 
-      var decodedData = JSON.parse(window.atob(data.content));
+      // var decodedData = JSON.parse(window.atob(data.content));
+      var decodedData = data.content;
+
       attacksByYear = decodedData;
       return(attacksByYear);
   });
