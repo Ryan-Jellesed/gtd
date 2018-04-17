@@ -252,7 +252,7 @@
             .style("font-size", "30px")
             .style("text-decoration", "bold")
             .style("fill", "black")
-            .text("1970")
+            .text("")
             .attr("id", "demo")
       svg.append("text")
             .attr("x", (width - 150 ))
@@ -446,8 +446,21 @@
       console.log("this is what you need");
       console.log(dsYear['monthlyCount']);
 
+      tempArray = [{date: 19930101, count: 0},
+                  {date: 19930201, count: 0},
+                  {date: 19930301, count: 0},
+                  {date: 19930401, count: 0},
+                  {date: 19930501, count: 0},
+                  {date: 19930601, count: 0},
+                  {date: 19930701, count: 0},
+                  {date: 19930801, count: 0},
+                  {date: 19930901, count: 0},
+                  {date: 19931001, count: 0},
+                  {date: 19931101, count: 0},
+                  {date: 19931201, count: 0}]
 
-      buildLineMonth(dsYear['monthlyCount']);
+      // buildLineMonth(dsYear['monthlyCount']);
+      buildLineMonth(tempArray);
 
 
       // decodedData.contents.forEach(function(ds){
@@ -468,7 +481,11 @@
             // console.log(selYear);
             // console.log(data);
 
-            // var decodedData = JSON.parse(window.atob(data.content));
+            if(selYear === "00"){
+              updateLineMonth(tempArray);
+            } else {
+
+              // var decodedData = JSON.parse(window.atob(data.content));
             var decodedData = data;
             // console.log(decodedData);
 
@@ -502,6 +519,10 @@
             //   dsYear = dsYear.monthlyCount.slice(0, dsYear.monthlyCount.length - date);
             // }
             updateLineMonth(dsYear['monthlyCount']);
+
+            }
+
+            
           
       });
 
@@ -630,22 +651,33 @@ d3.json("http://api.worldbank.org/v2/countries/eg/indicators/NY.GDP.MKTP.CD?date
 
 function myFunction() {
   var selectedYear = document.getElementById("year-option").value;
-
-  document.getElementById("demo").innerHTML = selectedYear;
+  if(selectedYear === "00") {
+    document.getElementById("demo").innerHTML = "";
+  } else {
+    document.getElementById("demo").innerHTML = selectedYear;
+  }
 }; 
 
 var compareYears = function () {
   var selectedYear = document.getElementById("year-option").value;
   var selectedYear2 = document.getElementById("year2-option").value;
-  if(selectedYear2 === "99"){
+  if(selectedYear === "00" & selectedYear2 === "99") {
+    document.getElementById("demo").innerHTML = "";
+    document.getElementById("demo2").innerHTML = "";
+  } else if(selectedYear2 === "99"){
     document.getElementById("demo").innerHTML = selectedYear;
     document.getElementById("demo").style.fill = "black";
     document.getElementById("demo2").innerHTML = "";
+  } else if(selectedYear === "00") {
+    document.getElementById("demo").innerHTML = "";
+    document.getElementById("demo2").style.fill = "black";
+    document.getElementById("demo2").innerHTML = selectedYear2;
   } else {
     
     // document.getElementById("year2-option").style.color = "red";
     // document.getElementById("demo").style.color = "blue";
     document.getElementById("demo").style.fill = "blue";
+    document.getElementById("demo2").style.fill = "red";
     document.getElementById("demo").innerHTML = selectedYear;
     document.getElementById("demo2").innerHTML = selectedYear2;
 
@@ -915,6 +947,7 @@ var regionLatLon = function(){
                       lon: parseFloat(gtdJSON[i]['longitude']),
                       lat: parseFloat(gtdJSON[i]['latitude']),
                       date: String(gtdJSON[i]['imonth']) + "/" + String(gtdJSON[i]['iday']) + "/" + String(gtdJSON[i]['iyear']),
+                      country: gtdJSON[i]['country_txt'],
                       city: gtdJSON[i]['city'],
                       state: gtdJSON[i]['provstate'],
                       target: gtdJSON[i]['target1'],
