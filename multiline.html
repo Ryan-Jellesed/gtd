@@ -13,17 +13,19 @@ body {
 .axis1 path,
 .axis1 line {
   fill: none;
-  stroke: #E6E7E8;
+  stroke: black;
   shape-rendering: crispEdges;
 }
 
 .x.axis path, .x.axis1 path {
-  display: none;
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
 }
 
 .line {
   fill: none;
-  stroke-width: 1.5px;
+  stroke-width: 1px;
 }
 
 .legend-box {
@@ -73,10 +75,15 @@ var margin = {top: 20, right: 200, bottom: 100, left: 50},
     height = 500 - margin.top - margin.bottom,
     height2 = 500 - margin2.top - margin2.bottom;
 
-var parseDate = d3.time.format("%Y%m%d").parse;
-var bisectDate = d3.bisector(function(d) { return d.date; }).left;
+var maxY; // Initializing variable that will hold the maximium Y value when slider is changed
 
-var xScale = d3.time.scale()
+var parseDate = d3.time.format("%Y%m%d").parse;   // parse the date from the data file
+var bisectDate = d3.bisector(function(d) { return d.date; }).left;  //  Bisect the date for the mouse slider below
+
+// Initialize a list of colors for the variables in the dataset
+var color = d3.scale.ordinal().range(['rgb(166,206,227)','rgb(31,120,180)','rgb(178,223,138)','rgb(51,160,44)','rgb(251,154,153)','rgb(227,26,28)','rgb(253,191,111)','rgb(255,127,0)','rgb(202,178,214)','rgb(106,61,154)','rgb(232, 232, 0)','rgb(177,89,40)']);
+
+var xScale = d3.time.scale() // Set the xScale for the svg
     .range([0, width]),
 
     xScale2 = d3.time.scale()
@@ -84,10 +91,6 @@ var xScale = d3.time.scale()
 
 var yScale = d3.scale.linear()
     .range([height, 0]);
-
-// 40 Custom DDV colors 
-var color = d3.scale.ordinal().range(['rgb(166,206,227)','rgb(31,120,180)','rgb(178,223,138)','rgb(51,160,44)','rgb(251,154,153)','rgb(227,26,28)','rgb(253,191,111)','rgb(255,127,0)','rgb(202,178,214)','rgb(106,61,154)','rgb(255,255,153)','rgb(177,89,40)']);  
-
 
 var xAxis = d3.svg.axis()
     .scale(xScale)
@@ -104,10 +107,10 @@ var yAxis = d3.svg.axis()
 var line = d3.svg.line()
     .interpolate("linear")
     .x(function(d) { return xScale(d.date); })
-    .y(function(d) { return yScale(d.rating); })
-    // .defined(function(d) { return d.rating; });  // Hiding line value defaults of 0 for missing data
+    .y(function(d) { return yScale(d.count); })
+    // .defined(function(d) { return d.count; });  // Hiding line value defaults of 0 for missing data
 
-var maxY; // Defined later to update yAxis
+
 
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -115,7 +118,8 @@ var svg = d3.select("body").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-// Create invisible rect for mouse tracking
+// Create the rect for mouse tracking 
+// Initialize as invisible
 svg.append("rect")
     .attr("width", width)
     .attr("height", height)                                    
@@ -144,25 +148,29 @@ svg.append("rect")
 var ds = [];
 d3.csv("large_data/attacks_Sum_weaptype1_txt.csv", function(error, data) {
   console.log(data); 
+  ds = data;
   color.domain(d3.keys(data[0]).filter(function(key) { // Set the domain of the color ordinal scale to be all the csv headers except "date", matching a color to an issue
     return key !== "date"; 
   }));
 
-  ds = data;
-  console.log(data);
+  
+  // console.log(data);
 
   data.forEach(function(d) { // Make every date in the csv data a javascript date object format
     d.date = parseDate(d.date);
+
   });
+
+  // console.log(data);
 
   var categories = color.domain().map(function(name) { // Nest the data into an array of objects with new keys
 
     return {
       name: name, // "name": the csv headers except date
-      values: data.map(function(d) { // "values": which has an array of the dates and ratings
+      values: data.map(function(d) { // "values": which has an array of the dates and counts
         return {
           date: d.date, 
-          rating: +(d[name]),
+          count: +(d[name]),
           };
       }),
       visible: (name === "Number of Attacks" ? true : false) // "visible": all false except for economy which is true.
@@ -172,7 +180,7 @@ d3.csv("large_data/attacks_Sum_weaptype1_txt.csv", function(error, data) {
   xScale.domain(d3.extent(data, function(d) { return d.date; })); // extent = highest and lowest points, domain is data, range is bounding box
 
   yScale.domain([0, 100
-    //d3.max(categories, function(c) { return d3.max(c.values, function(v) { return v.rating; }); })
+    //d3.max(categories, function(c) { return d3.max(c.values, function(v) { return v.count; }); })
   ]);
 
   xScale2.domain(xScale.domain()); // Setting a duplicate xdomain for brushing reference later
@@ -219,12 +227,15 @@ d3.csv("large_data/attacks_Sum_weaptype1_txt.csv", function(error, data) {
       .attr("class", "y axis")
       .call(yAxis)
     .append("text")
-      .attr("transform", "rotate(-90)")
+      // .attr("transform", "rotate(-90)")
       .attr("y", 6)
-      .attr("x", -10)
+      .attr("x", 550)
       .attr("dy", ".71em")
+      .style("font-size", "30px")
       .style("text-anchor", "end")
-      .text("Issues Rating");
+      .style("text-decoration", "bold")
+      .text("Multi-line Chart Variable Counts")
+      .attr("id", "multiTitle");
 
   var issue = svg.selectAll(".issue")
       .data(categories) // Select nested data and append to new svg group elements
@@ -259,7 +270,7 @@ d3.csv("large_data/attacks_Sum_weaptype1_txt.csv", function(error, data) {
       .on("click", function(d){ // On click make d.visible 
         d.visible = !d.visible; // If array key for this data selection is "visible" = true then make it false, if false then make it true
 
-        maxY = findMaxY(categories); // Find max Y rating value categories data with "visible"; true
+        maxY = findMaxY(categories); // Find max Y count value categories data with "visible"; true
         yScale.domain([0,maxY]); // Redefine yAxis domain based on highest y value of categories data with "visible"; true
         svg.select(".y.axis")
           .transition()
@@ -371,10 +382,10 @@ d3.csv("large_data/attacks_Sum_weaptype1_txt.csv", function(error, data) {
 
       var x0 = xScale.invert(d3.mouse(this)[0]), /* d3.mouse(this)[0] returns the x position on the screen of the mouse. xScale.invert function is reversing the process that we use to map the domain (date) to range (position on screen). So it takes the position on the screen and converts it into an equivalent date! */
       i = bisectDate(data, x0, 1), // use our bisectDate function that we declared earlier to find the index of our data array that is close to the mouse cursor
-      /*It takes our data array and the date corresponding to the position of or mouse cursor and returns the index number of the data array which has a date that is higher than the cursor position.*/
+      /*It takes our data array and the date corresponding to the position of our mouse cursor and returns the index number of the data array which has a date that is higher than the cursor position.*/
       d0 = data[i - 1],
       d1 = data[i],
-      /*d0 is the combination of date and rating that is in the data array at the index to the left of the cursor and d1 is the combination of date and close that is in the data array at the index to the right of the cursor. In other words we now have two variables that know the value and date above and below the date that corresponds to the position of the cursor.*/
+      /*d0 is the combination of date and count that is in the data array at the index to the left of the cursor and d1 is the combination of date and close that is in the data array at the index to the right of the cursor. In other words we now have two variables that know the value and date above and below the date that corresponds to the position of the cursor.*/
       d = x0 - d0.date > d1.date - x0 ? d1 : d0;
       /*The final line in this segment declares a new array d that is represents the date and close combination that is closest to the cursor. It is using the magic JavaScript short hand for an if statement that is essentially saying if the distance between the mouse cursor and the date and close combination on the left is greater than the distance between the mouse cursor and the date and close combination on the right then d is an array of the date and close on the right of the cursor (d1). Otherwise d is an array of the date and close on the left of the cursor (d0).*/
 
@@ -397,7 +408,7 @@ d3.csv("large_data/attacks_Sum_weaptype1_txt.csv", function(error, data) {
           .transition()
           .call(xAxis);
 
-    maxY = findMaxY(categories); // Find max Y rating value categories data with "visible"; true
+    maxY = findMaxY(categories); // Find max Y count value categories data with "visible"; true
     yScale.domain([0,maxY]); // Redefine yAxis domain based on highest y value of categories data with "visible"; true
     
     svg.select(".y.axis") // Redraw yAxis
@@ -417,8 +428,8 @@ d3.csv("large_data/attacks_Sum_weaptype1_txt.csv", function(error, data) {
   function findMaxY(data){  // Define function "findMaxY"
     var maxYValues = data.map(function(d) { 
       if (d.visible){
-        return d3.max(d.values, function(value) { // Return max rating value
-          return value.rating; })
+        return d3.max(d.values, function(value) { // Return max count value
+          return value.count; })
       }
     });
     return d3.max(maxYValues);
