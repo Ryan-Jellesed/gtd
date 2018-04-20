@@ -67,11 +67,32 @@ body {
 <body>
 <script src="http://d3js.org/d3.v3.js"></script>
 
+
 <input type="button" name="clearweaponsButton" value="clear" onclick="clearWeaponsLineChart(); ">
+
+<label for="">Change Dataset
+  <select name="" id="multiLineChartDataset" onchange="input_data(); clearWeaponsLineChart();">
+    <option value="attacks">Attacks Per Year</option>
+    <option value="deaths">Deaths Per Year</option>
+  </select>
+</label>  
 
 <script>
 
+var multiLineData = "large_data/attack_count_by_weaptype1_daily.csv";
 
+var input_data = function(){
+  var inputValue = document.getElementById("multiLineChartDataset").value;
+  var d;
+  if(inputValue === "attacks"){
+    multiLineData = "large_data/attack_count_by_weaptype1_daily.csv";
+    console.log(multiLineData);
+  } else {
+    multiLineData = "large_data/attack_sum_nkill_by_weaptype1_monthly.csv";
+    console.log(multiLineData);
+  }
+  return multiLineData;
+};
 
 var margin = {top: 20, right: 200, bottom: 100, left: 50},
     margin2 = { top: 430, right: 10, bottom: 20, left: 40 },
@@ -149,8 +170,10 @@ svg.append("defs")
 
 //end slider part----------------------------------------------------------------------------------- 
 
+
+
 var ds = [];
-d3.csv("large_data/attack_sum_nkill_by_weaptype1_monthly.csv", function(error, data) {
+d3.csv(multiLineData, function(error, data) {
   console.log(data); 
   ds = data;
   color.domain(d3.keys(data[0]).filter(function(key) { // Set the domain of the color ordinal scale to be all the csv headers except "date", matching a color to an issue
@@ -468,7 +491,7 @@ svg.append("defs")
 //end slider part----------------------------------------------------------------------------------- 
 
 var ds = [];
-d3.csv("large_data/attack_sum_nkill_by_weaptype1_monthly.csv", function(error, data) {
+d3.csv(multiLineData, function(error, data) {
   console.log(data); 
   ds = data;
   color.domain(d3.keys(data[0]).filter(function(key) { // Set the domain of the color ordinal scale to be all the csv headers except "date", matching a color to an issue
