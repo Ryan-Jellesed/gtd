@@ -1,0 +1,19 @@
+{
+  "name": "gtd",
+  "version": "1.0.0",
+  "description": "gtd dataset visualization",
+  "main": "d3-charting.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ryan-Jellesed/gtd.git"
+  },
+  "author": "Ryan Jellesed",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ryan-Jellesed/gtd/issues"
+  },
+  "homepage": "https://github.com/Ryan-Jellesed/gtd#readme"
+}
