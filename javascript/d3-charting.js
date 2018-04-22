@@ -346,15 +346,15 @@
       // var svg = d3.select("svg");
       // svg.selectAll("*").remove();
 
-      var dots = svg.selectAll(".circle-svg")
-                      // .data(ds)     
-                      .transition()
-                      .duration(1000)
-                      .ease("linear")
-                      .attr({
-                        cx: function(d) { return xScale(getDate(d.date)); },
-                        cy: function(d) { return yScale(d.count); },
-                      });
+      // var dots = svg.selectAll(".circle-svg")
+      //                 // .data(ds)     
+      //                 .transition()
+      //                 .duration(1000)
+      //                 .ease("linear")
+      //                 .attr({
+      //                   cx: function(d) { return xScale(getDate(d.date)); },
+      //                   cy: function(d) { return yScale(d.count); },
+      //                 });
       var dots = svg.selectAll(".circle-svg")
                       .data(ds)
                       .transition()

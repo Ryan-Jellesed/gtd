@@ -1,9 +1,11 @@
   /*
     Load the whole gtd dataset in JSON format
    */
-  var gtdJSON = [];
-  d3.json("large_data/gtd.json", function(error, data){
-
+  // var gtdJSON = [];
+  var gtdCSV = [];
+  // d3.json("large_data/gtd.json", function(error, data){
+  d3.csv("large_data/gtdMini.csv", function(error, data) {
+    // console.log(data);
     if(error){
       console.log(error);
     } else {
@@ -14,43 +16,43 @@
       // console.log("************************************************\n\n\n\n");
     
       console.log("*******    gtdJSON = GTD full dataset      *******");
-      data.contents.forEach(function(contents){
-        gtdJSON.push(contents);
+      // data.contents.forEach(function(contents){
+      data.forEach(function(contents) {
+        gtdCSV.push(contents);
       });
-      console.log(gtdJSON);
+      console.log(gtdCSV);
       console.log("**************************************************\n\n\n\n");
 
-      
     }
 
   });
 
 var toolTipArray = [];
 var tooltip_object = function(){
-  var toolTipArray = [];
+  // var toolTipArray = [];
   var selectedYear = document.getElementById("graph1year").value;
   console.log(selectedYear);
+  toolTipArray = [];
+  for(i = 0; i < gtdCSV.length; i++){
 
-    for(i = 0; i < gtdJSON.length; i++){
+    if(gtdCSV[i]['iyear'] === selectedYear & gtdCSV[i]['latitude'] !== "" & gtdCSV[i]['region_txt'] === "North America") {
 
-      if(gtdJSON[i]['iyear'] === selectedYear & gtdJSON[i]['latitude'] !== "" & gtdJSON[i]['region_txt'] === "North America") {
+      toolTipArray.push({
+                          lon: parseFloat(gtdCSV[i]['longitude']),
+                          lat: parseFloat(gtdCSV[i]['latitude']),
+                          date: String(gtdCSV[i]['imonth']) + "/" + String(gtdCSV[i]['iday']) + "/" + String(gtdCSV[i]['iyear']),
+                          city: gtdCSV[i]['city'],
+                          state: gtdCSV[i]['provstate'],
+                          target: gtdCSV[i]['target1'],
+                          group_name: gtdCSV[i]['gname'],
+                          motive: gtdCSV[i]['motive'],
+                          attack_type: gtdCSV[i]['attacktype1_txt'],
+                          weapon_type: gtdCSV[i]['weaptype1_txt'],
+                          number_killed: gtdCSV[i]['nkill'],
+                          summary: gtdCSV[i]['summary'],
+                          additional_notes: gtdCSV[i]['addnotes']
 
-        toolTipArray.push({
-                      lon: parseFloat(gtdJSON[i]['longitude']),
-                      lat: parseFloat(gtdJSON[i]['latitude']),
-                      date: String(gtdJSON[i]['imonth']) + "/" + String(gtdJSON[i]['iday']) + "/" + String(gtdJSON[i]['iyear']),
-                      city: gtdJSON[i]['city'],
-                      state: gtdJSON[i]['provstate'],
-                      target: gtdJSON[i]['target1'],
-                      group_name: gtdJSON[i]['gname'],
-                      motive: gtdJSON[i]['motive'],
-                      attack_type: gtdJSON[i]['attacktype1_txt'],
-                      weapon_type: gtdJSON[i]['weaptype1_txt'],
-                      number_killed: gtdJSON[i]['nkill'],
-                      summary: gtdJSON[i]['summary'],
-                      additional_notes: gtdJSON[i]['addnotes']
-
-      });
+                        });
 
     }
 
@@ -59,6 +61,11 @@ var tooltip_object = function(){
     console.log(toolTipArray);
     return toolTipArray;
 };
+
+
+
+
+
 
 
 var graph1 = function(ds){
@@ -106,7 +113,7 @@ var graph1 = function(ds){
               .attr("class", function(d) { return "subunit " + d.id; })
               .attr("d", path);
 
-        
+      
 
 };
 
@@ -115,8 +122,6 @@ var graph1 = function(ds){
 var updategraph1 = function(ds){
       
       
-      
-
       var width = 960,
           height = 500;
 
@@ -140,11 +145,7 @@ var updategraph1 = function(ds){
         //   .attr("width", width)
         //   .attr("height", height);
 
-
-
         var subunits = topojson.feature(ds, ds.objects.subunits);
-        
-
 
         console.log(subunits);
         svg.append("path")
@@ -157,7 +158,41 @@ var updategraph1 = function(ds){
               .attr("class", function(d) { return "subunit " + d.id; })
               .attr("d", path);
 
+        // var locations = d3.select(".locations").selectAll('circle')
+        //                     .data(toolTipArray);
+
+        // locations.enter().append("svg:circle")
+        // .attr("cy", function(d) { return projection(d.toolTipArray)[0]["lat"];})
+        // .attr("cx", function(d) { return projection(d.toolTipArray)[0]["lon"];})
+        // // .attr("id", function(d) { return d.label})
+        // .attr("r", 4.5)
+        // // .attr('d', path)
+        // .on('mousemove', function(d) {
+        //   tooltip[0][0].style.display = "block"
+        //   var mouse = d3.mouse(locations.enter().append("svg:circle").node()).map(function(d) {
+        //     return parseInt(d);
+        //   });
+        //   tooltip.classed('hidden', false)
+        //   .attr('style', 'left:' + (mouse[0] + 15) +
+        //     'px; top:' + (mouse[1]) + 'px');
+        //   // .html(d.label);
+        // })
+        // .on('mouseout', function() {
+        //   tooltip[0][0].style.display = "none"
+        //   tooltip.classed('hidden', true);
+        // });
         
+
+        svg.selectAll("circle")
+              .data(toolTipArray)
+              .enter()
+              .append("circle")
+              // .attr("cy", function(d) {  console.log(projection(d)); return projection(d[0]["lon"]); })
+              // .attr("cx", function(d) {  return projection(d[1]["lat"]); })
+              .attr("transform", function(d) { return "translate(" + projection([d.lon,d.lat]) + ")"; })
+              .attr("r", "2px")
+              .attr("fill", "red")
+              // .on("mouseover", )
 
 };
 
@@ -169,7 +204,7 @@ var updategraph1 = function(ds){
   d3.json("north_america.json", function(error, ds) {
     if (error) return console.error(error);
     
-
+      var ds = ds;
     
       // console.log(ds);
 
@@ -179,7 +214,7 @@ var updategraph1 = function(ds){
            .on("change", function(d,i){
 
              tooltip_object();          
-
+             updategraph1(ds);
         });
 
 
@@ -195,9 +230,41 @@ var updategraph1 = function(ds){
 
 
 
+ //      var dots = svg.selectAll("circle")
+ //                      .data(ds)
+ //                      .enter()
+ //                      .append("circle")
+ //                      .attr({
+ //                        cx: function(d) { return xScale(getDate(d.date)); },
+ //                        cy: function(d) { return yScale(d.count); },
+ //                        r: 3,
+ //                        "fill": "#666666",
+ //                        class: "circle-svg"
+ //                      })
+ //                      .on("mouseover", function(d){
 
+ //                        tooltip.transition()
+ //                                  .duration(500)
+ //                                  .style("opacity", .85)
+ //                        tooltip.html("<strong>Attack Count: " + d.count)
+ //                                  .style("left", (d3.event.pageX) + "px")
+ //                                  .style("top", (d3.event.pageY - 28) + "px");
+ //                      })
+ //                      .on("mouseout", function(d){
+ //                        tooltip.transition()
+ //                                  .duration(300)
+ //                                  .style("opacity", 0);
+ //                      })
 
-
+ // var dots = svg.selectAll(".circle-svg")
+ //                      .data(ds)
+ //                      .transition()
+ //                      .duration(1000)
+ //                      .ease("linear")
+ //                      .attr({
+ //                        cx: function(d) { return xScale(getDate(d.date)); },
+ //                        cy: function(d) { return yScale(d.count); },
+ //                      });             
 
 
 
