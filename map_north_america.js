@@ -43,6 +43,7 @@ var tooltip_object = function(){
                           date: String(gtdCSV[i]['imonth']) + "/" + String(gtdCSV[i]['iday']) + "/" + String(gtdCSV[i]['iyear']),
                           city: gtdCSV[i]['city'],
                           state: gtdCSV[i]['provstate'],
+                          country: gtdCSV[i]['country_txt'],
                           target: gtdCSV[i]['target1'],
                           group_name: gtdCSV[i]['gname'],
                           motive: gtdCSV[i]['motive'],
@@ -132,7 +133,23 @@ var updategraph1 = function(ds){
           .scale(350)
           .translate([width / 2, height / 2]);
 
+      var tooltip = d3.select("body").append("div")
+                      .attr("class", "tooltip")
+                      .style("opacity", 0)
 
+      var maxTooltip = function(arr){
+        var maxTip = [];
+        for(i = 0; i<arr.length; i++){
+          maxTip.push(arr[i].number_killed)
+        }
+        var maxTipOut = Math.max(...maxTip)
+        console.log(maxTipOut);
+        return maxTipOut;
+      };
+
+      var radius = d3.scale.sqrt()
+          .domain([0, maxTooltip(toolTipArray)])
+          .range([0, 3]);
 
       var path = d3.geo.path()
           .projection(projection);
@@ -185,14 +202,44 @@ var updategraph1 = function(ds){
 
         svg.selectAll("circle")
               .data(toolTipArray)
+              .sort(function(a,b) {
+                return b.number_killed - a.number_killed;
+              })
               .enter()
               .append("circle")
+              .attr("class", "bubble")
               // .attr("cy", function(d) {  console.log(projection(d)); return projection(d[0]["lon"]); })
               // .attr("cx", function(d) {  return projection(d[1]["lat"]); })
               .attr("transform", function(d) { return "translate(" + projection([d.lon,d.lat]) + ")"; })
-              .attr("r", "2px")
+              // .attr("r", "2px")
+              // .attr("r", function(d) { return d.number_killed ; })
+              .attr("r", function(d) { return radius(d.number_killed); })
               .attr("fill", "red")
-              // .on("mouseover", )
+              .on("mouseover", function(d){
+
+                        tooltip.transition()
+                                  .duration(500)
+                                  .style("opacity", .85)
+                        tooltip.html("<strong>Date: </strong>" + d.date + 
+                                    "<br><strong>City: </strong>" + d.city +
+                                    "<br><strong>State/Province: </strong>" + d.state +
+                                    "<br><strong>Country: </strong>" + d.country +
+                                    "<br><strong>Target: </strong>" + d.target +
+                                    "<br><strong>Attack Type: </strong>" + d.attack_type +
+                                    "<br><strong>Weapon Used: </strong>" + d.weapon_type +
+                                    "<br><strong>Number Killed: </strong>" + d.number_killed +
+                                    "<br><strong>Motive: </strong>" + d.Motive +
+                                    "<br><strong>Group Name: </strong>" + d.group_name +
+                                    "<br><strong>Summary: </strong>" + d.summary +
+                                    "<br><strong>Additional Notes: </strong>" + d.additional_notes)
+                                  .style("left", (d3.event.pageX) + "px")
+                                  .style("top", (d3.event.pageY - 28) + "px");
+                      })
+                      .on("mouseout", function(d){
+                        tooltip.transition()
+                                  .duration(200)
+                                  .style("opacity", 0);
+                      })
 
 };
 
