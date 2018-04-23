@@ -148,13 +148,14 @@ var updategraph1 = function(ds){
       };
 
       var radius = d3.scale.sqrt()
-          .domain([0, maxTooltip(toolTipArray)])
+          // .domain([0, maxTooltip(toolTipArray)])
+          .domain([0, 1500])
           .range([0, 3]);
 
       var path = d3.geo.path()
           .projection(projection);
 
-      var svg = d3.select("body").append("svg")
+      var svg = d3.select("body").select("#graph_north_america").append("svg")
           .attr("width", width)
           .attr("height", height)
           .attr("id", "graph_north_america");
@@ -203,7 +204,7 @@ var updategraph1 = function(ds){
         svg.selectAll("circle")
               .data(toolTipArray)
               .sort(function(a,b) {
-                return b.number_killed - a.number_killed;
+                return b.properties.number_killed - a.properties.number_killed;
               })
               .enter()
               .append("circle")
@@ -211,9 +212,9 @@ var updategraph1 = function(ds){
               // .attr("cy", function(d) {  console.log(projection(d)); return projection(d[0]["lon"]); })
               // .attr("cx", function(d) {  return projection(d[1]["lat"]); })
               .attr("transform", function(d) { return "translate(" + projection([d.lon,d.lat]) + ")"; })
-              // .attr("r", "2px")
+              .attr("r", "2px")
               // .attr("r", function(d) { return d.number_killed ; })
-              .attr("r", function(d) { return radius(d.number_killed); })
+              // .attr("r", function(d) { return radius(d.number_killed); })
               .attr("fill", "red")
               .on("mouseover", function(d){
 
