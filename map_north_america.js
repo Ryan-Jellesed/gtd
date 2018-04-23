@@ -101,7 +101,9 @@ var graph1 = function(ds){
 
         var subunits = topojson.feature(ds, ds.objects.subunits);
         
-
+        var tooltip = d3.select("body").append("div")
+                      .attr("class", "tooltip_graph")
+                      .style("opacity", 0)
 
         console.log(subunits);
         svg.append("path")
@@ -118,10 +120,12 @@ var graph1 = function(ds){
 
 };
 
-
+ var removeBubble = function(){
+  d3.selectAll(".bubble").remove();
+}
 
 var updategraph1 = function(ds){
-      
+     removeBubble();
       
       var width = 960,
           height = 500;
@@ -133,8 +137,9 @@ var updategraph1 = function(ds){
           .scale(350)
           .translate([width / 2, height / 2]);
 
-      var tooltip = d3.select("body").append("div")
-                      .attr("class", "tooltip")
+      var tooltip = d3.select("body").select(".tooltip_graph")
+                      // .append("div")
+                      // .attr("class", "tooltip")
                       .style("opacity", 0)
 
       var maxTooltip = function(arr){
@@ -155,10 +160,11 @@ var updategraph1 = function(ds){
       var path = d3.geo.path()
           .projection(projection);
 
-      var svg = d3.select("body").select("#graph_north_america").append("svg")
+      var svg = d3.select("body").select("#graph_north_america")
+          .append("svg")
           .attr("width", width)
-          .attr("height", height)
-          .attr("id", "graph_north_america");
+          .attr("height", height);
+          // .attr("id", "graph_north_america");
         // .append("svg")
         //   .attr("width", width)
         //   .attr("height", height);
@@ -206,9 +212,11 @@ var updategraph1 = function(ds){
               .sort(function(a,b) {
                 return b.properties.number_killed - a.properties.number_killed;
               })
+
               .enter()
               .append("circle")
               .attr("class", "bubble")
+
               // .attr("cy", function(d) {  console.log(projection(d)); return projection(d[0]["lon"]); })
               // .attr("cx", function(d) {  return projection(d[1]["lat"]); })
               .attr("transform", function(d) { return "translate(" + projection([d.lon,d.lat]) + ")"; })
