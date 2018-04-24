@@ -60,10 +60,10 @@ var graph1 = function(ds){
           height = 500;
 
       var projection = d3.geo.albers()
-          .center([0, 15])
-          .rotate([75, 0])
-          .parallels([5,30])
-          .scale(1150)
+          .center([0, 40])
+          .rotate([280, 0])
+          .parallels([30,50])
+          .scale(600)
           .translate([width / 2, height / 2]);
       
       var path = d3.geo.path()
@@ -113,7 +113,7 @@ var updategraph1 = function(ds){
           .center([-20, 40])
           .rotate([4.4, 0])
           .parallels([50,60])
-          .scale(350)
+          .scale(200)
           .translate([width / 2, height / 2]);
 
       var tooltip = d3.select("body").select(".tooltip_graph")
@@ -209,7 +209,7 @@ var updategraph1 = function(ds){
 
 var mapDs = [];
   // d3.json("north_america.json", function(error, ds) {
-  d3.json("central_america_topo.json", function(error, ds) {
+  d3.json("central_asia_topo.json", function(error, ds) {
     if (error) return console.error(error);
     
       var mapDs = ds;
