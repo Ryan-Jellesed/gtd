@@ -1,58 +1,6 @@
-
-
-
-
-  var margin = {top: 40, right: 100, bottom: 50, left: 100},
+ var margin = {top: 40, right: 100, bottom: 50, left: 100},
       width = 960 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
-
-  /*
-    Start building the graphing functions
-   */
-
- 
-  // var buildLine = function(ds){
-
-  //   var minDate = getDate(ds[0].date);
-
-  //   var maxDate = getDate(ds[ds.length-1].date);
-
-  //   console.log("min date: " + minDate);
-  //   console.log("max date: " + maxDate);
-
-  //   var tooltip = d3.select('body').append("div")
-  //                     .attr("class", "tooltip")
-  //                     .style("opacity", 0)
-
-  //   // scales
-  //   var xScale = d3.time.scale()
-  //                         .domain([minDate, maxDate])
-  //                         .range([0, width]);
-
-  //   var yScale = d3.scale.linear()
-  //                           .domain([0, d3.max(ds. function(d){ return d.count; })])
-  //                           .range([height, 0])
-  //                           .nice();
-
-  //   // Axis
-  //   var xAxis = d3.svg.axis()
-  //                       .scale(xScale)
-  //                       .orient("bottom")
-  //                       .innerTickSize(-height)
-  //                       .outerTickSize(0)
-  //                       .tickPadding(10)
-  //                       .tickFormat(d3.time.format("%b"));
-
-  //   var yAxis = d3.svg.axis()
-  //       .scale(yScale)
-  //       .orient("left")
-  //       .innerTickSize(-width)
-  //       .outerTickSize(0)
-  //       .tickPadding(10);
-
-
-  // }
-
 
   var buildLineYear = function(data) {
 
@@ -237,7 +185,6 @@
                                   .style("opacity", 0);
                       })
 
-
       svg.append("text")
             .attr("x", (width /2 ))
             .attr("y", 0 - (margin.top / 5))
@@ -366,32 +313,12 @@
                       });                     
   };
 
-// var obj = new Object();
-//    obj.name = "Raj";
-//    obj.age  = 32;
-//    obj.married = false;
-//    var jsonString= JSON.stringify(obj);
-
-// var jsonString = JSON.stringify(ds2);
-
-// JSON.parse(jsonString);
-// decodedData = JSON.parse(jsonString);
-
-// decodedData.contents.forEach(function(ds){
-//   console.log(ds);
-// })
-
-
-
-  
-
-
 
   /*
-    Load the whole gtd dataset in JSON format
+    Load the whole gtd dataset in csv format
    */
-  var gtdJSON = [];
-  d3.json("large_data/gtd.json", function(error, data){
+  var gtdCSV = [];
+  d3.csv("large_data/gtdMini.csv", function(error, data){
 
     if(error){
       console.log(error);
@@ -399,14 +326,14 @@
       // console.log("************************************************");
       // console.log("Loaded the GTD full Dataset!!!");
       // console.log(data.contents);
-      // gtdJSON = data;
+      // gtdCSV = data;
       // console.log("************************************************\n\n\n\n");
     
-      console.log("*******    gtdJSON = GTD full dataset      *******");
-      data.contents.forEach(function(contents){
-        gtdJSON.push(contents);
+      console.log("*******    gtdCSV = GTD full dataset      *******");
+      data.forEach(function(contents){
+        gtdCSV.push(contents);
       });
-      console.log(gtdJSON);
+      console.log(gtdCSV);
       console.log("**************************************************\n\n\n\n");
 
     }
@@ -474,6 +401,58 @@
       d3.select("#year-option")
           .on("change", function(d,i){
 
+            regionLatLon();          
+            // updategraph1(mapDs);
+            if(regionSelected === "Australasia & Oceania"){
+              update_australasia_map(australasia_ds);
+              mapDs = australasia_ds;
+
+            } else if(regionSelected === "North America"){
+              update_north_america_map(north_america_ds);
+              mapDs = north_america_ds;
+
+            } else if(regionSelected === "Central America & Caribbean"){
+              update_central_america_map(central_america_ds);
+              mapDs = central_america_ds;
+
+            } else if(regionSelected === "Central Asia"){
+              update_central_asia_map(central_asia_ds);
+              mapDs = central_asia_ds;
+
+            } else if(regionSelected === "East Asia"){
+              update_east_asia_map(east_asia_ds);
+              mapDs = east_asia_ds;
+
+            } else if(regionSelected === "Eastern Europe"){
+              update_eastern_europe_map(eastern_europe_ds);
+              mapDs = eastern_europe_ds;
+            
+            } else if(regionSelected === "Middle East & North Africa"){
+              update_middle_east_and_north_africa_map(middle_east_and_north_africa_ds);
+              mapDs = middle_east_and_north_africa_ds;
+
+            } else if(regionSelected === "South America"){
+              update_south_america_map(south_america_ds);
+              mapDs = south_america_ds;
+
+            } else if(regionSelected === "South Asia"){
+              update_south_asia_map(south_asia_ds);
+              mapDs = south_asia_ds;
+
+            } else if(regionSelected === "Southeast Asia"){
+              update_southeast_asia_map(southeast_asia_ds);
+              mapDs = southeast_asia_ds;
+
+            } else if(regionSelected === "Sub-Saharan Africa"){
+              update_sub_saharan_africa_map(sub_saharan_africa_ds);
+              mapDs = sub_saharan_africa_ds;
+
+            } else if(regionSelected === "Western Europe"){
+              update_western_europe_map(western_europe_ds);
+              mapDs = western_europe_ds;
+            }
+           
+            
             //get selected option
             var selYear = d3.select('#year-option').node().value;
             var selDate = d3.select("#date-option").node().value;
@@ -580,9 +559,6 @@
             } 
       });
 
-
-    
-
     // #####################
 
       d3.select("#month-option")
@@ -634,10 +610,7 @@
       d3.select("#year2-option")
           .on("change", function(d,i) {
 
-
-
           });
-
 
   // d3.json("https://api.github.com/repos/Ryan-Jellesed/gtd/contents/jsonFiles/attacksByYear.json", function(error, data) {
   d3.json("jsonFiles/attacksByYear.json", function(error, data) {
@@ -648,15 +621,12 @@
        // console.log(data); //we're golden!
        
     }
-
       // var decodedData = JSON.parse(window.atob(data.content));
       var decodedData = data.content;
 
       attacksByYear = decodedData;
       return(attacksByYear);
   });
-
-
 });
 
 
@@ -728,7 +698,6 @@ var compareYears = function () {
   }
 };
 
-
 // gets the value that is in the rendered html not the value="" from within the tag
 function getOptionIndexValue(sel){
         selected = sel.options[sel.selectedIndex].text;
@@ -742,8 +711,6 @@ function insertCountry(sel) {
   selectedCountry = selected;
   document.getElementById("data1").innerHTML = selectedCountry;
 }
-
-
 
 /*
   this function gets the iso county code and year value from the selection option in the html and 
@@ -800,16 +767,11 @@ function insertCountry(sel) {
 //   }
 // }
 
-
 function clearInputs() {
   document.getElementById("data1").innerHTML = " _____ ";
   document.getElementById("gdp").innerHTML = " _____ ";
   document.getElementById("population-total").innerHTML = "  _____  ";
 }
-
-
-
-
 
 // function selectNorthAmericaCountryCode() {
 
@@ -882,7 +844,7 @@ function selectCCode() {
   // selectCountryYear = document.getElementById("year-option").value;
 
   // console.log(selectCountryISO);
-  if(CCode === '99' || CCode === "cs" || YCode === "99") {
+  if(CCode === '99' || CCode === "cs" || CCode === "va" || YCode === "99") {
     document.getElementById("gdp").innerHTML = " _____ ";
     document.getElementById("population-total").innerHTML = "  _____  ";
   } else {
@@ -924,8 +886,6 @@ function selectCCode() {
 
   }
 }
-
-
 
  // var width = 960,
  //      height = 500;
@@ -977,30 +937,31 @@ var selectRegion = function(sel){
 };
 
 // this code block will set up an array of lat lon value to be used in plotting on the map
-// it iterates over the gtdJSON file and pushes the lat lon data to the new array 
-// latLonArray = [];
+// it iterates over the gtdCSV file and pushes the lat lon data to the new array 
+latLonArray = [];
 var regionLatLon = function(){
-  var latLonArray = [];
+  // var latLonArray = [];
   var selectedYear = document.getElementById("year-option").value;
+  latLonArray = [];
   // var selectedRegion = document.getElementById("regions_all").value;
-  for(i = 0; i < gtdJSON.length; i++){
+  for(i = 0; i < gtdCSV.length; i++){
 
-    if(gtdJSON[i]['iyear'] === selectedYear & gtdJSON[i]['latitude'] !== "" & gtdJSON[i]['region_txt'] === regionSelected) {
+    if(gtdCSV[i]['iyear'] === selectedYear & gtdCSV[i]['latitude'] !== "" & gtdCSV[i]['region_txt'] === regionSelected) {
       latLonArray.push({
-                      lon: parseFloat(gtdJSON[i]['longitude']),
-                      lat: parseFloat(gtdJSON[i]['latitude']),
-                      date: String(gtdJSON[i]['imonth']) + "/" + String(gtdJSON[i]['iday']) + "/" + String(gtdJSON[i]['iyear']),
-                      country: gtdJSON[i]['country_txt'],
-                      city: gtdJSON[i]['city'],
-                      state: gtdJSON[i]['provstate'],
-                      target: gtdJSON[i]['target1'],
-                      group_name: gtdJSON[i]['gname'],
-                      motive: gtdJSON[i]['motive'],
-                      attack_type: gtdJSON[i]['attacktype1_txt'],
-                      weapon_type: gtdJSON[i]['weaptype1_txt'],
-                      number_killed: gtdJSON[i]['nkill'],
-                      summary: gtdJSON[i]['summary'],
-                      additional_notes: gtdJSON[i]['addnotes']
+                      lon: parseFloat(gtdCSV[i]['longitude']),
+                      lat: parseFloat(gtdCSV[i]['latitude']),
+                      date: String(gtdCSV[i]['imonth']) + "/" + String(gtdCSV[i]['iday']) + "/" + String(gtdCSV[i]['iyear']),
+                      country: gtdCSV[i]['country_txt'],
+                      city: gtdCSV[i]['city'],
+                      state: gtdCSV[i]['provstate'],
+                      target: gtdCSV[i]['target1'],
+                      group_name: gtdCSV[i]['gname'],
+                      motive: gtdCSV[i]['motive'],
+                      attack_type: gtdCSV[i]['attacktype1_txt'],
+                      weapon_type: gtdCSV[i]['weaptype1_txt'],
+                      number_killed: gtdCSV[i]['nkill'],
+                      summary: gtdCSV[i]['summary'],
+                      additional_notes: gtdCSV[i]['addnotes']
                 });
     }
   };
@@ -1008,16 +969,686 @@ var regionLatLon = function(){
   return latLonArray;
 };
 
-d3.select('id', 'regions_all')
-    . on('change', function(d,i) {
+// d3.select('id', 'regions_all')
+//     .on('change', function(d,i) {
 
-      regionLatLon();
+//       regionLatLon();
 
-  }); 
-
-
+//   }); 
 
 
+
+
+
+var graph1 = function(ds){
+      
+      var width = 960,
+          height = 500;
+
+      var projection = d3.geo.albers()
+          .center([-20, 40])
+          // .rotate([4.4, 0])
+          .parallels([50,60])
+          .scale(350)
+          .translate([width / 2, height / 2]);
+      
+      var path = d3.geo.path()
+          .projection(projection);
+
+      var svg = d3.select("body").append("svg")
+          .attr("width", width)
+          .attr("height", height)
+          .attr("id", "graph_north_america")
+          .attr("class", "map");
+        // .append("svg")
+        //   .attr("width", width)
+        //   .attr("height", height);
+
+        var subunits = topojson.feature(ds, ds.objects.subunits);
+        
+        var tooltip = d3.select("body").append("div")
+                      .attr("class", "tooltip")
+                      .style("opacity", 0)
+
+        console.log(subunits);
+        svg.append("path")
+              .datum(subunits)
+              .attr("d", path);
+
+        svg.selectAll(".subunit")
+              .data(topojson.feature(ds, ds.objects.subunits).features)
+            .enter().append("path")
+              .attr("class", function(d) { return "subunit " + d.id; })
+              .attr("d", path);
+
+      
+
+};
+
+var removeBubble = function(){
+  d3.selectAll(".bubble").remove();
+}
+
+var updategraph1 = function(ds){
+     removeBubble();
+      
+      var width = 960,
+          height = 500;
+
+      var projection = d3.geo.albers()
+          .center([-20, 40])
+          // .rotate([4.4, 0])
+          .parallels([50,60])
+          .scale(350)
+          .translate([width / 2, height / 2]);
+
+      var tooltip = d3.select("body").select(".tooltip")
+                      // .append("div")
+                      // .attr("class", "tooltip")
+                      .style("opacity", 0)
+
+      var maxTooltip = function(arr){
+        var maxTip = [];
+        for(i = 0; i<arr.length; i++){
+          maxTip.push(arr[i].number_killed)
+        }
+        var maxTipOut = Math.max(...maxTip)
+        console.log(maxTipOut);
+        return maxTipOut;
+      };
+
+      var radius = d3.scale.sqrt()
+          // .domain([0, maxTooltip(toolTipArray)])
+          .domain([0, 1500])
+          .range([0, 3]);
+
+      var path = d3.geo.path()
+          .projection(projection);
+
+      var svg = d3.select("body").select("#graph_north_america")
+          .append("svg")
+          .attr("width", width)
+          .attr("height", height)
+          .attr("class", "map");
+          // .attr("id", "graph_north_america");
+        // .append("svg")
+        //   .attr("width", width)
+        //   .attr("height", height);
+
+        var subunits = topojson.feature(ds, ds.objects.subunits);
+
+        console.log(subunits);
+        svg.append("path")
+              .datum(subunits)
+              .attr("d", path);
+
+        svg.selectAll(".subunit")
+              .data(topojson.feature(ds, ds.objects.subunits).features)
+            .enter().append("path")
+              .attr("class", function(d) { return "subunit " + d.id; })
+              .attr("d", path);
+
+        svg.selectAll("circle")
+              .data(latLonArray)
+              .sort(function(a,b) {
+                return b.properties.number_killed - a.properties.number_killed;
+              })
+
+              .enter()
+              .append("circle")
+              .attr("class", "bubble")
+
+              // .attr("cy", function(d) {  console.log(projection(d)); return projection(d[0]["lon"]); })
+              // .attr("cx", function(d) {  return projection(d[1]["lat"]); })
+              .attr("transform", function(d) { return "translate(" + projection([d.lon,d.lat]) + ")"; })
+              .attr("r", "2px")
+              // .attr("r", function(d) { return d.number_killed ; })
+              // .attr("r", function(d) { return radius(d.number_killed); })
+              .attr("fill", "red")
+              .on("mouseover", function(d){
+
+                        tooltip.transition()
+                                  .duration(500)
+                                  .style("opacity", .85)
+                        tooltip.html("<strong>Date: </strong>" + d.date + 
+                                    "<br><strong>City: </strong>" + d.city +
+                                    "<br><strong>State/Province: </strong>" + d.state +
+                                    "<br><strong>Country: </strong>" + d.country +
+                                    "<br><strong>Target: </strong>" + d.target +
+                                    "<br><strong>Attack Type: </strong>" + d.attack_type +
+                                    "<br><strong>Weapon Used: </strong>" + d.weapon_type +
+                                    "<br><strong>Number Killed: </strong>" + d.number_killed +
+                                    "<br><strong>Motive: </strong>" + d.Motive +
+                                    "<br><strong>Group Name: </strong>" + d.group_name +
+                                    "<br><strong>Summary: </strong>" + d.summary +
+                                    "<br><strong>Additional Notes: </strong>" + d.additional_notes)
+                                  .style("left", (d3.event.pageX) + "px")
+                                  .style("top", (d3.event.pageY - 28) + "px");
+                      })
+                      .on("mouseout", function(d){
+                        tooltip.transition()
+                                  .duration(200)
+                                  .style("opacity", 0);
+                      })
+
+};
+
+
+
+var australasia_map = function(ds){
+  // var graph1 = function(ds){
+      
+      var width = 960,
+          height = 500;
+
+      var projection = d3.geo.albers()
+          .center([0, -155])
+          .rotate([-150, 0])
+          .parallels([0,-60])
+          .scale(500)
+          .translate([width / 2, height / 2]);
+      
+      var path = d3.geo.path()
+          .projection(projection);
+
+      var svg = d3.select("body").append("svg")
+          .attr("width", width)
+          .attr("height", height)
+          .attr("id", "graph_australasia")
+          .attr("class", "map");
+        // .append("svg")
+        //   .attr("width", width)
+        //   .attr("height", height);
+
+        var subunits = topojson.feature(ds, ds.objects.subunits);
+        
+        var tooltip = d3.select("body").append("div")
+                      .attr("class", "tooltip_graph")
+                      .style("opacity", 0)
+
+        console.log(subunits);
+        svg.append("path")
+              .datum(subunits)
+              .attr("d", path);
+
+        svg.selectAll(".subunit")
+              .data(topojson.feature(ds, ds.objects.subunits).features)
+            .enter().append("path")
+              .attr("class", function(d) { return "subunit " + d.id; })
+              .attr("d", path);     
+
+  };
+
+var update_australasia_map = function(ds){
+ removeBubble();
+  
+  var width = 960,
+      height = 500;
+
+  var projection = d3.geo.albers()
+      .center([0, -155])
+      .rotate([-150, 0])
+      .parallels([0,-60])
+      .scale(500)
+      .translate([width / 2, height / 2]);
+
+  var tooltip = d3.select("body").select(".tooltip")
+                  // .append("div")
+                  // .attr("class", "tooltip")
+                  .style("opacity", 0)
+
+  var maxTooltip = function(arr){
+    var maxTip = [];
+    for(i = 0; i<arr.length; i++){
+      maxTip.push(arr[i].number_killed)
+    }
+    var maxTipOut = Math.max(...maxTip)
+    console.log(maxTipOut);
+    return maxTipOut;
+  };
+
+  var radius = d3.scale.sqrt()
+      // .domain([0, maxTooltip(toolTipArray)])
+      .domain([0, 1500])
+      .range([0, 3]);
+
+  var path = d3.geo.path()
+      .projection(projection);
+
+  var svg = d3.select("body").select("#graph_australasia")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("class", "map");
+      // .attr("id", "graph_north_america");
+    // .append("svg")
+    //   .attr("width", width)
+    //   .attr("height", height);
+
+    var subunits = topojson.feature(ds, ds.objects.subunits);
+
+    console.log(subunits);
+    svg.append("path")
+          .datum(subunits)
+          .attr("d", path);
+
+    svg.selectAll(".subunit")
+          .data(topojson.feature(ds, ds.objects.subunits).features)
+        .enter().append("path")
+          .attr("class", function(d) { return "subunit " + d.id; })
+          .attr("d", path);
+
+    svg.selectAll("circle")
+          .data(latLonArray)
+          .sort(function(a,b) {
+            return b.properties.number_killed - a.properties.number_killed;
+          })
+
+          .enter()
+          .append("circle")
+          .attr("class", "bubble")
+
+          // .attr("cy", function(d) {  console.log(projection(d)); return projection(d[0]["lon"]); })
+          // .attr("cx", function(d) {  return projection(d[1]["lat"]); })
+          .attr("transform", function(d) { return "translate(" + projection([d.lon,d.lat]) + ")"; })
+          .attr("r", "4px")
+          // .attr("r", function(d) { return d.number_killed ; })
+          // .attr("r", function(d) { return radius(d.number_killed); })
+          .attr("fill", "red")
+          .on("mouseover", function(d){
+
+                    tooltip.transition()
+                              .duration(500)
+                              .style("opacity", .85)
+                    tooltip.html("<strong>Date: </strong>" + d.date + 
+                                "<br><strong>City: </strong>" + d.city +
+                                "<br><strong>State/Province: </strong>" + d.state +
+                                "<br><strong>Country: </strong>" + d.country +
+                                "<br><strong>Target: </strong>" + d.target +
+                                "<br><strong>Attack Type: </strong>" + d.attack_type +
+                                "<br><strong>Weapon Used: </strong>" + d.weapon_type +
+                                "<br><strong>Number Killed: </strong>" + d.number_killed +
+                                "<br><strong>Motive: </strong>" + d.Motive +
+                                "<br><strong>Group Name: </strong>" + d.group_name +
+                                "<br><strong>Summary: </strong>" + d.summary +
+                                "<br><strong>Additional Notes: </strong>" + d.additional_notes)
+                              .style("left", (d3.event.pageX) + "px")
+                              .style("top", (d3.event.pageY - 28) + "px");
+                  })
+                  .on("mouseout", function(d){
+                    tooltip.transition()
+                              .duration(200)
+                              .style("opacity", 0);
+                  })
+  };
+
+var north_america_map = function(ds){
+      
+  var width = 960,
+      height = 500;
+
+  var projection = d3.geo.albers()
+      .center([-20, 40])
+      // .rotate([4.4, 0])
+      .parallels([50,60])
+      .scale(350)
+      .translate([width / 2, height / 2]);
+  
+  var path = d3.geo.path()
+      .projection(projection);
+
+  var svg = d3.select("body").append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("id", "graph_north_america")
+      .attr("class", "map");
+    // .append("svg")
+    //   .attr("width", width)
+    //   .attr("height", height);
+
+    var subunits = topojson.feature(ds, ds.objects.subunits);
+    
+    var tooltip = d3.select("body").append("div")
+                  .attr("class", "tooltip")
+                  .style("opacity", 0)
+
+    console.log(subunits);
+    svg.append("path")
+          .datum(subunits)
+          .attr("d", path);
+
+    svg.selectAll(".subunit")
+          .data(topojson.feature(ds, ds.objects.subunits).features)
+        .enter().append("path")
+          .attr("class", function(d) { return "subunit " + d.id; })
+          .attr("d", path);   
+  };
+
+var update_north_america_map = function(ds){
+ removeBubble();
+  
+  var width = 960,
+      height = 500;
+
+  var projection = d3.geo.albers()
+      .center([-20, 40])
+      // .rotate([4.4, 0])
+      .parallels([50,60])
+      .scale(350)
+      .translate([width / 2, height / 2]);
+
+  var tooltip = d3.select("body").select(".tooltip")
+                  // .append("div")
+                  // .attr("class", "tooltip")
+                  .style("opacity", 0)
+
+  var maxTooltip = function(arr){
+    var maxTip = [];
+    for(i = 0; i<arr.length; i++){
+      maxTip.push(arr[i].number_killed)
+    }
+    var maxTipOut = Math.max(...maxTip)
+    console.log(maxTipOut);
+    return maxTipOut;
+  };
+
+  var radius = d3.scale.sqrt()
+      // .domain([0, maxTooltip(toolTipArray)])
+      .domain([0, 1500])
+      .range([0, 3]);
+
+  var path = d3.geo.path()
+      .projection(projection);
+
+  var svg = d3.select("body").select("#graph_north_america")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("class", "map");
+      // .attr("id", "graph_north_america");
+    // .append("svg")
+    //   .attr("width", width)
+    //   .attr("height", height);
+
+    var subunits = topojson.feature(ds, ds.objects.subunits);
+
+    console.log(subunits);
+    svg.append("path")
+          .datum(subunits)
+          .attr("d", path);
+
+    svg.selectAll(".subunit")
+          .data(topojson.feature(ds, ds.objects.subunits).features)
+        .enter().append("path")
+          .attr("class", function(d) { return "subunit " + d.id; })
+          .attr("d", path);
+
+    svg.selectAll("circle")
+          .data(latLonArray)
+          .sort(function(a,b) {
+            return b.properties.number_killed - a.properties.number_killed;
+          })
+
+          .enter()
+          .append("circle")
+          .attr("class", "bubble")
+
+          // .attr("cy", function(d) {  console.log(projection(d)); return projection(d[0]["lon"]); })
+          // .attr("cx", function(d) {  return projection(d[1]["lat"]); })
+          .attr("transform", function(d) { return "translate(" + projection([d.lon,d.lat]) + ")"; })
+          // .attr("r", function(d) { return d.number_killed ; })
+          // .attr("r", function(d) { return radius(d.number_killed); })
+          .attr("fill", "red")
+          .on("mouseover", function(d){
+
+                    tooltip.transition()
+                              .duration(500)
+                              .style("opacity", .85)
+                    tooltip.html("<strong>Date: </strong>" + d.date + 
+                                "<br><strong>City: </strong>" + d.city +
+                                "<br><strong>State/Province: </strong>" + d.state +
+                                "<br><strong>Country: </strong>" + d.country +
+                                "<br><strong>Target: </strong>" + d.target +
+                                "<br><strong>Attack Type: </strong>" + d.attack_type +
+                                "<br><strong>Weapon Used: </strong>" + d.weapon_type +
+                                "<br><strong>Number Killed: </strong>" + d.number_killed +
+                                "<br><strong>Motive: </strong>" + d.Motive +
+                                "<br><strong>Group Name: </strong>" + d.group_name +
+                                "<br><strong>Summary: </strong>" + d.summary +
+                                "<br><strong>Additional Notes: </strong>" + d.additional_notes)
+                              .style("left", (d3.event.pageX) + "px")
+                              .style("top", (d3.event.pageY - 28) + "px");
+                  })
+                  .on("mouseout", function(d){
+                    tooltip.transition()
+                              .duration(200)
+                              .style("opacity", 0);
+                  })
+
+  };
+
+var central_america_map = function(ds){
+      
+  var width = 960,
+      height = 500;
+
+  var projection = d3.geo.albers()
+      .center([0, 15])
+      .rotate([75, 0])
+      .parallels([5,30])
+      .scale(1150)
+      .translate([width / 2, height / 2]);
+  
+  var path = d3.geo.path()
+      .projection(projection);
+
+  var svg = d3.select("body").append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("id", "graph_central_america")
+      .attr("class", "map");
+    // .append("svg")
+    //   .attr("width", width)
+    //   .attr("height", height);
+
+    var subunits = topojson.feature(ds, ds.objects.subunits);
+    
+    var tooltip = d3.select("body").append("div")
+                  .attr("class", "tooltip_graph")
+                  .style("opacity", 0)
+
+    console.log(subunits);
+    svg.append("path")
+          .datum(subunits)
+          .attr("d", path);
+
+    svg.selectAll(".subunit")
+          .data(topojson.feature(ds, ds.objects.subunits).features)
+        .enter().append("path")
+          .attr("class", function(d) { return "subunit " + d.id; })
+          .attr("d", path);
+  };
+
+var update_central_america_map = function(ds){
+ removeBubble();
+  
+  var width = 960,
+      height = 500;
+
+  var projection = d3.geo.albers()
+      .center([0, 15])
+      .rotate([75, 0])
+      .parallels([5,30])
+      .scale(1150)
+      .translate([width / 2, height / 2]);
+
+  var tooltip = d3.select("body").select(".tooltip")
+                  // .append("div")
+                  // .attr("class", "tooltip")
+                  .style("opacity", 0)
+
+  var maxTooltip = function(arr){
+    var maxTip = [];
+    for(i = 0; i<arr.length; i++){
+      maxTip.push(arr[i].number_killed)
+    }
+    var maxTipOut = Math.max(...maxTip)
+    console.log(maxTipOut);
+    return maxTipOut;
+  };
+
+  var radius = d3.scale.sqrt()
+      // .domain([0, maxTooltip(toolTipArray)])
+      .domain([0, 1500])
+      .range([0, 3]);
+
+  var path = d3.geo.path()
+      .projection(projection);
+
+  var svg = d3.select("body").select("#graph_central_america")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("class", "map");
+      // .attr("id", "graph_north_america");
+    // .append("svg")
+    //   .attr("width", width)
+    //   .attr("height", height);
+
+    var subunits = topojson.feature(ds, ds.objects.subunits);
+
+    console.log(subunits);
+    svg.append("path")
+          .datum(subunits)
+          .attr("d", path);
+
+    svg.selectAll(".subunit")
+          .data(topojson.feature(ds, ds.objects.subunits).features)
+        .enter().append("path")
+          .attr("class", function(d) { return "subunit " + d.id; })
+          .attr("d", path);
+
+    svg.selectAll("circle")
+          .data(latLonArray)
+          .sort(function(a,b) {
+            return b.properties.number_killed - a.properties.number_killed;
+          })
+
+          .enter()
+          .append("circle")
+          .attr("class", "bubble")
+
+          // .attr("cy", function(d) {  console.log(projection(d)); return projection(d[0]["lon"]); })
+          // .attr("cx", function(d) {  return projection(d[1]["lat"]); })
+          .attr("transform", function(d) { return "translate(" + projection([d.lon,d.lat]) + ")"; })
+          .attr("r", "2px")
+          // .attr("r", function(d) { return d.number_killed ; })
+          // .attr("r", function(d) { return radius(d.number_killed); })
+          .attr("fill", "red")
+          .on("mouseover", function(d){
+
+                    tooltip.transition()
+                              .duration(500)
+                              .style("opacity", .85)
+                    tooltip.html("<strong>Date: </strong>" + d.date + 
+                                "<br><strong>City: </strong>" + d.city +
+                                "<br><strong>State/Province: </strong>" + d.state +
+                                "<br><strong>Country: </strong>" + d.country +
+                                "<br><strong>Target: </strong>" + d.target +
+                                "<br><strong>Attack Type: </strong>" + d.attack_type +
+                                "<br><strong>Weapon Used: </strong>" + d.weapon_type +
+                                "<br><strong>Number Killed: </strong>" + d.number_killed +
+                                "<br><strong>Motive: </strong>" + d.Motive +
+                                "<br><strong>Group Name: </strong>" + d.group_name +
+                                "<br><strong>Summary: </strong>" + d.summary +
+                                "<br><strong>Additional Notes: </strong>" + d.additional_notes)
+                              .style("left", (d3.event.pageX) + "px")
+                              .style("top", (d3.event.pageY - 28) + "px");
+                  })
+                  .on("mouseout", function(d){
+                    tooltip.transition()
+                              .duration(200)
+                              .style("opacity", 0);
+                  })
+  };
+
+
+
+
+
+
+
+var north_america_ds = [];
+d3.json("north_america.json", function(error, ds) {
+    if (error) return console.error(error);
+    north_america_ds = ds;
+  });
+
+var australasia_ds = [];
+d3.json("australasia_and_oceania_topo.json", function(error, ds) {
+    if (error) return console.error(error);
+    australasia_ds = ds;
+  });
+
+var central_america_ds = [];
+d3.json("central_america_topo.json", function(error, ds) {
+    if (error) return console.error(error);
+    central_america_ds = ds;
+  });
+
+
+
+
+
+var mapDs = [];
+d3.select("#regions_all")
+    .on("change", function(){
+
+      d3.selectAll(".map").remove();
+      if(regionSelected === "Australasia & Oceania"){
+          australasia_map(australasia_ds);
+          mapDs = australasia_ds;
+        } else if(regionSelected === "North America"){
+          north_america_map(north_america_ds);
+          mapDs = north_america_ds;
+        } else if(regionSelected === "Central America & Caribbean")
+          central_america_map(central_america_ds);
+          mapDs = central_america_ds;
+    });
+
+// d3.select("#year-option")
+//     .on("change", function(){
+
+//       if(regionSelected === "Australasia & Oceania"){
+//           update_australasia_map(australasia_ds);
+//           mapDs = australasia_ds;
+//         } else if(regionSelected === "North America"){
+//           north_america_map(north_america_ds);
+//           mapDs = north_america_ds;
+//         }
+
+//     })
+  
+      
+    // d3.select("#regions_all")
+    //     .on("change", function(){
+
+        
+    //     mapDs = ds;
+          
+    //     });
+
+      
+      // console.log(ds);
+
+      // graph1(ds);
+
+      // d3.select("#year-option")
+      //      .on("change", function(d,i){
+
+             // regionLatLon();          
+             // updategraph1(ds);
+      //   });
 
 
 

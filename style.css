@@ -18,6 +18,51 @@
     display:  none;
   }
 
+  .subunit.AUA { fill: #ddc; }
+  .subunit.AUM { fill: #ddc; }
+  .subunit.AUZ { fill: #ddc; }
+  .subunit.FJI { fill: #33a02c; }
+  .subunit.NCL { fill: #fb9a99; }
+  .subunit.NZA { fill: #cdc; }
+  .subunit.NZS { fill: #cdc; }
+  .subunit.NZC { fill: #cdc; }
+  .subunit.NZK { fill: #cdc; }
+  .subunit.NZN { fill: #cdc; }
+  .subunit.NZA { fill: #fdbf6f; }
+  .subunit.PNX { fill: #cdd; }
+  .subunit.PNB { fill: #cdd; }
+  .subunit.PNX { fill: #cdd; }
+  .subunit.PYF { fill: #cdd; }
+  .subunit.SLB { fill: #e31a1c; }
+  .subunit.TKL { fill: #6acd9a; }
+  .subunit.VUT { fill: #b15928; }
+  .subunit.WLF { fill: #1f78b4; }
+
+
+  /* Central America Countries */
+  .subunit.ACA { fill: #ddc; }
+  .subunit.ACB { fill: #cdd; }
+  .subunit.BHS { fill: #cdc; }
+  .subunit.BLZ { fill: #ddc; }
+  .subunit.CRI { fill: #cdd; }
+  .subunit.CUB { fill: #cdc; }
+  .subunit.CYM { fill: #ddc; }
+  .subunit.DMA { fill: #cdd; }
+  .subunit.DOM { fill: #cdc; }
+  .subunit.GRD { fill: #ddc; }
+  .subunit.GTM { fill: #cdd; }
+  .subunit.HND { fill: #cdc; }
+  .subunit.HTI { fill: #ddc; }
+  .subunit.JAM { fill: #cdd; }
+  .subunit.KNA { fill: #cdc; }
+  .subunit.LCA { fill: #ddc; }
+  .subunit.NIC { fill: #cdd; }
+  .subunit.PAN { fill: #cdc; }
+  .subunit.SLV { fill: #ddc; }
+  .subunit.TTD { fill: #cdd; }
+  .subunit.TTG { fill: #cdc; }
+
+
 
 /* Some default styles to make each box visible  */
 .box {

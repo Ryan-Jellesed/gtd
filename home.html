@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="style.css" type="text/css">
   <style>
       
-.subunit.USB { 
+/* .subunit.USB { 
       fill: #ddc; 
     }
     .subunit.USK { 
@@ -19,7 +19,7 @@
       fill: #cdd; 
     }
     .subunit.MEX { 
-      fill: #cdc; }
+      fill: #cdc; } */
 
       #region2 {
         display:  none;
@@ -288,21 +288,21 @@
     </p>
 </div>
 
-<select size="1" id="regions_all" title="" name="regions_all" onchange="clearInputs(); selectRegion(this);">
+<select size="1" id="regions_all" title="" name="regions_all" onchange="clearInputs(); selectRegion(this); ">
     <option value="">-Select A Region-</option>
     <option value="all_countries">All</option>
-    <option value="north_america">North America</option>
-    <option value="central_america">Central America</option>
-    <option value="south_america">South America</option>
-    <option value="east_asia">East Asia</option>
-    <option value="southeast_asia">Southeast Asia</option>
-    <option value="south_asia">South Asia</option>
+    <option value="australasia_and_oceania">Australasia & Oceania</option>
+    <option value="central_america">Central America & Caribbean</option>
     <option value="central_asia">Central Asia</option>
-    <option value="western_europe">Western Europe</option>
+    <option value="east_asia">East Asia</option>
     <option value="eastern_europe">Eastern Europe</option>
     <option value="middle_east_and_north_africa">Middle East & North Africa</option>
+    <option value="north_america">North America</option>
+    <option value="south_america">South America</option>
+    <option value="south_asia">South Asia</option>
+    <option value="southeast_asia">Southeast Asia</option>
     <option value="sub_saharan_africa">Sub-Saharan Africa</option>
-    <option value="australasia_and_oceania">Australasia & Oceanaia</option> -->
+    <option value="western_europe">Western Europe</option>
 </select>
       
 <div class="container">
@@ -314,6 +314,36 @@
     </div>
     <div class="central_america">
         Central America
+    </div>
+    <div class="south_america">
+        South America
+    </div>
+    <div class="central_asia">
+        Central Asia
+    </div>
+    <div class="east_asia">
+        East Asia
+    </div>
+    <div class="southeast_asia">
+        Southeast Asia
+    </div>
+    <div class="south_asia">
+        South Asia
+    </div>
+    <div class="western_europe">
+        Western Europe
+    </div>
+    <div class="eastern_europe">
+        Eastern Europe
+    </div>
+    <div class="middle_east_and_north_africa">
+        MIddle East & North Africa
+    </div>
+    <div class="sub_saharan_africa">
+        Sub-Saharan Africa
+    </div>
+    <div class="australasia_and_oceania">
+        Australasia & Oceania
     </div>
 </div>
 
@@ -547,31 +577,273 @@
     <div class="central_america">
        <select onchange="setCCode(this.value); selectCCode(); insertCountry(this);">
        <!-- <select onchange="selectCentralAmericaCountryCode(); insertCountry();">  -->
-        <option value="99">All</option>
-        <option value="ag">Antigua and Barbuda</option>
-        <option value="bs">Bahamas</option>
-        <option value="bb">Barbados</option>
-        <option value="bz">Belize</option>
-        <option value="cy">Cayman Islands</option>
-        <option value="cr">Costa Rica</option>
-        <option value="cu">Cuba</option>
-        <option value="dm">Dominica</option>
-        <option value="do">Dominican Republic</option>
-        <option value="sv">El Salvador</option>
-        <option value="gd">Grenada</option>
-        <option value="gp">Guadeloupe</option>
-        <option value="gt">Guatemala</option>
-        <option value="ht">Haiti</option>
-        <option value="hn">Honduras</option>
-        <option value="jm">Jamaica</option>
-        <option value="mq">Martinique</option>
-        <option value="ni">Nicaragua</option>
-        <option value="pa">Panama</option>
-        <option value="kn">St. Kitts and Nevis</option>
-        <option value="lc">St. Lucia</option>
-        <option value="tt">Trinidad and Tobago</option>
+            <option value="99">All</option>
+            <option value="ag">Antigua and Barbuda</option>
+            <option value="bs">Bahamas</option>
+            <option value="bb">Barbados</option>
+            <option value="bz">Belize</option>
+            <option value="cy">Cayman Islands</option>
+            <option value="cr">Costa Rica</option>
+            <option value="cu">Cuba</option>
+            <option value="dm">Dominica</option>
+            <option value="do">Dominican Republic</option>
+            <option value="sv">El Salvador</option>
+            <option value="gd">Grenada</option>
+            <option value="gp">Guadeloupe</option>
+            <option value="gt">Guatemala</option>
+            <option value="ht">Haiti</option>
+            <option value="hn">Honduras</option>
+            <option value="jm">Jamaica</option>
+            <option value="mq">Martinique</option>
+            <option value="ni">Nicaragua</option>
+            <option value="pa">Panama</option>
+            <option value="kn">St. Kitts and Nevis</option>
+            <option value="lc">St. Lucia</option>
+            <option value="tt">Trinidad and Tobago</option>
         </select>
     </div>
+
+    <div class="central_asia">
+       <select onchange="setCCode(this.value); selectCCode(); insertCountry(this);">
+       <!-- <select onchange="selectCentralAmericaCountryCode(); insertCountry();">  -->
+            <option value="99">All</option>
+            <option class="Central-Asia" value="am">Armenia</option>
+            <option class="Central-Asia" value="az">Azerbaijan</option>
+            <option class="Central-Asia" value="ge">Georgia</option>
+            <option class="Central-Asia" value="kz">Kazakhstan</option>
+            <option class="Central-Asia" value="kg">Kyrgyzstan</option>
+            <option class="Central-Asia" value="tj">Tajikistan</option>
+            <option class="Central-Asia" value="tm">Turkmenistan</option>
+            <option class="Central-Asia" value="uz">Uzbekistan</option>
+        </select>
+    </div>
+    <div class="south_america">
+       <select onchange="setCCode(this.value); selectCCode(); insertCountry(this);">
+       <!-- <select onchange="selectCentralAmericaCountryCode(); insertCountry();">  -->
+            <option value="99">All</option>
+            <option class="South-America" value="ar">Argentina</option>
+            <option class="South-America" value="bo">Bolivia</option>
+            <option class="South-America" value="br">Brazil</option>
+            <option class="South-America" value="cl">Chile</option>
+            <option class="South-America" value="co">Colombia</option>
+            <option class="South-America" value="ec">Ecuador</option>
+            <option class="South-America" value="fk">Falkland Islands</option>
+            <option class="South-America" value="gf">French Guiana</option>
+            <option class="South-America" value="gy">Guyana</option>
+            <option class="South-America" value="py">Paraguay</option>
+            <option class="South-America" value="pe">Peru</option>
+            <option class="South-America" value="sr">Suriname</option>
+            <option class="South-America" value="uy">Uruguay</option>
+            <option class="South-America" value="ve">Venezuela</option>
+        </select>
+    </div>
+    <div class="east_asia">
+       <select onchange="setCCode(this.value); selectCCode(); insertCountry(this);">
+       <!-- <select onchange="selectCentralAmericaCountryCode(); insertCountry();">  -->
+            <option value="99">All</option>
+            <option class="East-Asia" value="cn">China</option>
+            <option class="East-Asia" value="hk">Hong Kong</option>
+            <option class="East-Asia" value="jp">Japan</option>
+            <option class="East-Asia" value="mo">Macau</option>
+            <option class="East-Asia" value="kp">North Korea</option>
+            <option class="East-Asia" value="kr">South Korea</option>
+            <option class="East-Asia" value="tw">Taiwan</option>
+        </select>
+    </div>
+    <div class="southeast_asia">
+       <select onchange="setCCode(this.value); selectCCode(); insertCountry(this);">
+       <!-- <select onchange="selectCentralAmericaCountryCode(); insertCountry();">  -->
+            <option value="99">All</option>
+            <option class="Southeast-Asia" value="bn">Brunei</option>
+            <option class="Southeast-Asia" value="kh">Cambodia</option>
+            <option class="Southeast-Asia" value="tl">East Timor</option>
+            <option class="Southeast-Asia" value="id">Indonesia</option>
+            <option class="Southeast-Asia" value="la">Laos</option>
+            <option class="Southeast-Asia" value="my">Malaysia</option>
+            <option class="Southeast-Asia" value="mm">Myanmar</option>
+            <option class="Southeast-Asia" value="ph">Philippines</option>
+            <option class="Southeast-Asia" value="sg">Singapore</option>
+            <option class="Southeast-Asia" value="vn">South Vietnam</option>
+            <option class="Southeast-Asia" value="th">Thailand</option>
+            <option class="Southeast-Asia" value="vn">South Vietnam</option>
+        </select>
+    </div>
+    <div class="south_asia">
+       <select onchange="setCCode(this.value); selectCCode(); insertCountry(this);">
+       <!-- <select onchange="selectCentralAmericaCountryCode(); insertCountry();">  -->
+            <option value="99">All</option>
+            <option class="South-Asia" value="af" text="Afghanistan">Afghanistan</option>
+            <option class="South-Asia" value="bd">Bangladesh</option>
+            <option class="South-Asia" value="bt">Bhutan</option>
+            <option class="South-Asia" value="in">India</option>
+            <option class="South-Asia" value="mv">Maldives</option>
+            <option class="South-Asia" value="mu">Mauritius</option>
+            <option class="South-Asia" value="np">Nepal</option>
+            <option class="South-Asia" value="pk">Pakistan</option>
+            <option class="South-Asia" value="lk">Sri Lanka</option>
+        </select>
+    </div>
+    <div class="western_europe">
+       <select onchange="setCCode(this.value); selectCCode(); insertCountry(this);">
+       <!-- <select onchange="selectCentralAmericaCountryCode(); insertCountry();">  -->
+            <option value="99">All</option>
+            <option class="Western-Europe" value="ad">Andorra</option>
+            <option class="Western-Europe" value="at">Austria</option>
+            <option class="Western-Europe" value="be">Belgium</option>
+            <option class="Western-Europe" value="cy">Cyprus</option>
+            <option class="Western-Europe" value="dk">Denmark</option>
+            <option class="Western-Europe" value="fi">Finland</option>
+            <option class="Western-Europe" value="fr">France</option>
+            <option class="Western-Europe" value="de">Germany</option>
+            <option class="Western-Europe" value="gr">Greece</option>
+            <option class="Western-Europe" value="is">Iceland</option>
+            <option class="Western-Europe" value="ie">Ireland</option>
+            <option class="Western-Europe" value="it">Italy</option>
+            <option class="Western-Europe" value="lu">Luxembourg</option>
+            <option class="Western-Europe" value="mt">Malta</option>
+            <option class="Western-Europe" value="nl">Netherlands</option>
+            <option class="Western-Europe" value="no">Norway</option>
+            <option class="Western-Europe" value="pt">Portugal</option>
+            <option class="Western-Europe" value="es">Spain</option>
+            <option class="Western-Europe" value="se">Sweden</option>
+            <option class="Western-Europe" value="ch">Switzerland</option>
+            <option class="Western-Europe" value="gb">United Kingdom</option>
+            <option class="Western-Europe" value="va">Vatican City</option>
+            <option class="Western-Europe" value="de">West Germany (FRG)</option>
+        </select>
+    </div>
+    <div class="eastern_europe">
+       <select onchange="setCCode(this.value); selectCCode(); insertCountry(this);">
+       <!-- <select onchange="selectCentralAmericaCountryCode(); insertCountry();">  -->
+            <option value="99">All</option>
+            <option class="Eastern-Europe" value="al">Albania</option>
+            <option class="Eastern-Europe" value="by">Belarus</option>
+            <option class="Eastern-Europe" value="ba">Bosnia-Herzegovina</option>
+            <option class="Eastern-Europe" value="bg">Bulgaria</option>
+            <option class="Eastern-Europe" value="hr">Croatia</option>
+            <option class="Eastern-Europe" value="cz">Czech Republic</option>
+            <option class="Eastern-Europe" value="cs">Czechoslovakia</option>
+            <option class="Eastern-Europe" value="de">East Germany (GDR)</option>
+            <option class="Eastern-Europe" value="ee">Estonia</option>
+            <option class="Eastern-Europe" value="hu">Hungary</option>
+            <option class="Eastern-Europe" value="xk">Kosovo</option>
+            <option class="Eastern-Europe" value="lv">Latvia</option>
+            <option class="Eastern-Europe" value="lt">Lithuania</option>
+            <option class="Eastern-Europe" value="mk">Macedonia</option>
+            <option class="Eastern-Europe" value="md">Moldova</option>
+            <option class="Eastern-Europe" value="me">Montenegro</option>
+            <option class="Eastern-Europe" value="pl">Poland</option>
+            <option class="Eastern-Europe" value="ro">Romania</option>
+            <option class="Eastern-Europe" value="ru">Russia</option>
+            <option class="Eastern-Europe" value="rs">Serbia</option>
+            <option class="Eastern-Europe" value="99">Serbia-Montenegro</option>
+            <option class="Eastern-Europe" value="sk">Slovak Republic</option>
+            <option class="Eastern-Europe" value="si">Slovenia</option>
+            <option class="Eastern-Europe" value="99">Soviet Union</option>
+            <option class="Eastern-Europe" value="ua">Ukraine</option>
+            <option class="Eastern-Europe" value="99">Yugoslavia</option>
+        </select>
+    </div>
+    <div class="middle_east_and_north_africa">
+       <select onchange="setCCode(this.value); selectCCode(); insertCountry(this);">
+       <!-- <select onchange="selectCentralAmericaCountryCode(); insertCountry();">  -->
+            <option value="99">All</option>
+            <option class="Middle-East-and-North-Africa" value="dz">Algeria</option>
+            <option class="Middle-East-and-North-Africa" value="bh">Bahrain</option>
+            <option class="Middle-East-and-North-Africa" value="eg">Egypt</option>
+            <option class="Middle-East-and-North-Africa" value="ir">Iran</option>
+            <option class="Middle-East-and-North-Africa" value="iq">Iraq</option>
+            <option class="Middle-East-and-North-Africa" value="il">Israel</option>
+            <option class="Middle-East-and-North-Africa" value="jo">Jordan</option>
+            <option class="Middle-East-and-North-Africa" value="kw">Kuwait</option>
+            <option class="Middle-East-and-North-Africa" value="lb">Lebanon</option>
+            <option class="Middle-East-and-North-Africa" value="ly">Libya</option>
+            <option class="Middle-East-and-North-Africa" value="ma">Morocco</option>
+            <option class="Middle-East-and-North-Africa" value="ye">North Yemen</option>
+            <option class="Middle-East-and-North-Africa" value="qa">Qatar</option>
+            <option class="Middle-East-and-North-Africa" value="sa">Saudi Arabia</option>
+            <option class="Middle-East-and-North-Africa" value="ye">South Yemen</option>
+            <option class="Middle-East-and-North-Africa" value="sy">Syria</option>
+            <option class="Middle-East-and-North-Africa" value="tn">Tunisia</option>
+            <option class="Middle-East-and-North-Africa" value="tr">Turkey</option>
+            <option class="Middle-East-and-North-Africa" value="ae">United Arab Emirates</option>
+            <option class="Middle-East-and-North-Africa" value="ps">West Bank and Gaza Strip</option>
+            <option class="Middle-East-and-North-Africa" value="eh">Western Sahara</option>
+            <option class="Middle-East-and-North-Africa" value="ye">Yemen</option>
+        </select>
+    </div>
+    <div class="sub_saharan_africa">
+       <select onchange="setCCode(this.value); selectCCode(); insertCountry(this);">
+       <!-- <select onchange="selectCentralAmericaCountryCode(); insertCountry();">  -->
+            <option value="99">All</option>
+            <option class="Sub-Saharan-Africa" value="ao">Angola</option>
+            <option class="Sub-SaharanAfrica" value="bj">Benin</option>
+            <option class="Sub-Saharan-Africa" value="bw">Botswana</option>
+            <option class="Sub-Saharan-Africa" value="bf">Burkina Faso</option>
+            <option class="Sub-Saharan-Africa" value="bi">Burundi</option>
+            <option class="Sub-Saharan-Africa" value="cm">Cameroon</option>
+            <option class="Sub-Saharan-Africa" value="cf">Central African Republic</option>
+            <option class="Sub-Saharan-Africa" value="td">Chad</option>
+            <option class="Sub-Saharan-Africa" value="km">Comoros</option>
+            <option class="Sub-Saharan-Africa" value="cd">Democratic Republic of the Congo</option>
+            <option class="Sub-Saharan-Africa" value="dj">Djibouti</option>
+            <option class="Sub-Saharan-Africa" value="gq">Equatorial Guinea</option>
+            <option class="Sub-Saharan-Africa" value="er">Eritrea</option>
+            <option class="Sub-Saharan-Africa" value="et">Ethiopia</option>
+            <option class="Sub-Saharan-Africa" value="ga">Gabon</option>
+            <option class="Sub-Saharan-Africa" value="gm">Gambia</option>
+            <option class="Sub-Saharan-Africa" value="gh">Ghana</option>
+            <option class="Sub-Saharan-Africa" value="gn">Guinea</option>
+            <option class="Sub-Saharan-Africa" value="gw">Guinea-Bissau</option>
+            <option class="Sub-Saharan-Africa" value="ci">Ivory Coast</option>
+            <option class="Sub-Saharan-Africa" value="ke">Kenya</option>
+            <option class="Sub-Saharan-Africa" value="ls">Lesotho</option>
+            <option class="Sub-Saharan-Africa" value="lr">Liberia</option>
+            <option class="Sub-Saharan-Africa" value="mg">Madagascar</option>
+            <option class="Sub-Saharan-Africa" value="mw">Malawi</option>
+            <option class="Sub-Saharan-Africa" value="ml">Mali</option>
+            <option class="Sub-Saharan-Africa" value="mr">Mauritania</option>
+            <option class="Sub-Saharan-Africa" value="mz">Mozambique</option>
+            <option class="Sub-Saharan-Africa" value="na">Namibia</option>
+            <option class="Sub-Saharan-Africa" value="ne">Niger</option>
+            <option class="Sub-Saharan-Africa" value="ng">Nigeria</option>
+            <option class="Sub-Saharan-Africa" value="cd">People's Republic of the Congo</option>
+            <option class="Sub-Saharan-Africa" value="cd">Democratic Republic of the Congo</option>
+            <option class="Sub-Saharan-Africa" value="99">Rhodesia</option>
+            <option class="Sub-Saharan-Africa" value="rw">Rwanda</option>
+            <option class="Sub-Saharan-Africa" value="sn">Senegal</option>
+            <option class="Sub-Saharan-Africa" value="sc">Seychelles</option>
+            <option class="Sub-Saharan-Africa" value="sl">Sierra Leone</option>
+            <option class="Sub-Saharan-Africa" value="so">Somalia</option>
+            <option class="Sub-Saharan-Africa" value="za">South Africa</option>
+            <option class="Sub-Saharan-Africa" value="ss">South Sudan</option>
+            <option class="Sub-Saharan-Africa" value="sd">Sudan</option>
+            <option class="Sub-Saharan-Africa" value="sz">Swaziland</option>
+            <option class="Sub-Saharan-Africa" value="tz">Tanzania</option>
+            <option class="Sub-Saharan-Africa" value="tg">Togo</option>
+            <option class="Sub-Saharan-Africa" value="ug">Uganda</option>
+            <option class="Sub-Saharan-Africa" value="99">Zaire</option>
+            <option class="Sub-Saharan-Africa" value="zm">Zambia</option>
+            <option class="Sub-Saharan Africa" value="zw">Zimbabwe</option>
+        </select>
+    </div>
+    <div class="australasia_and_oceania">
+       <select onchange="setCCode(this.value); selectCCode(); insertCountry(this);">
+       <!-- <select onchange="selectCentralAmericaCountryCode(); insertCountry();">  -->
+            <option value="99">All</option>
+            <option class="Australasia-and-Oceania" value="au">Australia</option>
+            <option class="Australasia-and-Oceania" value="fj">Fiji</option>
+            <option class="Australasia-and-Oceania" value="pf">French Polynesia</option>
+            <option class="Australasia-and-Oceania" value="nc">New Caledonia</option>
+            <option class="Australasia-and-Oceania" value="vu">New Hebrides</option>
+            <option class="Australasia-and-Oceania" value="nz">New Zealand</option>
+            <option class="Australasia-and-Oceania" value="pg">Papua New Guinea</option>
+            <option class="Australasia-and-Oceania" value="sb">Solomon Islands</option>
+            <option class="Australasia-and-Oceania" value="vu">Vanuatu</option>
+            <option class="Australasia-and-Oceania" value="wf">Wallis and Futuna</option>
+        </select>
+    </div>
+
 </div>
 
 <br>
@@ -598,7 +870,7 @@
 <script src="javascript/functions.js"></script>
 <script src="javascript/mathFunctions.js"></script>
 <script src="javascript/d3-charting.js" type="text/javascript" ></script>
-
+<!-- <script src="javascript/map_north_america.js" type="text/javascript"></script> -->
 </body>
 </html>
 
