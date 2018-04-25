@@ -228,6 +228,18 @@ div.area-1, div.area-2 { display: inline; }
     opacity: 0.2;
   }
 
+ #date-option {
+  display:  none;
+ }
+
+#year2-option-2 {
+  display: none;
+}
+
+#date-label {
+  display: none;
+}
+
   h1 {
     font-family:  sans-serif;
     font-weight: 300;
@@ -259,7 +271,12 @@ div.area-1, div.area-2 { display: inline; }
                 shape-rendering: crispEdges;
             }
 
+#main-title {
+  font-family: sans-serif;
+  font-size: 30px;
+  shape-rendering: crispEdges;
 
+}
 
 #title_1 {
   width:  50%;

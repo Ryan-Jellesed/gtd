@@ -105,10 +105,19 @@
 <p id="hook"></p>
 
 <div id="date-pickers">
-    <p> Choose Date Range:
+    <p> 
+        <div id="main-title">
+            Visualizing the Global Terrorism Dataset with D3
+            <br>
+            By Ryan Jellesed
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
       <div>
         <div>
-              <label for="date-option">Timeframe:
+              <label for="date-option" id="date-label">Timeframe:
                 <select id="date-option">
                   <option value="0">Twelve Months</option>
                   <option value="3">Nine Months</option>
@@ -118,7 +127,24 @@
                   <option value="-3">Last Three Months</option>
                 </select>
               </label>
-
+            <label for="">Region: 
+                <select size="1" id="regions_all" title="" name="regions_all" onchange="clearInputs(); selectRegion(this); ">
+                    <option value="">-Select A Region-</option>
+                    <!-- <option value="all_countries">All</option> -->
+                    <option value="australasia_and_oceania">Australasia & Oceania</option>
+                    <option value="central_america">Central America & Caribbean</option>
+                    <option value="central_asia">Central Asia</option>
+                    <option value="east_asia">East Asia</option>
+                    <option value="eastern_europe">Eastern Europe</option>
+                    <option value="middle_east_and_north_africa">Middle East & North Africa</option>
+                    <option value="north_america">North America</option>
+                    <option value="south_america">South America</option>
+                    <option value="south_asia">South Asia</option>
+                    <option value="southeast_asia">Southeast Asia</option>
+                    <option value="sub_saharan_africa">Sub-Saharan Africa</option>
+                    <option value="western_europe">Western Europe</option>
+                </select>
+            </label>
             <div id="years">
                 <label for="year-option">Year:
 
@@ -175,7 +201,7 @@
                   </select>
                 </label>
 
-                <label for="year2-option">Compare Year: 
+                <label for="year2-option" id="year2-option-2">Compare Year: 
                     <!-- <select id="year2-option"  onchange="myFunction(); setYCode(this.value); selectCCode(); regionLatLon(); compareYears();"> -->
                     <select id="year2-option"  onchange="setYCode(this.value); selectCCode(); regionLatLon(this.value); compareYears();">
                         <option value="99"> - Select Year - </option>
@@ -291,22 +317,6 @@
     </p>
 </div>
 
-<select size="1" id="regions_all" title="" name="regions_all" onchange="clearInputs(); selectRegion(this); ">
-    <option value="">-Select A Region-</option>
-    <option value="all_countries">All</option>
-    <option value="australasia_and_oceania">Australasia & Oceania</option>
-    <option value="central_america">Central America & Caribbean</option>
-    <option value="central_asia">Central Asia</option>
-    <option value="east_asia">East Asia</option>
-    <option value="eastern_europe">Eastern Europe</option>
-    <option value="middle_east_and_north_africa">Middle East & North Africa</option>
-    <option value="north_america">North America</option>
-    <option value="south_america">South America</option>
-    <option value="south_asia">South Asia</option>
-    <option value="southeast_asia">Southeast Asia</option>
-    <option value="sub_saharan_africa">Sub-Saharan Africa</option>
-    <option value="western_europe">Western Europe</option>
-</select>
       
 <div class="container">
     <div class="all_countries">
