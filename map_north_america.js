@@ -60,11 +60,11 @@ var graph1 = function(ds){
           height = 500;
 
       var projection = d3.geo.albers()
-          .center([0, 40])
-          .rotate([280, 0])
-          .parallels([30,50])
-          .scale(600)
-          .translate([width / 2, height / 2]);
+          .center([0, 70])
+          .rotate([-80, 0])
+          .parallels([50,60])
+          .scale(500)
+          .translate([width / 2, height / 2 ]);
       
       var path = d3.geo.path()
           .projection(projection);
@@ -92,7 +92,7 @@ var graph1 = function(ds){
         svg.selectAll(".subunit")
               .data(topojson.feature(ds, ds.objects.subunits).features)
             .enter().append("path")
-              .attr("class", function(d) { return "subunit " + d.id; })
+              .attr("class", function(d) { return "subunit " + d.id;})
               .attr("d", path);
 
       
@@ -209,7 +209,7 @@ var updategraph1 = function(ds){
 
 var mapDs = [];
   // d3.json("north_america.json", function(error, ds) {
-  d3.json("central_asia_topo.json", function(error, ds) {
+  d3.json("eastern_europe_topo.json", function(error, ds) {
     if (error) return console.error(error);
     
       var mapDs = ds;

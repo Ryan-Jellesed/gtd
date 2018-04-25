@@ -1132,7 +1132,13 @@ var removeBubble = function(){
 //                       })
 
 // };
-
+var hideCSS = function(cName){
+  d3.select(cName)
+        .style("fill", "white")
+        .style("stroke", "#777")
+        .style("stroke-dasharray", "2,2")
+        .style("stroke-linejoin", "round")
+};
 
 
 var australasia_map = function(ds){
@@ -1611,8 +1617,22 @@ var central_asia_map = function(ds){
     svg.selectAll(".subunit")
           .data(topojson.feature(ds, ds.objects.subunits).features)
         .enter().append("path")
-          .attr("class", function(d) { return "subunit " + d.id; })
+          .attr("class", function(d) { return "subunit " + d.id + " cAsia"; })
           .attr("d", path);
+    hideCSS(".subunit.CHI");
+    hideCSS(".subunit.CHH");
+    hideCSS(".subunit.AFG");
+    hideCSS(".subunit.RUA");
+    hideCSS(".subunit.INA");
+    hideCSS(".subunit.IRR");
+    hideCSS(".subunit.IRK");
+    hideCSS(".subunit.INX");
+    hideCSS(".subunit.IRN");
+    hideCSS(".subunit.PAK");
+    hideCSS(".subunit.RUE");
+    hideCSS(".subunit.SYX");
+    hideCSS(".subunit.TUR");
+    hideCSS(".subunit.RUC");
 
   };
 
@@ -1719,6 +1739,299 @@ var update_central_asia_map = function(ds){
                   })
   };
 
+var east_asia_map = function(ds){
+      
+  var width = 960,
+      height = 500;
+
+  var projection = d3.geo.albers()
+      .center([0, 35])
+      .rotate([250, 0])
+      .parallels([30,50])
+      .scale(600)
+      .translate([width / 2, height / 2]);
+  
+  var path = d3.geo.path()
+      .projection(projection);
+
+  var svg = d3.select("body").append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("id", "graph_east_asia")
+      .attr("class", "map");
+    // .append("svg")
+    //   .attr("width", width)
+    //   .attr("height", height);
+
+    var subunits = topojson.feature(ds, ds.objects.subunits);
+    
+    var tooltip = d3.select("body").append("div")
+                  .attr("class", "tooltip_graph")
+                  .style("opacity", 0)
+
+    console.log(subunits);
+    svg.append("path")
+          .datum(subunits)
+          .attr("d", path);
+
+    svg.selectAll(".subunit")
+          .data(topojson.feature(ds, ds.objects.subunits).features)
+        .enter().append("path")
+          .attr("class", function(d) { return "subunit " + d.id;})
+          .attr("d", path);
+
+  };
+
+var update_east_asia_map = function(ds){
+ removeBubble();
+  
+  var width = 960,
+      height = 500;
+
+  var projection = d3.geo.albers()
+      .center([0, 35])
+      .rotate([250, 0])
+      .parallels([30,50])
+      .scale(600)
+      .translate([width / 2, height / 2]);
+
+  var tooltip = d3.select("body").select(".tooltip")
+                  // .append("div")
+                  // .attr("class", "tooltip")
+                  .style("opacity", 0)
+
+  var maxTooltip = function(arr){
+    var maxTip = [];
+    for(i = 0; i<arr.length; i++){
+      maxTip.push(arr[i].number_killed)
+    }
+    var maxTipOut = Math.max(...maxTip)
+    console.log(maxTipOut);
+    return maxTipOut;
+  };
+
+  var radius = d3.scale.sqrt()
+      // .domain([0, maxTooltip(toolTipArray)])
+      .domain([0, 1500])
+      .range([0, 3]);
+
+  var path = d3.geo.path()
+      .projection(projection);
+
+  var svg = d3.select("body").select("#graph_east_asia")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("class", "map");
+      // .attr("id", "graph_north_america");
+    // .append("svg")
+    //   .attr("width", width)
+    //   .attr("height", height);
+
+    var subunits = topojson.feature(ds, ds.objects.subunits);
+
+    console.log(subunits);
+    svg.append("path")
+          .datum(subunits)
+          .attr("d", path);
+
+    svg.selectAll(".subunit")
+          .data(topojson.feature(ds, ds.objects.subunits).features)
+        .enter().append("path")
+          .attr("class", function(d) { return "subunit " + d.id + " empty"; })
+          .attr("d", path);
+
+    svg.selectAll("circle")
+          .data(latLonArray)
+          .sort(function(a,b) {
+            return b.properties.number_killed - a.properties.number_killed;
+          })
+
+          .enter()
+          .append("circle")
+          .attr("class", "bubble")
+
+          // .attr("cy", function(d) {  console.log(projection(d)); return projection(d[0]["lon"]); })
+          // .attr("cx", function(d) {  return projection(d[1]["lat"]); })
+          .attr("transform", function(d) { return "translate(" + projection([d.lon,d.lat]) + ")"; })
+          .attr("r", "2px")
+          // .attr("r", function(d) { return d.number_killed ; })
+          // .attr("r", function(d) { return radius(d.number_killed); })
+          .attr("fill", "red")
+          .on("mouseover", function(d){
+
+                    tooltip.transition()
+                              .duration(500)
+                              .style("opacity", .85)
+                    tooltip.html("<strong>Date: </strong>" + d.date + 
+                                "<br><strong>City: </strong>" + d.city +
+                                "<br><strong>State/Province: </strong>" + d.state +
+                                "<br><strong>Country: </strong>" + d.country +
+                                "<br><strong>Target: </strong>" + d.target +
+                                "<br><strong>Attack Type: </strong>" + d.attack_type +
+                                "<br><strong>Weapon Used: </strong>" + d.weapon_type +
+                                "<br><strong>Number Killed: </strong>" + d.number_killed +
+                                "<br><strong>Motive: </strong>" + d.Motive +
+                                "<br><strong>Group Name: </strong>" + d.group_name +
+                                "<br><strong>Summary: </strong>" + d.summary +
+                                "<br><strong>Additional Notes: </strong>" + d.additional_notes)
+                              .style("left", (d3.event.pageX) + "px")
+                              .style("top", (d3.event.pageY - 28) + "px");
+                  })
+                  .on("mouseout", function(d){
+                    tooltip.transition()
+                              .duration(200)
+                              .style("opacity", 0);
+                  })
+  };
+
+var eastern_europe_map = function(ds){
+      
+  var width = 960,
+      height = 500;
+
+  var projection = d3.geo.albers()
+      .center([0, 70])
+      .rotate([-80, 0])
+      .parallels([50,60])
+      .scale(500)
+      .translate([width / 2, height / 2 ]);
+  
+  var path = d3.geo.path()
+      .projection(projection);
+
+  var svg = d3.select("body").append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("id", "graph_eastern_europe")
+      .attr("class", "map");
+    // .append("svg")
+    //   .attr("width", width)
+    //   .attr("height", height);
+
+    var subunits = topojson.feature(ds, ds.objects.subunits);
+    
+    var tooltip = d3.select("body").append("div")
+                  .attr("class", "tooltip_graph")
+                  .style("opacity", 0)
+
+    console.log(subunits);
+    svg.append("path")
+          .datum(subunits)
+          .attr("d", path);
+
+    svg.selectAll(".subunit")
+          .data(topojson.feature(ds, ds.objects.subunits).features)
+        .enter().append("path")
+          .attr("class", function(d) { return "subunit " + d.id;})
+          .attr("d", path);
+
+
+  };
+
+var update_eastern_europe_map = function(ds){
+ removeBubble();
+  
+  var width = 960,
+      height = 500;
+
+  var projection = d3.geo.albers()
+      .center([0, 70])
+      .rotate([-80, 0])
+      .parallels([50,60])
+      .scale(500)
+      .translate([width / 2, height / 2]);
+
+  var tooltip = d3.select("body").select(".tooltip")
+                  // .append("div")
+                  // .attr("class", "tooltip")
+                  .style("opacity", 0)
+
+  var maxTooltip = function(arr){
+    var maxTip = [];
+    for(i = 0; i<arr.length; i++){
+      maxTip.push(arr[i].number_killed)
+    }
+    var maxTipOut = Math.max(...maxTip)
+    console.log(maxTipOut);
+    return maxTipOut;
+  };
+
+  var radius = d3.scale.sqrt()
+      // .domain([0, maxTooltip(toolTipArray)])
+      .domain([0, 1500])
+      .range([0, 3]);
+
+  var path = d3.geo.path()
+      .projection(projection);
+
+  var svg = d3.select("body").select("#graph_eastern_europe")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("class", "map");
+      // .attr("id", "graph_north_america");
+    // .append("svg")
+    //   .attr("width", width)
+    //   .attr("height", height);
+
+    var subunits = topojson.feature(ds, ds.objects.subunits);
+
+    console.log(subunits);
+    svg.append("path")
+          .datum(subunits)
+          .attr("d", path);
+
+    svg.selectAll(".subunit")
+          .data(topojson.feature(ds, ds.objects.subunits).features)
+        .enter().append("path")
+          .attr("class", function(d) { return "subunit " + d.id + " empty"; })
+          .attr("d", path);
+
+    svg.selectAll("circle")
+          .data(latLonArray)
+          .sort(function(a,b) {
+            return b.properties.number_killed - a.properties.number_killed;
+          })
+
+          .enter()
+          .append("circle")
+          .attr("class", "bubble")
+
+          // .attr("cy", function(d) {  console.log(projection(d)); return projection(d[0]["lon"]); })
+          // .attr("cx", function(d) {  return projection(d[1]["lat"]); })
+          .attr("transform", function(d) { return "translate(" + projection([d.lon,d.lat]) + ")"; })
+          .attr("r", "2px")
+          // .attr("r", function(d) { return d.number_killed ; })
+          // .attr("r", function(d) { return radius(d.number_killed); })
+          .attr("fill", "red")
+          .on("mouseover", function(d){
+
+                    tooltip.transition()
+                              .duration(500)
+                              .style("opacity", .85)
+                    tooltip.html("<strong>Date: </strong>" + d.date + 
+                                "<br><strong>City: </strong>" + d.city +
+                                "<br><strong>State/Province: </strong>" + d.state +
+                                "<br><strong>Country: </strong>" + d.country +
+                                "<br><strong>Target: </strong>" + d.target +
+                                "<br><strong>Attack Type: </strong>" + d.attack_type +
+                                "<br><strong>Weapon Used: </strong>" + d.weapon_type +
+                                "<br><strong>Number Killed: </strong>" + d.number_killed +
+                                "<br><strong>Motive: </strong>" + d.Motive +
+                                "<br><strong>Group Name: </strong>" + d.group_name +
+                                "<br><strong>Summary: </strong>" + d.summary +
+                                "<br><strong>Additional Notes: </strong>" + d.additional_notes)
+                              .style("left", (d3.event.pageX) + "px")
+                              .style("top", (d3.event.pageY - 28) + "px");
+                  })
+                  .on("mouseout", function(d){
+                    tooltip.transition()
+                              .duration(200)
+                              .style("opacity", 0);
+                  })
+  };
+
 
 
 var north_america_ds = [];
@@ -1745,6 +2058,18 @@ d3.json("central_asia_topo.json", function(error, ds) {
     central_asia_ds = ds;
   });
 
+var east_asia_ds = [];
+d3.json("east_asia_topo.json", function(error, ds) {
+    if (error) return console.error(error);
+    east_asia_ds = ds;
+  });
+
+var eastern_europe_ds = [];
+d3.json("eastern_europe_topo.json", function(error, ds) {
+    if (error) return console.error(error);
+    eastern_europe_ds = ds;
+    console.log(eastern_europe_ds);
+  });
 
 
 var mapDs = [];
@@ -1764,6 +2089,12 @@ d3.select("#regions_all")
         } else if(regionSelected === "Central Asia") {
           central_asia_map(central_asia_ds);
           mapDs = central_asia_ds;
+        } else if(regionSelected === "East Asia") {
+          east_asia_map(east_asia_ds);
+          mapDs = east_asia_ds;
+        } else if(regionSelected === "Eastern Europe") {
+          eastern_europe_map(eastern_europe_ds);
+          mapDs = eastern_europe_ds;
         }
     });
 
