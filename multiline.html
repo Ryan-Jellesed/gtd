@@ -878,41 +878,42 @@ var buildchart = function(){
   var bisectDate = d3.bisector(function(d) { return d.date; }).left;  //  Bisect the date for the mouse slider below
 
   // Initialize a list of colors for the variables in the dataset
-  // var color = d3.scale.ordinal().range(['rgb(166,206,227)','rgb(31,120,180)','rgb(178,223,138)','rgb(51,160,44)','rgb(251,154,153)','rgb(227,26,28)','rgb(253,191,111)','rgb(255,127,0)','rgb(202,178,214)','rgb(106,61,154)','rgb(232, 232, 0)','rgb(177,89,40)']);
+  var color = d3.scale.ordinal().range(['rgb(166,206,227)','rgb(31,120,180)','rgb(178,223,138)','rgb(51,160,44)','rgb(251,154,153)','rgb(227,26,28)','rgb(253,191,111)','rgb(255,127,0)','rgb(202,178,214)','rgb(106,61,154)','rgb(232, 232, 0)','rgb(177,89,40)']);
 
-  // var xScale = d3.time.scale() // Set the xScale for the svg
-  //     .range([0, width]),
-  //     xScale2 = d3.time.scale()
-  //     .range([0, width]); // Duplicate xScale for brushing ref later
+  var xScale = d3.time.scale() // Set the xScale for the svg
+      .range([0, width]),
+      xScale2 = d3.time.scale()
+      .range([0, width]); // Duplicate xScale for brushing ref later
 
-  // var yScale = d3.scale.linear()
-  //     .range([height, 0]);
+  var yScale = d3.scale.linear()
+      .range([height, 0]);
 
-  // var xAxis = d3.svg.axis()
-  //     .scale(xScale)
-  //     .orient("bottom"),
+  var xAxis = d3.svg.axis()
+      .scale(xScale)
+      .orient("bottom"),
 
-  //     xAxis2 = d3.svg.axis() // xAxis for brush slider
-  //     .scale(xScale2)
-  //     .orient("bottom");    
+      xAxis2 = d3.svg.axis() // xAxis for brush slider
+      .scale(xScale2)
+      .orient("bottom");    
 
-  // var yAxis = d3.svg.axis()
-  //     .scale(yScale)
-  //     .orient("left");  
+  var yAxis = d3.svg.axis()
+      .scale(yScale)
+      .orient("left");  
 
-  // var line = d3.svg.line()
-  //     .interpolate("linear")
-  //     .x(function(d) { return xScale(d.date); })
-  //     .y(function(d) { return yScale(d.count); })
-  //     .defined(function(d) { return d.count; });  // Hiding line value defaults of 0 for missing data
+  var line = d3.svg.line()
+      .interpolate("linear")
+      .x(function(d) { return xScale(d.date); })
+      .y(function(d) { return yScale(d.count); })
+      .defined(function(d) { return d.count; });  // Hiding line value defaults of 0 for missing data
 
 
 
-  // var svg = d3.select("body").append("svg")
-  //     .attr("width", width + margin.left + margin.right)
-  //     .attr("height", height + margin.top + margin.bottom) //height + margin.top + margin.bottom
-  //   .append("g")
-  //     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  var svg = d3.select("body").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom) //height + margin.top + margin.bottom
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+      .attr("id", "multi_chart");
 
   // Create the rect for mouse tracking 
   // Initialize as invisible

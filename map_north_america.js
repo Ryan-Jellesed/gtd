@@ -60,10 +60,10 @@ var graph1 = function(ds){
           height = 500;
 
       var projection = d3.geo.albers()
-          .center([0, 70])
-          .rotate([-80, 0])
-          .parallels([50,60])
-          .scale(500)
+          .center([0, 25])
+          .rotate([-25, 0])
+          .parallels([30,40])
+          .scale(700)
           .translate([width / 2, height / 2 ]);
       
       var path = d3.geo.path()
@@ -209,7 +209,7 @@ var updategraph1 = function(ds){
 
 var mapDs = [];
   // d3.json("north_america.json", function(error, ds) {
-  d3.json("eastern_europe_topo.json", function(error, ds) {
+  d3.json("middle_east_and_north_africa_topo.json", function(error, ds) {
     if (error) return console.error(error);
     
       var mapDs = ds;

@@ -134,6 +134,26 @@
     .subunit.SVN { fill: #cdd; }
     .subunit.UKR { fill: #cdc; }
 
+    .subunit.ARE { fill: #ddc; }
+    .subunit.BHR { fill: #cdc; }
+    .subunit.DZA { fill: #ddc; }
+    .subunit.EGY { fill: #ddc; }
+    .subunit.IRN { fill: #ddc; }
+    .subunit.ISR { fill: #cdc; }
+    .subunit.JOR { fill: #ddc; }
+    .subunit.KWT { fill: #cdd; }
+    .subunit.LBN { fill: #ddc; }
+    .subunit.LBY { fill: #cdd; }
+    .subunit.MAR { fill: #cdd; }
+    .subunit.QAT { fill: #cdd; }
+    .subunit.SAU { fill: #ddc; }
+    .subunit.SYU { fill: #cdc; }
+    .subunit.SYX { fill: #ddc; }
+    .subunit.TUN { fill: #cdd; }
+    .subunit.TUR { fill: #cdc; }
+    .subunit.YEM { fill: #cdd; }
+    .subunit.YES { fill: #ddc; }
+
 /* Some default styles to make each box visible  */
 .box {
   color:  white;
@@ -238,5 +258,68 @@ div.area-1, div.area-2 { display: inline; }
                 font-size:12px;
                 shape-rendering: crispEdges;
             }
+
+
+
+#title_1 {
+  width:  50%;
+  /* margin: auto; */
+  margin-left: 265px;
+}
+
+.brush .extent {
+  stroke: #FFF;
+  shape-rendering: crispEdges;
+}
+
+.hover-text {
+  stroke: none;
+  font-size: 30px;
+  font-weight: bold;
+  fill: #000000;
+}
+
+.axis path,
+.axis line, 
+.axis1 path,
+.axis1 line {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path, .x.axis1 path {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
+}
+
+.line {
+  fill: none;
+  stroke-width: 1px;
+}
+
+.legend-box {
+  cursor: pointer;  
+}
+
+#mouse-tracker {
+  stroke: #E6E7E8;
+  stroke-width: 1px;
+}
+
+.hover-line { 
+  stroke: #E6E7E8;
+  fill: none;
+  stroke-width: 1px;
+  left: 10px;
+  shape-rendering: crispEdges;
+  opacity: 1e-6;
+}
+
+
+
+
+
 
 
